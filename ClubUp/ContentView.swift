@@ -3,7 +3,7 @@
 //  ClubUp
 //
 //  Created by Phillip  Tracy on 3/16/24.
-//
+//  My first commit!
 
 import SwiftUI
 import SwiftData
@@ -11,7 +11,6 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Item]
-
     var body: some View {
         NavigationSplitView {
             List {
