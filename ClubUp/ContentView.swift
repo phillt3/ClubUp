@@ -11,36 +11,36 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var items: [Club]
+    
+    @State private var recClubs = ["Dr", "3w", "5w","3i","4i","5i","6i","7i","8i","9i","Pw", "W-52", "W-56", "W-60"]
+    let columns = 3
     var body: some View {
-        NavigationSplitView {
+        NavigationStack {
+
+            HStack(alignment: .center) {
+                Button(action: addItem) {
+                    Label("Add Club", systemImage: "plus")
+                }
+                .buttonStyle(.bordered)
+            }
             List {
                 ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.brand)")
-                    } label: {
-                        Text(item.brand)
-                    }
+                    ClubsListCellView(club: item)
                 }
                 .onDelete(perform: deleteItems)
             }
+            .listRowSpacing(9)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     EditButton()
                 }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
             }
-        } detail: {
-            Text("Select an item")
         }
     }
 
     private func addItem() {
         withAnimation {
-            let newItem = Club.createClub(brand: "Titleist", model: "Apex", name: "", type: ClubType.iron, number: "9", degree: "", distanceYards: 140, distanceMeters: nil, favorite: false)
+            let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.iron, number: "9", degree: "", distanceYards: 140, distanceMeters: nil, favorite: false)
             modelContext.insert(newItem)
         }
     }

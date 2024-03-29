@@ -18,6 +18,8 @@ class Club {
     var distanceYards: Int? //How far club is hit in yards
     var distanceMeters: Int? //How far club is hit in meters
     var favorite: Bool //Is the club favored
+    var shots: Int = 0
+    var goodShots: Int = 0
     
     //General Init
     private init(brand: String, model: String, name: String, type: ClubType, number: String, degree: String, distanceYards: Int?, distanceMeters: Int?, favorite: Bool, id: UUID = UUID()) {
@@ -148,6 +150,23 @@ class Club {
     func modifyDistanceMeters(meters: Int) {
         self.distanceMeters = meters
         self.distanceYards = Club.metersToYards(meters: meters)
+    }
+    
+    func addGoodShot() {
+        self.goodShots += 1
+        self.shots += 1
+    }
+    
+    func addShot() {
+        self.shots += 1
+    }
+    
+    func calculateGoodShotPercentage() -> Int {
+        if(self.shots == 0) {
+            return 0
+        }
+        let decimalPercentage = Double(self.goodShots) / Double(self.shots)
+        return Int(decimalPercentage * 100)
     }
         
     //HelperMethods
