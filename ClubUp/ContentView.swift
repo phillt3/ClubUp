@@ -13,10 +13,8 @@ struct ContentView: View {
     @Query private var items: [Club]
     
     @State private var recClubs = ["Dr", "3w", "5w","3i","4i","5i","6i","7i","8i","9i","Pw", "W-52", "W-56", "W-60"]
-    let columns = 3
     var body: some View {
         NavigationStack {
-
             HStack(alignment: .center) {
                 Button(action: addItem) {
                     Label("Add Club", systemImage: "plus")
@@ -40,7 +38,7 @@ struct ContentView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.iron, number: "9", degree: "", distanceYards: 140, distanceMeters: nil, favorite: false)
+            let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.iron, number: "9", degree: "", distanceYards: nil, distanceMeters: nil, favorite: false)
             modelContext.insert(newItem)
         }
     }

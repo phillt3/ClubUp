@@ -62,7 +62,7 @@ struct ClubDetailView: View {
                             .padding(.leading)
                             .bold()
                         Spacer()
-                        TextField("?", value: $club.distanceYards, formatter: NumberFormatter())
+                        TextField("0", value: $club.distanceYards, format: .number)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.numberPad)
                             .frame(width: 75) // Adjust the width as per your requirement
@@ -133,8 +133,14 @@ struct ClubDetailView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        modelContext.insert(club)
-                        dismiss()
+                        if (club.distanceYards != nil) {
+                            modelContext.insert(club)
+                            dismiss()
+                        } else {
+                            club.distanceYards = 0
+                            modelContext.insert(club)
+                            dismiss()
+                        }
                     }, label: {
                         Image(systemName:"chevron.backward")
                             .foregroundStyle(.gray)
