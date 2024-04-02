@@ -29,8 +29,8 @@ struct ClubsListCellView: View {
                 
                 VStack(alignment: .leading) {
                     Text(club.name)
-                        .font(.title) // Larger font size
-                        .fontWeight(.bold) // Optional: Make font bold
+                        .font(.title)
+                        .fontWeight(.bold)
                     Text(club.brand)
                         .font(.subheadline)
                         .italic()
@@ -40,8 +40,8 @@ struct ClubsListCellView: View {
                 VStack(alignment: .trailing) { // Adjusted spacing
                     if (club.distanceYards ?? 0 > 0) {
                         Text("\(club.distanceYards!)")
-                            .font(.title) // Larger font size
-                            .fontWeight(.bold) // Optional: Make font bold
+                            .font(.title)
+                            .fontWeight(.bold)
                         Text("Yds")
                             .font(.subheadline)
                             .foregroundColor(.secondary)

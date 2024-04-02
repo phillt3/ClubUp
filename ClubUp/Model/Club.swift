@@ -21,6 +21,24 @@ class Club {
     var shots: Int = 0
     var goodShots: Int = 0
     
+    static var recommendedClubs: [Club] =
+        [
+            Club.createWood(brand: "", model: "", number: "1", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createWood(brand: "", model: "", number: "3", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createWood(brand: "", model: "", number: "5", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "3", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "4", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "5", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "6", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "7", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "8", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "9", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createIron(brand: "", model: "", number: "P", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createWedge(brand: "", model: "", degree: "52", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createWedge(brand: "", model: "", degree: "56", distanceYards: nil, distanceMeters: nil, favorite: false),
+            Club.createWedge(brand: "", model: "", degree: "60", distanceYards: nil, distanceMeters: nil, favorite: false)
+        ]
+    
     //General Init
     private init(brand: String, model: String, name: String, type: ClubType, number: String, degree: String, distanceYards: Int?, distanceMeters: Int?, favorite: Bool, id: UUID = UUID()) {
         self.id = id
@@ -129,7 +147,7 @@ class Club {
         //Wedge naming conventions are W-deg but for wedges with no specific degree then it is letter + 'w' like 'Pw, Gw, Sw, Lw'
         var name = ""
         if let _ = Int(degree) {
-            name = "W-\(degree)"
+            name = "W\(degree)"
         } else {
             if let firstChar = degree.uppercased().first {
                 name = "\(firstChar)w"
@@ -176,5 +194,41 @@ class Club {
     
     private static func metersToYards(meters: Int) -> Int {
         return Int(round(Double(meters) / 0.9144))
+    }
+    
+    public static func getRecClub(name: String) -> Club {
+        switch name {
+        case "Dr":
+            return createWood(brand: "", model: "", number: "1", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "3w":
+            return createWood(brand: "", model: "", number: "3", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "5w":
+            return createWood(brand: "", model: "", number: "5", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "3i":
+            return createIron(brand: "", model: "", number: "3", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "4i":
+            return createIron(brand: "", model: "", number: "4", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "5i":
+            return createIron(brand: "", model: "", number: "5", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "6i":
+            return createIron(brand: "", model: "", number: "6", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "7i":
+            return createIron(brand: "", model: "", number: "7", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "8i":
+            return createIron(brand: "", model: "", number: "8", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "9i":
+            return createIron(brand: "", model: "", number: "9", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "Pw":
+            return createIron(brand: "", model: "", number: "P", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "W52":
+            return createWedge(brand: "", model: "", degree: "52", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "W56":
+            return createWedge(brand: "", model: "", degree: "56", distanceYards: nil, distanceMeters: nil, favorite: false)
+        case "W60":
+            return createWedge(brand: "", model: "", degree: "60", distanceYards: nil, distanceMeters: nil, favorite: false)
+        default:
+            //something went wrong
+            return createClub(brand: "", model: "", name: "", type: ClubType.iron, number: "", degree: "", distanceYards: nil, distanceMeters: nil, favorite: false)
+        }
     }
 }

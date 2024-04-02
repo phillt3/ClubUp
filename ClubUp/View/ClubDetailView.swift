@@ -117,17 +117,6 @@ struct ClubDetailView: View {
                     }
                     .padding()
                 }
-                HStack{
-                    Spacer()
-                    Button(role: .destructive) {
-                        modelContext.delete(club)
-                        dismiss()
-                    } label: {
-                        Label("Delete Club", systemImage: "trash")
-                    }
-                    .padding()
-                    Spacer()
-                }
             }
             .navigationBarBackButtonHidden()
             .toolbar {
@@ -146,7 +135,6 @@ struct ClubDetailView: View {
                             .foregroundStyle(.gray)
                     })
                 }
-                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         
