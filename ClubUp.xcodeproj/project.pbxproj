@@ -20,6 +20,7 @@
 
 /* Begin PBXFileReference section */
 		A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailView.swift; sourceTree = "<group>"; };
+		A471C8742BC49C470033D68C /* Notes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Notes.md; sourceTree = "<group>"; };
 		A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubCreateView.swift; sourceTree = "<group>"; };
 		A481CF9D2BA6458B00121B44 /* ClubUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClubUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A481CFA02BA6458B00121B44 /* ClubUpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubUpApp.swift; sourceTree = "<group>"; };
@@ -42,6 +43,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A471C8732BC49BBD0033D68C /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				A471C8742BC49C470033D68C /* Notes.md */,
+			);
+			path = Documentation;
+			sourceTree = "<group>";
+		};
 		A481CF942BA6458B00121B44 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +70,7 @@
 		A481CF9F2BA6458B00121B44 /* ClubUp */ = {
 			isa = PBXGroup;
 			children = (
+				A471C8732BC49BBD0033D68C /* Documentation */,
 				A481CFA02BA6458B00121B44 /* ClubUpApp.swift */,
 				A4C6D7B12BB9DA3100DEF7E8 /* View */,
 				A4C6D7AF2BB9D9C200DEF7E8 /* Model */,

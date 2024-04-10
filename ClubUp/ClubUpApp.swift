@@ -14,8 +14,7 @@ struct ClubUpApp: App {
         let schema = Schema([
             Club.self,
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false) //will set this to false for production
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {

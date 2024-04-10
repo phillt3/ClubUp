@@ -37,7 +37,7 @@ struct ClubsListCellView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
-                VStack(alignment: .trailing) { // Adjusted spacing
+                VStack(alignment: .trailing) {
                     if (club.distanceYards ?? 0 > 0) {
                         Text("\(club.distanceYards!)")
                             .font(.title)

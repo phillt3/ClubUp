@@ -27,22 +27,22 @@ struct ClubDetailView: View {
                                 .font(.custom("Arial Rounded MT Bold", size: 28))
                                 .textCase(.uppercase)
                                 .foregroundColor(.white)
-                                .shadow(color: .black, radius: 1, x: 0, y: 1) // Adding shadow
-                                .tracking(1) // Adding letter spacing
+                                .shadow(color: .black, radius: 1, x: 0, y: 1)
+                                .tracking(1)
                             HStack {
                                 Text(club.model)
                                     .font(.custom("Avenir-Heavy", size: 36))
                                     .textCase(.uppercase)
                                     .foregroundColor(.white)
                                     .italic()
-                                    .shadow(color: .black, radius: 1, x: 0, y: 1) // Adding shadow
-                                    .tracking(1) // Adding letter spacing
+                                    .shadow(color: .black, radius: 1, x: 0, y: 1)
+                                    .tracking(1)
                                 Text(club.name)
                                     .font(.custom("Avenir-Heavy", size: 36))
                                     .textCase(.uppercase)
                                     .foregroundColor(.white)
-                                    .shadow(color: .black, radius: 1, x: 0, y: 1) // Adding shadow
-                                    .tracking(1) // Adding letter spacing
+                                    .shadow(color: .black, radius: 1, x: 0, y: 1)
+                                    .tracking(1)
                             }
                         }
                         .padding()
@@ -53,7 +53,7 @@ struct ClubDetailView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.white)
-                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2) // Adding shadow
+                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                         .frame(height: 75)
                         .padding(.horizontal)
                     HStack {
@@ -65,8 +65,8 @@ struct ClubDetailView: View {
                         TextField("0", value: $club.distanceYards, format: .number)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .keyboardType(.numberPad)
-                            .frame(width: 75) // Adjust the width as per your requirement
-                            .font(.title2) // Increase font size
+                            .frame(width: 75)
+                            .font(.title2)
                             .bold()
                             .multilineTextAlignment(.center)
                             .padding(.trailing)
@@ -76,7 +76,7 @@ struct ClubDetailView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.white)
-                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2) // Adding shadow
+                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                         .frame(height: 75)
                         .padding(.horizontal)
                     HStack {
@@ -101,7 +101,7 @@ struct ClubDetailView: View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.white)
-                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2) // Adding shadow
+                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                         .frame(height: 75)
                         .padding(.horizontal)
                     HStack {
