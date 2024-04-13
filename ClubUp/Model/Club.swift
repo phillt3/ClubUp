@@ -22,6 +22,7 @@ class Club: CustomStringConvertible {
     var shots: Int = 0
     var goodShots: Int = 0
     var rank: Int
+    var imageName: String = ""
     
     var description: String {
         return "\(self.name)(rank: \(self.rank))"
@@ -47,7 +48,7 @@ class Club: CustomStringConvertible {
     ]
     
     //General Init
-    private init(brand: String, model: String, name: String, type: ClubType, number: String, degree: String, distanceYards: Int?, distanceMeters: Int?, favorite: Bool, rank: Int, id: UUID = UUID()) {
+    private init(brand: String, model: String, name: String, type: ClubType, number: String, degree: String, distanceYards: Int?, distanceMeters: Int?, favorite: Bool, rank: Int, imageName: String, id: UUID = UUID()) {
         self.id = id
         self.brand = brand
         self.model = model
@@ -59,6 +60,7 @@ class Club: CustomStringConvertible {
         self.distanceMeters = distanceMeters
         self.favorite = favorite
         self.rank = rank
+        self.imageName = imageName
     }
     
     //Factory Method
@@ -110,7 +112,7 @@ class Club: CustomStringConvertible {
             name = "Wd"
         }
         
-        return Club(brand: brand, model: model, name: name, type: ClubType.wood, number: number, degree: "", distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank)
+        return Club(brand: brand, model: model, name: name, type: ClubType.wood, number: number, degree: "", distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank, imageName: "default-driver")
     }
     
     /*
@@ -126,7 +128,7 @@ class Club: CustomStringConvertible {
             name = "Hy"
         }
         
-        return Club(brand: brand, model: model, name: name, type: ClubType.hybrid, number: number, degree: "", distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank)
+        return Club(brand: brand, model: model, name: name, type: ClubType.hybrid, number: number, degree: "", distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank, imageName: "default-hybrid")
     }
     
     /*
@@ -146,7 +148,7 @@ class Club: CustomStringConvertible {
             }
         }
         
-        return Club(brand: brand, model: model, name: name, type: ClubType.iron, number: number, degree: "", distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank)
+        return Club(brand: brand, model: model, name: name, type: ClubType.iron, number: number, degree: "", distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank, imageName: "default-iron")
     }
     
     /*
@@ -166,7 +168,7 @@ class Club: CustomStringConvertible {
             }
         }
         
-        return Club(brand: brand, model: model, name: name, type: ClubType.wedge, number: "", degree: degree, distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank)
+        return Club(brand: brand, model: model, name: name, type: ClubType.wedge, number: "", degree: degree, distanceYards: distanceYards, distanceMeters: distanceMeters, favorite: favorite, rank: rank, imageName: "default-wedge")
     }
     
     //Class Functions

@@ -21,7 +21,7 @@ struct ClubsListCellView: View {
                     .onTapGesture {
                         club.favorite.toggle()
                     }
-                Image("golf-club")
+                Image(club.imageName)
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 60, height: 60)

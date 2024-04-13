@@ -17,7 +17,7 @@ struct ClubDetailView: View {
             VStack {
                 ZStack {
                     LinearGradient(gradient: Gradient(colors: [Color.black, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                    Image("golf-club")
+                    Image(club.imageName)
                         .resizable()
                         .shadow(radius: 8)
                     HStack {

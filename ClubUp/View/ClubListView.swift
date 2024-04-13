@@ -41,7 +41,7 @@ struct ClubListView: View {
                                 Button(action: {
                                     addItem(club: recClub)
                                 }, label: {
-                                    Image("golf-club")
+                                    Image(recClub.imageName)
                                         .resizable()
                                         .aspectRatio(contentMode: .fit)
                                     Text("\(recClub.name)")
@@ -97,7 +97,7 @@ struct ClubListView: View {
 
     private func addItem() {
         withAnimation {
-            let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.iron, number: "9", degree: "", distanceYards: nil, distanceMeters: nil, favorite: false)
+            let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.hybrid, number: "9", degree: "", distanceYards: nil, distanceMeters: nil, favorite: false)
             modelContext.insert(newItem)
         }
     }
