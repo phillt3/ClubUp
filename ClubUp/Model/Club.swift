@@ -48,7 +48,7 @@ class Club: CustomStringConvertible {
     ]
     
     //General Init
-    private init(brand: String, model: String, name: String, type: ClubType, number: String, degree: String, distanceYards: Int?, distanceMeters: Int?, favorite: Bool, rank: Int, imageName: String, id: UUID = UUID()) {
+    init(brand: String = "", model: String = "", name: String = "", type: ClubType = ClubType.iron, number: String = "", degree: String = "", distanceYards: Int? = 0, distanceMeters: Int? = 0, favorite: Bool = false, rank: Int = -1, imageName: String = "", id: UUID = UUID()) {
         self.id = id
         self.brand = brand
         self.model = model

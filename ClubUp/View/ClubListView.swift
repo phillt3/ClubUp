@@ -12,6 +12,8 @@ struct ClubListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Club.rank) private var userClubs: [Club]
     
+    @State private var sheetIsPresented = false
+    
     let layout = [
         GridItem(.adaptive(minimum: 80)),
         GridItem(.adaptive(minimum: 80)),
@@ -62,7 +64,9 @@ struct ClubListView: View {
                 }
             }
             HStack(alignment: .center) {
-                Button(action: addItem) {
+                Button {
+                    sheetIsPresented.toggle()
+                } label: {
                     Label("Add Custom Club", systemImage: "plus")
                 }
                 .buttonStyle(.bordered)
@@ -92,9 +96,15 @@ struct ClubListView: View {
                     })
                 }
             }
+            
         }
+        .sheet(isPresented: $sheetIsPresented, content: {
+            NavigationStack {
+                ClubCreateView(club: Club())//new value
+            }
+        })
     }
-
+    
     private func addItem() {
         withAnimation {
             let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.hybrid, number: "9", degree: "", distanceYards: nil, distanceMeters: nil, favorite: false)
@@ -107,7 +117,7 @@ struct ClubListView: View {
             modelContext.insert(club)
         }
     }
-
+    
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {
