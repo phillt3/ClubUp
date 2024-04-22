@@ -100,7 +100,7 @@ struct ClubListView: View {
         }
         .sheet(isPresented: $sheetIsPresented, content: {
             NavigationStack {
-                ClubCreateView(club: Club())//new value
+                ClubCreateView()//new value
             }
         })
     }

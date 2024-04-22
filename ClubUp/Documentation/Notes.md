@@ -48,3 +48,8 @@
 ## onDelete(perform:)
 - SwiftUI passes a set of indicies to the closure that's relative to the dynamic view's underlying collection of data
 - In my code this then calls delete items which loops through the set of inidices and deletes each one from the model context, this probably opens up the possibility to delete multiple items at a time so I can keep it for now, but can always be simplified to only delete the selected item
+
+## Binding
+- Use a binding to create a two-way connection between a property that stores data, and a view that displays and changes the data. 
+- A binding connects a property to a source of truth stored elsewhere, instead of storing data directly. 
+- For example, a button that toggles between play and pause can create a binding to a property of its parent view using the Binding property wrapper.

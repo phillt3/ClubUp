@@ -13,10 +13,14 @@ let ironValues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "P"]
 let wedgeValues = ["E", "A", "D", "F", "G", "M", "MB", "S", "L"] + (46...72).map { String($0) }
 
 struct ClubCreateView: View {
-    @State var club: Club
     @Environment(\.modelContext) var modelContext
-    @State private var selectedButton: ClubType?
-    @State private var selectedValue: String?
+    @State private var brand: String = ""
+    @State private var model: String = ""
+    @State private var distance: Int = 0
+    @State private var isFavorite: Bool = false
+    @State private var type: ClubType?
+    @State private var selectedValue: String = ""
+    @Environment(\.dismiss) private var dismiss
     var body: some View {
         List {
             HStack(alignment: .center) {
@@ -31,7 +35,7 @@ struct ClubCreateView: View {
             VStack(alignment: .leading) {
                 Text("Brand").font(.headline).bold()
                     .padding(.bottom, -10)
-                TextField("Brand", text: $club.brand)
+                TextField("Brand", text: $brand)
                     .font(.title)
                     .textFieldStyle(.roundedBorder)
                     .listRowSeparator(.hidden)
@@ -42,7 +46,7 @@ struct ClubCreateView: View {
             VStack(alignment: .leading) {
                 Text("Model").font(.headline).bold()
                     .padding(.bottom, -10)
-                TextField("Model", text: $club.model)
+                TextField("Model", text: $model)
                     .font(.title)
                     .textFieldStyle(.roundedBorder)
                     .listRowSeparator(.hidden)
@@ -54,7 +58,7 @@ struct ClubCreateView: View {
                 Text("Club Type").font(.headline).bold()
                 HStack {
                     Button(action: {
-                        self.selectedButton = ClubType.wood
+                        type = ClubType.wood
                     }) {
                         VStack(alignment: .center) {
                             Text("Wood")
@@ -64,10 +68,10 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: selectedButton == ClubType.wood))
+                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.wood))
                     
                     Button(action: {
-                        self.selectedButton = ClubType.hybrid
+                        type = ClubType.hybrid
                     }) {
                         VStack(alignment: .center) {
                             Text("Hybrid")
@@ -77,12 +81,12 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: selectedButton == ClubType.hybrid))
+                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.hybrid))
                 }
                 
                 HStack {
                     Button(action: {
-                        self.selectedButton = ClubType.iron //TODO: should make these capitalized
+                        type = ClubType.iron //TODO: should make these capitalized
                     }) {
                         VStack(alignment: .center) {
                             Text("Iron")
@@ -92,10 +96,10 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: selectedButton == ClubType.iron))
+                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.iron))
                     
                     Button(action: {
-                        self.selectedButton = ClubType.wedge
+                        type = ClubType.wedge
                     }) {
                         VStack(alignment: .center) {
                             Text("Wedge")
@@ -105,20 +109,20 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: selectedButton == ClubType.wedge))
+                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.wedge))
                 }
             }
             .padding()
             .listRowSeparator(.hidden)
             
-            if selectedButton != nil {
+            if type != nil {
                 HStack {
                     Label("Select Club Number", systemImage: "number")
                         .font(.headline)
                         .foregroundColor(.blue)
                     
-                    Picker(selection: $selectedValue, label: Text("Appearance")) {
-                        let themes = getSelection(type: selectedButton!)
+                    Picker(selection: $selectedValue, label: Text("Select Club Number")) {
+                        let themes = getSelection(type: type!)
                         ForEach(themes, id: \.self) {
                             Text($0)
                         }
@@ -133,7 +137,7 @@ struct ClubCreateView: View {
                         .padding(.leading)
                         .bold()
                     Spacer()
-                    TextField("0", value: $club.distanceYards, format: .number)
+                    TextField("0", value: $distance, format: .number)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.numberPad)
                         .frame(width: 75)
@@ -150,7 +154,7 @@ struct ClubCreateView: View {
                         .padding(.leading)
                         .bold()
                     Spacer()
-                    Image(systemName: club.favorite ? "star.fill" : "star")
+                    Image(systemName: isFavorite ? "star.fill" : "star")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 40, height: 40)
@@ -158,9 +162,37 @@ struct ClubCreateView: View {
                         .foregroundStyle(.yellow)
                         .padding(.trailing, 25)
                         .onTapGesture {
-                            club.favorite.toggle()
+                            isFavorite.toggle()
                         }
                 }
+                HStack(alignment: .center) {
+                    Spacer()
+                    Button(action: {
+                        
+                        if (selectedValue == "") {
+                            switch type! {
+                            case .wood:
+                                fallthrough
+                            case .iron:
+                                fallthrough
+                            case .hybrid:
+                                selectedValue = "1"
+                            case .wedge:
+                                selectedValue = "E"
+                            }
+                        }
+                        
+                        let newClub = Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: distance, distanceMeters: distance, favorite: isFavorite)
+                        modelContext.insert(newClub)  //TODO: This needs to be improved, seems like a waste to use a half baked model to create a full model, model should just be ready to ship out
+                        dismiss()
+                    }) {
+                        Label("Add Club", systemImage: "plus")
+                            .foregroundStyle(.white)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    Spacer()
+                }
+                .listRowSeparator(.hidden)
             }
         }
     }
@@ -183,7 +215,6 @@ private func temp() {
     
 }
 
-
 struct CustomButtonStyle: ButtonStyle {
     let selected: Bool
     
@@ -200,6 +231,5 @@ struct CustomButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.hybrid, number: "9", degree: "", distanceYards: nil, distanceMeters: nil, favorite: false)
-    return ClubCreateView(club: newItem)
+    return ClubCreateView()
 }
