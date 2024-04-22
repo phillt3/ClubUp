@@ -14,4 +14,9 @@ enum ClubType: Codable {
     case wedge
 }
 
+enum Unit: String, CaseIterable, Codable {
+    case Imperial = "Imperial (Yards, Miles)"
+    case Metric = "Metric (Meters, Kilometers)"
+}
+
 

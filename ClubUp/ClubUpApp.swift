@@ -13,8 +13,9 @@ struct ClubUpApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Club.self,
+            Settings.self
         ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false) //will set this to false for production
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true) //will set this to false for production
         do {
             return try ModelContainer(for: schema, configurations: [modelConfiguration])
         } catch {

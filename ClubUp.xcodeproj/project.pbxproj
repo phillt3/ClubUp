@@ -14,8 +14,10 @@
 		A481CFA52BA6458B00121B44 /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = A481CFA42BA6458B00121B44 /* Club.swift */; };
 		A481CFA72BA6458D00121B44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A481CFA62BA6458D00121B44 /* Assets.xcassets */; };
 		A481CFAA2BA6458D00121B44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A481CFA92BA6458D00121B44 /* Preview Assets.xcassets */; };
-		A4AA136A2BA71D7000F3AD35 /* ClubType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AA13692BA71D7000F3AD35 /* ClubType.swift */; };
+		A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */; };
 		A4B3D5BE2BA895A4001E101B /* ClubsListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */; };
+		A4D19BA62BD70E79002A0EE3 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D19BA52BD70E79002A0EE3 /* Settings.swift */; };
+		A4D19BAA2BD71335002A0EE3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D19BA92BD71335002A0EE3 /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,8 +30,10 @@
 		A481CFA42BA6458B00121B44 /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
 		A481CFA62BA6458D00121B44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A481CFA92BA6458D00121B44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		A4AA13692BA71D7000F3AD35 /* ClubType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubType.swift; sourceTree = "<group>"; };
+		A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialTypes.swift; sourceTree = "<group>"; };
 		A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsListCellView.swift; sourceTree = "<group>"; };
+		A4D19BA52BD70E79002A0EE3 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		A4D19BA92BD71335002A0EE3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,8 +95,9 @@
 		A4C6D7AF2BB9D9C200DEF7E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				A4AA13692BA71D7000F3AD35 /* ClubType.swift */,
+				A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */,
 				A481CFA42BA6458B00121B44 /* Club.swift */,
+				A4D19BA52BD70E79002A0EE3 /* Settings.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -104,6 +109,7 @@
 				A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */,
 				A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */,
 				A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */,
+				A4D19BA92BD71335002A0EE3 /* SettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -180,10 +186,12 @@
 			files = (
 				A4B3D5BE2BA895A4001E101B /* ClubsListCellView.swift in Sources */,
 				A43BAE382BAA161C005CBEE5 /* ClubDetailView.swift in Sources */,
+				A4D19BA62BD70E79002A0EE3 /* Settings.swift in Sources */,
+				A4D19BAA2BD71335002A0EE3 /* SettingsView.swift in Sources */,
 				A481CFA32BA6458B00121B44 /* ClubListView.swift in Sources */,
 				A481CFA52BA6458B00121B44 /* Club.swift in Sources */,
 				A481CFA12BA6458B00121B44 /* ClubUpApp.swift in Sources */,
-				A4AA136A2BA71D7000F3AD35 /* ClubType.swift in Sources */,
+				A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */,
 				A47986282BB1FF4A009F6DB2 /* ClubCreateView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
