@@ -8,8 +8,13 @@
 import Foundation
 import SwiftData
 
+
+/*
+ This model defines the structure and properties of global user preferences
+ Currently only 1 userpref obj is kept in the swiftdata model list, will look for ways to improve this by having a singular peristent object
+ */
 @Model
-class Settings {
+class UserPrefs {
     
     var distanceUnit: Unit
     var speedUnit: Unit

@@ -11,8 +11,11 @@ import SwiftData
 struct ClubListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Club.rank) private var userClubs: [Club]
+    @Query private var userPrefs: [UserPrefs]
+    
     
     @State private var sheetIsPresented = false
+    @State private var showSettingsView = false
     
     let layout = [
         GridItem(.adaptive(minimum: 80)),
@@ -79,24 +82,21 @@ struct ClubListView: View {
             }
             .listRowSpacing(9)
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        
-                    }, label: {
-                        Image(systemName:"scope")
-                            .foregroundStyle(.gray)
-                    })
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        
-                    }, label: {
+//                ToolbarItem(placement: .topBarTrailing) {
+//                    Button(action: {
+//                        
+//                    }, label: {
+//                        Image(systemName:"scope")
+//                            .foregroundStyle(.gray)
+//                    })
+//                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: SettingsView(userPrefs: userPrefs.first ?? UserPrefs(), isFirst: userPrefs.isEmpty)) {
                         Image(systemName:"gearshape")
                             .foregroundStyle(.gray)
-                    })
+                    }
                 }
             }
-            
         }
         .sheet(isPresented: $sheetIsPresented, content: {
             NavigationStack {

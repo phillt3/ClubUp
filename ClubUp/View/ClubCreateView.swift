@@ -183,7 +183,7 @@ struct ClubCreateView: View {
                         }
                         
                         let newClub = Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: distance, distanceMeters: distance, favorite: isFavorite)
-                        modelContext.insert(newClub)  //TODO: This needs to be improved, seems like a waste to use a half baked model to create a full model, model should just be ready to ship out
+                        modelContext.insert(newClub)
                         dismiss()
                     }) {
                         Label("Add Club", systemImage: "plus")
