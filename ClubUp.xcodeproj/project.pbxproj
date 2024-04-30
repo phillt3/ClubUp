@@ -22,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailView.swift; sourceTree = "<group>"; };
+		A44C330C2BDFD05A00DDC2FB /* TechDebt.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TechDebt.md; sourceTree = "<group>"; };
 		A471C8742BC49C470033D68C /* Notes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Notes.md; sourceTree = "<group>"; };
 		A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubCreateView.swift; sourceTree = "<group>"; };
 		A481CF9D2BA6458B00121B44 /* ClubUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClubUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				A471C8742BC49C470033D68C /* Notes.md */,
+				A44C330C2BDFD05A00DDC2FB /* TechDebt.md */,
 			);
 			path = Documentation;
 			sourceTree = "<group>";

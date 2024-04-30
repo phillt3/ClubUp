@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ClubDetailView: View {
     @State var club: Club
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Query private var userPrefs: [UserPrefs]
+    
+    var prefs: UserPrefs
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
@@ -57,65 +61,86 @@ struct ClubDetailView: View {
                         .frame(height: 75)
                         .padding(.horizontal)
                     HStack {
-                        Text("Distance (Yds)")
-                            .font(.title2)
-                            .padding(.leading)
-                            .bold()
-                        Spacer()
-                        TextField("0", value: $club.distanceYards, format: .number)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .keyboardType(.numberPad)
-                            .frame(width: 75)
-                            .font(.title2)
-                            .bold()
-                            .multilineTextAlignment(.center)
-                            .padding(.trailing)
+                        if (prefs.distanceUnit == Unit.Imperial) {
+                            Text("Distance (Yards)")
+                                .font(.title2)
+                                .padding(.leading)
+                                .bold()
+                            Spacer()
+                            TextField("0", value: $club.distanceYards, format: .number)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .keyboardType(.numberPad)
+                                .frame(width: 75)
+                                .font(.title2)
+                                .bold()
+                                .multilineTextAlignment(.center)
+                                .padding(.trailing)
+                        } else if (prefs.distanceUnit == Unit.Metric) {
+                            Text("Distance (Meters)")
+                                .font(.title2)
+                                .padding(.leading)
+                                .bold()
+                            Spacer()
+                            TextField("0", value: $club.distanceMeters, format: .number)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .keyboardType(.numberPad)
+                                .frame(width: 75)
+                                .font(.title2)
+                                .bold()
+                                .multilineTextAlignment(.center)
+                                .padding(.trailing)
+                        }
+
                     }
                     .padding()
                 }
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.white)
-                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
-                        .frame(height: 75)
-                        .padding(.horizontal)
-                    HStack {
-                        Text("Favorite")
-                            .font(.title2)
-                            .padding(.leading)
-                            .bold()
-                        Spacer()
-                        Image(systemName: club.favorite ? "star.fill" : "star")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 40, height: 40)
-                            .fontWeight(.thin)
-                            .foregroundStyle(.yellow)
-                            .padding(.trailing, 25)
-                            .onTapGesture {
-                                club.favorite.toggle()
-                            }
+                if (prefs.favoritesOn) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white)
+                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
+                            .frame(height: 75)
+                            .padding(.horizontal)
+                        HStack {
+                            Text("Favorite")
+                                .font(.title2)
+                                .padding(.leading)
+                                .bold()
+                            Spacer()
+                            Image(systemName: club.favorite ? "star.fill" : "star")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 40, height: 40)
+                                .fontWeight(.thin)
+                                .foregroundStyle(.yellow)
+                                .padding(.trailing, 25)
+                                .onTapGesture {
+                                    club.favorite.toggle()
+                                }
+                        }
+                        .padding()
                     }
-                    .padding()
                 }
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.white)
-                        .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
-                        .frame(height: 75)
-                        .padding(.horizontal)
-                    HStack {
-                        Text("Good Shot %")
-                            .font(.title2)
-                            .padding(.leading)
-                            .bold()
-                        Spacer()
-                        Text("\(club.calculateGoodShotPercentage()) %")
-                            .font(.title2)
-                            .padding(.trailing)
-                            .bold()
+                if (prefs.trackersOn) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(Color.white)
+                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
+                            .frame(height: 75)
+                            .padding(.horizontal)
+                        HStack {
+                            Text("Good Shot %")
+                                .font(.title2)
+                                .padding(.leading)
+                                .bold()
+                            Spacer()
+                            Text("\(club.calculateGoodShotPercentage()) %")
+                                .font(.title2)
+                                .padding(.trailing)
+                                .bold()
+                        }
+                        .padding()
                     }
-                    .padding()
                 }
             }
             .navigationBarBackButtonHidden()
@@ -136,12 +161,10 @@ struct ClubDetailView: View {
                     })
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        
-                    }, label: {
+                    NavigationLink(destination: SettingsView(userPrefs: userPrefs.first ?? UserPrefs(), isFirst: userPrefs.isEmpty)) {
                         Image(systemName:"gearshape")
                             .foregroundStyle(.gray)
-                    })
+                    }
                 }
             }
         }
@@ -150,5 +173,5 @@ struct ClubDetailView: View {
 
 #Preview {
     let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.iron, number: "9", degree: "", distanceYards: 140, distanceMeters: nil, favorite: false)
-    return ClubDetailView(club: newItem)
+    return ClubDetailView(club: newItem, prefs: UserPrefs())
 }

@@ -33,7 +33,9 @@ struct ClubListView: View {
                         Spacer()
                         Button(action: {
                             Club.recommendedClubs.forEach { key, recClub in
-                                addItem(club: recClub)
+                                if !userClubs.contains(where: { $0.name == recClub.name }) {
+                                    addItem(club: recClub) //TODO: Hopefully this can be optimized as well
+                                }
                             }
                         }, label: {
                             Text("Add All")
@@ -41,7 +43,7 @@ struct ClubListView: View {
                         })
                     }
                     LazyVGrid(columns: layout) {
-                        ForEach(Club.recommendedClubs.values.sorted { return $0.rank < $1.rank }, id: \.self) { recClub in //looping through this dictionary and then checking the list feels unoptimized and can be improved. But it is important that we are no longer relying on a state static dictionary from the model
+                        ForEach(Club.recommendedClubs.values.sorted { return $0.rank < $1.rank }, id: \.self) { recClub in //TODO: looping through this dictionary and then checking the list feels unoptimized and can be improved. But it is important that we are no longer relying on a state static dictionary from the model
                             if !userClubs.contains(where: { $0.name == recClub.name }) {
                                 Button(action: {
                                     addItem(club: recClub)
@@ -76,7 +78,7 @@ struct ClubListView: View {
             }
             List {
                 ForEach(userClubs) { item in
-                    ClubsListCellView(club: item)
+                    ClubsListCellView(club: item, prefs: userPrefs.first ?? UserPrefs())
                 }
                 .onDelete(perform: deleteItems)
             }
@@ -100,7 +102,7 @@ struct ClubListView: View {
         }
         .sheet(isPresented: $sheetIsPresented, content: {
             NavigationStack {
-                ClubCreateView()//new value
+                ClubCreateView(prefs: userPrefs.first ?? UserPrefs())//new value
             }
         })
     }

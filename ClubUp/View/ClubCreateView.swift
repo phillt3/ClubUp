@@ -21,17 +21,20 @@ struct ClubCreateView: View {
     @State private var type: ClubType?
     @State private var selectedValue: String = ""
     @Environment(\.dismiss) private var dismiss
+    
+    var prefs: UserPrefs
     var body: some View {
         List {
-            HStack(alignment: .center) {
-                Spacer()
-                Button(action: temp) {
-                    Label("Search Club", systemImage: "magnifyingglass")
-                }
-                .buttonStyle(.bordered)
-                Spacer()
-            }
-            .listRowSeparator(.hidden)
+            //TODO: Club Lookup
+//            HStack(alignment: .center) {
+//                Spacer()
+//                Button(action: temp) {
+//                    Label("Search Club", systemImage: "magnifyingglass")
+//                }
+//                .buttonStyle(.bordered)
+//                Spacer()
+//            }
+//            .listRowSeparator(.hidden)
             VStack(alignment: .leading) {
                 Text("Brand").font(.headline).bold()
                     .padding(.bottom, -10)
@@ -132,10 +135,17 @@ struct ClubCreateView: View {
                 .frame(height: 100)
                 
                 HStack {
-                    Text("Distance (Yds)")
-                        .font(.title2)
-                        .padding(.leading)
-                        .bold()
+                    if (prefs.distanceUnit == Unit.Imperial) {
+                        Text("Distance (Yards)")
+                            .font(.title2)
+                            .padding(.leading)
+                            .bold()
+                    } else if (prefs.distanceUnit == Unit.Metric){
+                        Text("Distance (Meters)")
+                            .font(.title2)
+                            .padding(.leading)
+                            .bold()
+                    }
                     Spacer()
                     TextField("0", value: $distance, format: .number)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -148,22 +158,24 @@ struct ClubCreateView: View {
                 }
                 .listRowSeparator(.hidden)
                 
-                HStack {
-                    Text("Favorite")
-                        .font(.title2)
-                        .padding(.leading)
-                        .bold()
-                    Spacer()
-                    Image(systemName: isFavorite ? "star.fill" : "star")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 40, height: 40)
-                        .fontWeight(.thin)
-                        .foregroundStyle(.yellow)
-                        .padding(.trailing, 25)
-                        .onTapGesture {
-                            isFavorite.toggle()
-                        }
+                if (prefs.favoritesOn) {
+                    HStack {
+                        Text("Favorite")
+                            .font(.title2)
+                            .padding(.leading)
+                            .bold()
+                        Spacer()
+                        Image(systemName: isFavorite ? "star.fill" : "star")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 40, height: 40)
+                            .fontWeight(.thin)
+                            .foregroundStyle(.yellow)
+                            .padding(.trailing, 25)
+                            .onTapGesture {
+                                isFavorite.toggle()
+                            }
+                    }
                 }
                 HStack(alignment: .center) {
                     Spacer()
@@ -181,9 +193,13 @@ struct ClubCreateView: View {
                                 selectedValue = "E"
                             }
                         }
-                        
-                        let newClub = Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: distance, distanceMeters: distance, favorite: isFavorite)
-                        modelContext.insert(newClub)
+                        if (prefs.distanceUnit == Unit.Imperial) { //TODO: This can be cleaned up
+                            let newClub = Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: distance, distanceMeters: nil, favorite: isFavorite)
+                            modelContext.insert(newClub)
+                        } else if (prefs.distanceUnit == Unit.Metric) {
+                            let newClub = Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: nil, distanceMeters: distance, favorite: isFavorite)
+                            modelContext.insert(newClub)
+                        }
                         dismiss()
                     }) {
                         Label("Add Club", systemImage: "plus")
@@ -231,5 +247,6 @@ struct CustomButtonStyle: ButtonStyle {
 }
 
 #Preview {
-    return ClubCreateView()
+    let prefs = UserPrefs()
+    return ClubCreateView(prefs: prefs)
 }
