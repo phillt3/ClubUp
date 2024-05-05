@@ -19,4 +19,10 @@ Currently the calculation of which rec clubs to display, or if the section is di
 
 - The design and color scheme of the UI can be improved
 
+## MVVM Principle
+
+- Although Swift Data allows for the inherit functionality of MVVM, not all of my work relies on Swift Data, it would be a good idea to implement ViewModels where they make sense
+
+## In the detail page, when editing distance, it would be prefereable that upon the edit of one unit distance the other is automatically updated
+
 

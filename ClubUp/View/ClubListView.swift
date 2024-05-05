@@ -10,6 +10,7 @@ import SwiftData
 
 struct ClubListView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     @Query(sort: \Club.rank) private var userClubs: [Club]
     @Query private var userPrefs: [UserPrefs]
     
@@ -83,7 +84,16 @@ struct ClubListView: View {
                 .onDelete(perform: deleteItems)
             }
             .listRowSpacing(9)
+            .navigationBarBackButtonHidden()
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        dismiss()
+                    }, label: {
+                        Image(systemName:"scope")
+                            .foregroundStyle(.gray)
+                    })
+                }
 //                ToolbarItem(placement: .topBarTrailing) {
 //                    Button(action: {
 //                        

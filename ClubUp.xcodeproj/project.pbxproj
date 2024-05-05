@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A43BAE382BAA161C005CBEE5 /* ClubDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */; };
+		A44C330E2BE10EC300DDC2FB /* DistanceCalcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44C330D2BE10EC300DDC2FB /* DistanceCalcView.swift */; };
 		A47986282BB1FF4A009F6DB2 /* ClubCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */; };
 		A481CFA12BA6458B00121B44 /* ClubUpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A481CFA02BA6458B00121B44 /* ClubUpApp.swift */; };
 		A481CFA32BA6458B00121B44 /* ClubListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A481CFA22BA6458B00121B44 /* ClubListView.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailView.swift; sourceTree = "<group>"; };
 		A44C330C2BDFD05A00DDC2FB /* TechDebt.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TechDebt.md; sourceTree = "<group>"; };
+		A44C330D2BE10EC300DDC2FB /* DistanceCalcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceCalcView.swift; sourceTree = "<group>"; };
 		A471C8742BC49C470033D68C /* Notes.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Notes.md; sourceTree = "<group>"; };
 		A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubCreateView.swift; sourceTree = "<group>"; };
 		A481CF9D2BA6458B00121B44 /* ClubUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClubUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,6 +114,7 @@
 				A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */,
 				A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */,
 				A4D19BA92BD71335002A0EE3 /* SettingsView.swift */,
+				A44C330D2BE10EC300DDC2FB /* DistanceCalcView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -192,6 +195,7 @@
 				A4D19BAA2BD71335002A0EE3 /* SettingsView.swift in Sources */,
 				A481CFA32BA6458B00121B44 /* ClubListView.swift in Sources */,
 				A481CFA52BA6458B00121B44 /* Club.swift in Sources */,
+				A44C330E2BE10EC300DDC2FB /* DistanceCalcView.swift in Sources */,
 				A481CFA12BA6458B00121B44 /* ClubUpApp.swift in Sources */,
 				A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */,
 				A47986282BB1FF4A009F6DB2 /* ClubCreateView.swift in Sources */,

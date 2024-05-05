@@ -147,7 +147,13 @@ struct ClubDetailView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
-                        if (club.distanceYards != nil) {
+                        if (club.distanceYards != nil && prefs.distanceUnit == Unit.Imperial) {
+                            //TODO: AN event watcher where everytime one of the distances changes, the other unit is updated
+                            club.modifyDistanceYards(yards: club.distanceYards ?? 0)
+                            modelContext.insert(club)
+                            dismiss()
+                        } else if (club.distanceMeters != nil && prefs.distanceUnit == Unit.Metric) {
+                            club.modifyDistanceMeters(meters: club.distanceMeters ?? 0)
                             modelContext.insert(club)
                             dismiss()
                         } else {
