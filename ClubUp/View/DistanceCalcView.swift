@@ -21,6 +21,14 @@ struct DistanceCalcView: View {
     let arrowImages = ["arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
     
     @State private var selected: String = ""
+    @State private var sheetIsPresented = false
+    @State private var showingAlert = false
+    
+    enum AlertType {
+        case popup1, popup2, popup3, popup4, popup5, popup6, popup7, popup8, popup9, popup10
+    }
+    
+    @State private var alertType: AlertType? = nil
     
     let selectionOptions = ["Tee", "Fairway","Rough","Bunker", "Deep Rough"]
     let slopes = ["Flat","Down","Up"]
@@ -33,8 +41,7 @@ struct DistanceCalcView: View {
                         Text("Distance (Yards)")
                             .font(.headline)
                         Button(action: {
-                            // Action to be performed when the info button is tapped
-                            print("Info button tapped")
+                            
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
@@ -51,8 +58,7 @@ struct DistanceCalcView: View {
                         Text("Adjusted Distance (Yards)")
                             .font(.headline)
                         Button(action: {
-                            // Action to be performed when the info button is tapped
-                            print("Info button tapped")
+                            
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
@@ -65,7 +71,17 @@ struct DistanceCalcView: View {
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                     
-                    Text("Wind Direction")
+                    HStack {
+                        Text("Wind Direction")
+                            .font(.headline)
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "info.circle")
+                                .foregroundColor(.blue)
+                                .padding(.trailing, 8)
+                        }
+                    }
                     Picker(selection: $selectedDirection, label: Text("Wind Direction")) {
                         ForEach(arrowImages, id: \.self) {
                             Image(systemName: $0)
@@ -78,6 +94,14 @@ struct DistanceCalcView: View {
                     
                     HStack {
                         Text("Lie")
+                            .font(.headline)
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "info.circle")
+                                .foregroundColor(.blue)
+                                .padding(.trailing, 8)
+                        }
                         Picker("Lie", selection: $selected) {
                             ForEach(selectionOptions, id: \.self) {
                                 Text($0)
@@ -87,6 +111,14 @@ struct DistanceCalcView: View {
 
                     HStack {
                         Text("Slope")
+                            .font(.headline)
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "info.circle")
+                                .foregroundColor(.blue)
+                                .padding(.trailing, 8)
+                        }
                         Picker("Slope", selection: $selectedSlope) {
                             ForEach(slopes, id: \.self) {
                                 Text($0)
@@ -106,8 +138,7 @@ struct DistanceCalcView: View {
                                 Text("Temperature")
                                     .font(.headline)
                                 Button(action: {
-                                    // Action to be performed when the info button is tapped
-                                    print("Info button tapped")
+                                    
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -126,8 +157,7 @@ struct DistanceCalcView: View {
                                 Text("Air Pressure")
                                     .font(.headline)
                                 Button(action: {
-                                    // Action to be performed when the info button is tapped
-                                    print("Info button tapped")
+                                    
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -149,8 +179,7 @@ struct DistanceCalcView: View {
                                 Text("Humidity")
                                     .font(.headline)
                                 Button(action: {
-                                    // Action to be performed when the info button is tapped
-                                    print("Info button tapped")
+                                    
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -169,8 +198,7 @@ struct DistanceCalcView: View {
                                 Text("Altitude")
                                     .font(.headline)
                                 Button(action: {
-                                    // Action to be performed when the info button is tapped
-                                    print("Info button tapped")
+                                    
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -186,9 +214,17 @@ struct DistanceCalcView: View {
                     }
                     .padding()
                     
-                    Text("Wind Speed")
-                        .font(.headline)
-                    
+                    HStack {
+                        Text("Wind Speed")
+                            .font(.headline)
+                        Button(action: {
+                            
+                        }) {
+                            Image(systemName: "info.circle")
+                                .foregroundColor(.blue)
+                                .padding(.trailing, 8)
+                        }
+                    }
                     Slider(value: $windSpeed, in: 0...100, step: 1)
                         .padding(.horizontal)
                     
@@ -214,15 +250,22 @@ struct DistanceCalcView: View {
                                 .font(.headline)
                             Image(systemName: "arrowshape.right")
                         }
-                            
                     }
                 }
                 ToolbarItem(placement: .bottomBar) {
-                    Button("Calculate") {}
-                      .buttonStyle(.borderedProminent)
+                    Button("Calculate") {
+                        sheetIsPresented.toggle()
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
             }
         }
+        .sheet(isPresented: $sheetIsPresented, content: {
+            NavigationStack {
+                DistanceFoundView()
+            }
+            .presentationDetents([.medium])
+        })
     }
 }
 

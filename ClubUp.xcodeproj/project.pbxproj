@@ -19,6 +19,7 @@
 		A4B3D5BE2BA895A4001E101B /* ClubsListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */; };
 		A4D19BA62BD70E79002A0EE3 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D19BA52BD70E79002A0EE3 /* UserPrefs.swift */; };
 		A4D19BAA2BD71335002A0EE3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D19BA92BD71335002A0EE3 /* SettingsView.swift */; };
+		A4F84C192BE83B9F00C3A424 /* DistanceFoundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F84C182BE83B9F00C3A424 /* DistanceFoundView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsListCellView.swift; sourceTree = "<group>"; };
 		A4D19BA52BD70E79002A0EE3 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		A4D19BA92BD71335002A0EE3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A4F84C182BE83B9F00C3A424 /* DistanceFoundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceFoundView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */,
 				A4D19BA92BD71335002A0EE3 /* SettingsView.swift */,
 				A44C330D2BE10EC300DDC2FB /* DistanceCalcView.swift */,
+				A4F84C182BE83B9F00C3A424 /* DistanceFoundView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				A481CFA52BA6458B00121B44 /* Club.swift in Sources */,
 				A44C330E2BE10EC300DDC2FB /* DistanceCalcView.swift in Sources */,
 				A481CFA12BA6458B00121B44 /* ClubUpApp.swift in Sources */,
+				A4F84C192BE83B9F00C3A424 /* DistanceFoundView.swift in Sources */,
 				A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */,
 				A47986282BB1FF4A009F6DB2 /* ClubCreateView.swift in Sources */,
 			);
