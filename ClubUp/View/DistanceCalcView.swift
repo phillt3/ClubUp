@@ -8,28 +8,22 @@
 import SwiftUI
 import SwiftData
 
-//TODO: User a viewmodel for performing the calculations?
+//TODO: Use a viewmodel for performing the calculations?
 //TODO: Either way, step one is just to put together the UI
 struct DistanceCalcView: View {
+    @Query private var userPrefs: [UserPrefs]
     @State private var yardage: String = ""
     @State private var windSpeed: Double = 0
-    @State private var selectedDirection: String = ""
+    @State private var selectedDirection: String = "multiply.circle"
     @State private var selectedDirectionIndex = 0
     @State private var selectedSlope = ""
     @State private var isRaining: Bool = false
-    @Query private var userPrefs: [UserPrefs]
-    let arrowImages = ["arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
-    
     @State private var selected: String = ""
     @State private var sheetIsPresented = false
     @State private var showingAlert = false
+    @State private var alertType: AlertType = .distance
     
-    enum AlertType {
-        case popup1, popup2, popup3, popup4, popup5, popup6, popup7, popup8, popup9, popup10
-    }
-    
-    @State private var alertType: AlertType? = nil
-    
+    let arrowImages = ["multiply.circle","arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
     let selectionOptions = ["Tee", "Fairway","Rough","Bunker", "Deep Rough"]
     let slopes = ["Flat","Down","Up"]
     
@@ -41,12 +35,14 @@ struct DistanceCalcView: View {
                         Text("Distance (Yards)")
                             .font(.headline)
                         Button(action: {
-                            
+                            alertType = .distance
+                            showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
                     TextField("150", text: $yardage)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -58,12 +54,14 @@ struct DistanceCalcView: View {
                         Text("Adjusted Distance (Yards)")
                             .font(.headline)
                         Button(action: {
-                            
+                            alertType = .adjustedDistance
+                            showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
                     TextField("150", text: $yardage)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -75,12 +73,14 @@ struct DistanceCalcView: View {
                         Text("Wind Direction")
                             .font(.headline)
                         Button(action: {
-                            
+                            alertType = .windDirection
+                            showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
                     Picker(selection: $selectedDirection, label: Text("Wind Direction")) {
                         ForEach(arrowImages, id: \.self) {
@@ -96,12 +96,14 @@ struct DistanceCalcView: View {
                         Text("Lie")
                             .font(.headline)
                         Button(action: {
-                            
+                            alertType = .lie
+                            showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                         Picker("Lie", selection: $selected) {
                             ForEach(selectionOptions, id: \.self) {
                                 Text($0)
@@ -113,12 +115,14 @@ struct DistanceCalcView: View {
                         Text("Slope")
                             .font(.headline)
                         Button(action: {
-                            
+                            alertType = .slope
+                            showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                         Picker("Slope", selection: $selectedSlope) {
                             ForEach(slopes, id: \.self) {
                                 Text($0)
@@ -135,15 +139,35 @@ struct DistanceCalcView: View {
                     HStack(alignment:.center) {
                         VStack {
                             HStack {
-                                Text("Temperature")
+                                Text("Temp")
                                     .font(.headline)
                                 Button(action: {
-                                    
+                                    alertType = .temperature
+                                    showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
                                         .padding(.trailing, 8)
                                 }
+                                .buttonStyle(BorderlessButtonStyle())
+                            }
+                            TextField("77", text: $yardage)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 100)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.center)
+                            HStack {
+                                Text("Humidity")
+                                    .font(.headline)
+                                Button(action: {
+                                    alertType = .humidity
+                                    showingAlert.toggle()
+                                }) {
+                                    Image(systemName: "info.circle")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 8)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
                             }
                             TextField("77", text: $yardage)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -157,12 +181,32 @@ struct DistanceCalcView: View {
                                 Text("Air Pressure")
                                     .font(.headline)
                                 Button(action: {
-                                    
+                                    alertType = .airPressure
+                                    showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
                                         .padding(.trailing, 8)
                                 }
+                                .buttonStyle(BorderlessButtonStyle())
+                            }
+                            TextField("77", text: $yardage)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 100)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.center)
+                            HStack {
+                                Text("Altitude")
+                                    .font(.headline)
+                                Button(action: {
+                                    alertType = .altitude
+                                    showingAlert.toggle()
+                                }) {
+                                    Image(systemName: "info.circle")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 8)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
                             }
                             TextField("77", text: $yardage)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -173,57 +217,19 @@ struct DistanceCalcView: View {
                     }
                     .padding()
                     
-                    HStack(alignment:.center) {
-                        VStack {
-                            HStack {
-                                Text("Humidity")
-                                    .font(.headline)
-                                Button(action: {
-                                    
-                                }) {
-                                    Image(systemName: "info.circle")
-                                        .foregroundColor(.blue)
-                                        .padding(.trailing, 8)
-                                }
-                            }
-                            TextField("77", text: $yardage)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 100)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.center)
-                        }
-                        Spacer()
-                        VStack {
-                            HStack {
-                                Text("Altitude")
-                                    .font(.headline)
-                                Button(action: {
-                                    
-                                }) {
-                                    Image(systemName: "info.circle")
-                                        .foregroundColor(.blue)
-                                        .padding(.trailing, 8)
-                                }
-                            }
-                            TextField("77", text: $yardage)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 100)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.center)
-                        }
-                    }
-                    .padding()
                     
                     HStack {
                         Text("Wind Speed")
                             .font(.headline)
                         Button(action: {
-                            
+                            alertType = .windSpeed
+                            showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
+                        .buttonStyle(BorderlessButtonStyle())
                     }
                     Slider(value: $windSpeed, in: 0...100, step: 1)
                         .padding(.horizontal)
@@ -232,8 +238,25 @@ struct DistanceCalcView: View {
                         .font(.headline)
                         .foregroundColor(.gray)
                     
-                    Toggle("Raining", isOn: $isRaining)
+                    Toggle(isOn: $isRaining) {
+                        HStack {
+                            Text("Raining")
+                                .font(.headline)
+                            Button(action: {
+                                alertType = .rain
+                                showingAlert.toggle()
+                            }) {
+                                Image(systemName: "info.circle")
+                                    .foregroundColor(.blue)
+                                    .padding(.trailing, 8)
+                            }
+                            .buttonStyle(BorderlessButtonStyle())
+                        }
+                    }
 
+                }
+                .alert(isPresented: $showingAlert) {
+                    Alert(title: Text(alertType.title), message: Text("Wear sunscreen"), dismissButton: .default(Text("Got it!")))
                 }
             }
             .toolbar {

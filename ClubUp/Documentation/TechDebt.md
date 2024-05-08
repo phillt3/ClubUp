@@ -25,4 +25,6 @@ Currently the calculation of which rec clubs to display, or if the section is di
 
 ## In the detail page, when editing distance, it would be prefereable that upon the edit of one unit distance the other is automatically updated
 
+## Outsource All Phrases to its own class?
+
 

@@ -48,6 +48,7 @@ struct DistanceFoundView: View {
                     .background(.green)
                     .cornerRadius(10)
                 }
+                .buttonStyle(BorderlessButtonStyle())
             }
         }
         .padding()
