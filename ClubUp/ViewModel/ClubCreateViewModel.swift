@@ -8,18 +8,25 @@
 import Foundation
 
 extension ClubCreateView{
+    @Observable
     class ClubCreateViewModel: ObservableObject {
-        @Published public var brand: String = ""
-        @Published public var model: String = ""
-        @Published public var distance: Int = 0
-        @Published public var isFavorite: Bool = false
-        @Published public var type: ClubType?
-        @Published public var selectedValue: String = ""
+        public var brand: String = ""
+        public var model: String = ""
+        public var distance: Int = 0
+        public var isFavorite: Bool = false
+        public var type: ClubType?
+        public var selectedValue: String = ""
         
         let woodValues = (1...10).map { String($0) }
         let hybridValues = (1...10).map { String($0) }
         let ironValues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "P"]
         let wedgeValues = ["E", "A", "D", "F", "G", "M", "MB", "S", "L"] + (46...72).map { String($0) }
+        
+        public var prefs: UserPrefs
+        
+        init(prefs: UserPrefs ) {
+            self.prefs = prefs
+        }
         
         public func getSelection(type: ClubType) -> [String] {
             switch type {
@@ -32,6 +39,25 @@ extension ClubCreateView{
             case .wedge:
                 return wedgeValues
             }
+        }
+        
+        public func createClub() -> Club {
+            if (selectedValue == "") {
+                switch type! {
+                case .wood:
+                    fallthrough
+                case .iron:
+                    fallthrough
+                case .hybrid:
+                    selectedValue = "1"
+                case .wedge:
+                    selectedValue = "E"
+                }
+            }
+            
+            let isImperial: Bool = prefs.distanceUnit == Unit.Imperial
+            
+            return Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: isImperial ? distance : nil, distanceMeters: isImperial ? nil : distance, favorite: isFavorite)
         }
     }
 }

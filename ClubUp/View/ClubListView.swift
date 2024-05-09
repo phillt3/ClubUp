@@ -94,14 +94,6 @@ struct ClubListView: View {
                             .foregroundStyle(.gray)
                     })
                 }
-//                ToolbarItem(placement: .topBarTrailing) {
-//                    Button(action: {
-//                        
-//                    }, label: {
-//                        Image(systemName:"scope")
-//                            .foregroundStyle(.gray)
-//                    })
-//                }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink(destination: SettingsView(userPrefs: userPrefs.first ?? UserPrefs(), isFirst: userPrefs.isEmpty)) {
                         Image(systemName:"gearshape")
@@ -112,7 +104,8 @@ struct ClubListView: View {
         }
         .sheet(isPresented: $sheetIsPresented, content: {
             NavigationStack {
-                ClubCreateView(prefs: userPrefs.first ?? UserPrefs())//new value
+                ClubCreateView(viewModel: ClubCreateView.ClubCreateViewModel(prefs: userPrefs.first ?? UserPrefs()))//new value
+                
             }
         })
     }

@@ -17,8 +17,13 @@ struct DistanceCalcView: View {
     @Query public var userPrefs: [UserPrefs]
     @Query public var clubs: [Club]
     
-    @StateObject var viewModel = DistanceCalcViewModel()
-        
+    @State private var viewModel: DistanceCalcViewModel
+    
+    init(modelContext: ModelContext) {
+        let viewModel = DistanceCalcViewModel(modelContext: modelContext)
+        _viewModel = State(initialValue: viewModel)
+    }
+    
     var body: some View {
         NavigationStack {
             List {
@@ -280,11 +285,13 @@ struct DistanceCalcView: View {
             .sheet(isPresented: $viewModel.showingResult, content: {
             NavigationStack {
                 let result = viewModel.calculateTrueDistance()
-                DistanceResultView(distance: result)
+                let recClub = viewModel.getRecommendedClub(distance: result)
+                DistanceResultView(distance: result, club: recClub)
             }
             .presentationDetents([.medium])
         })
     }
+    
 }
 
 private func temp() {
@@ -292,6 +299,7 @@ private func temp() {
 }
 
 #Preview {
-    DistanceCalcView()
+    @Environment(\.modelContext) var modelContext
+    return DistanceCalcView(modelContext: modelContext)
 }
 

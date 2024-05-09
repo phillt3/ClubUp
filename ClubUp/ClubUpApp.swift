@@ -26,7 +26,7 @@ struct ClubUpApp: App {
     var body: some Scene {
         WindowGroup {
             //ClubListView()
-            DistanceCalcView()
+            DistanceCalcView(modelContext: sharedModelContainer.mainContext)
         }
         .modelContainer(sharedModelContainer)
     }

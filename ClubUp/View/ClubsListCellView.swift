@@ -42,36 +42,30 @@ struct ClubsListCellView: View {
                 }
                 Spacer()
                 VStack(alignment: .trailing) {
-                    if (prefs.distanceUnit == Unit.Imperial) { //TODO: This area can be condensed and cleaned up
-                        if (club.distanceYards ?? 0 > 0) {
-                            Text("\(club.distanceYards!)")
-                                .font(.title)
-                                .fontWeight(.bold)
-                            Text("Yards")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        } else {
-                            Text("Add Distance")
-                                .font(.subheadline)
-                                .foregroundStyle(.blue)
-                        }
-                    } else if (prefs.distanceUnit == Unit.Metric) {
-                        if (club.distanceMeters ?? 0 > 0) {
-                            Text("\(club.distanceMeters!)")
-                                .font(.title)
-                                .fontWeight(.bold)
-                            Text("Meters")
-                                .font(.subheadline)
-                                .foregroundColor(.secondary)
-                        } else {
-                            Text("Add Distance")
-                                .font(.subheadline)
-                                .foregroundStyle(.blue)
-                        }
+                    if prefs.distanceUnit == Unit.Imperial {
+                        distanceView(unitText: "Yards", distance: club.distanceYards)
+                    } else {
+                        distanceView(unitText: "Meters", distance: club.distanceMeters)
                     }
                 }
             }
         }
+    }
+}
+
+@ViewBuilder
+func distanceView(unitText: String, distance: Int?) -> some View {
+    if distance ?? 0 > 0 {
+        Text("\(distance!)")
+            .font(.title)
+            .fontWeight(.bold)
+        Text(unitText)
+            .font(.subheadline)
+            .foregroundColor(.secondary)
+    } else {
+        Text("Add Distance")
+            .font(.subheadline)
+            .foregroundStyle(.blue)
     }
 }
 

@@ -11,9 +11,8 @@ struct ClubCreateView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) private var dismiss
     
-    @StateObject var viewModel = ClubCreateViewModel()
-    
-    var prefs: UserPrefs //TODO: would like to add this to the vm somehow
+    @State var viewModel: ClubCreateViewModel
+
     var body: some View {
         List {
             VStack(alignment: .leading) {
@@ -116,18 +115,12 @@ struct ClubCreateView: View {
                 .frame(height: 100)
                 
                 HStack {
-                    //TODO: Could move this logic to the viewModel
-                    if (prefs.distanceUnit == Unit.Imperial) {
-                        Text("Distance (Yards)")
-                            .font(.title2)
-                            .padding(.leading)
-                            .bold()
-                    } else if (prefs.distanceUnit == Unit.Metric){
-                        Text("Distance (Meters)")
-                            .font(.title2)
-                            .padding(.leading)
-                            .bold()
-                    }
+                    
+                    Text("Distance" + (viewModel.prefs.distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
+                        .font(.title2)
+                        .padding(.leading)
+                        .bold()
+                    
                     Spacer()
                     TextField("0", value: $viewModel.distance, format: .number)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -140,7 +133,7 @@ struct ClubCreateView: View {
                 }
                 .listRowSeparator(.hidden)
                 
-                if (prefs.favoritesOn) {
+                if (viewModel.prefs.favoritesOn) {
                     HStack {
                         Text("Favorite")
                             .font(.title2)
@@ -162,26 +155,7 @@ struct ClubCreateView: View {
                 HStack(alignment: .center) {
                     Spacer()
                     Button(action: {
-                        //TODO: Move below to VM
-                        if (viewModel.selectedValue == "") {
-                            switch viewModel.type! {
-                            case .wood:
-                                fallthrough
-                            case .iron:
-                                fallthrough
-                            case .hybrid:
-                                viewModel.selectedValue = "1"
-                            case .wedge:
-                                viewModel.selectedValue = "E"
-                            }
-                        }
-                        if (prefs.distanceUnit == Unit.Imperial) { //TODO: This can be cleaned up
-                            let newClub = Club.createClub(brand: viewModel.brand, model: viewModel.model, name: "", type: viewModel.type!, number: viewModel.selectedValue, degree: viewModel.selectedValue, distanceYards: viewModel.distance, distanceMeters: nil, favorite: viewModel.isFavorite)
-                            modelContext.insert(newClub)
-                        } else if (prefs.distanceUnit == Unit.Metric) {
-                            let newClub = Club.createClub(brand: viewModel.brand, model: viewModel.model, name: "", type: viewModel.type!, number: viewModel.selectedValue, degree: viewModel.selectedValue, distanceYards: nil, distanceMeters: viewModel.distance, favorite: viewModel.isFavorite)
-                            modelContext.insert(newClub)
-                        }
+                        modelContext.insert(viewModel.createClub())
                         dismiss()
                     }) {
                         Label("Add Club", systemImage: "plus")
@@ -194,12 +168,6 @@ struct ClubCreateView: View {
             }
         }
     }
-}
-
-
-
-private func temp() {
-    
 }
 
 struct CustomButtonStyle: ButtonStyle {
@@ -219,5 +187,6 @@ struct CustomButtonStyle: ButtonStyle {
 
 #Preview {
     let prefs = UserPrefs()
-    return ClubCreateView(prefs: prefs)
+    let viewModel = ClubCreateView.ClubCreateViewModel(prefs: prefs)
+    return ClubCreateView(viewModel: viewModel)
 }
