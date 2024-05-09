@@ -8,25 +8,14 @@
 import SwiftUI
 import SwiftData
 
-//TODO: Use a viewmodel for performing the calculations?
+//TODO: Use a viewmodel for performing the calculations and abstracting all properties, this page should ONLY be UI or properties that deal with UI
+//TODO: Research whether or not the view model is necessary and makes sense in the context of swiftui
 //TODO: Either way, step one is just to put together the UI
+
 struct DistanceCalcView: View {
+    @StateObject var viewModel = DistanceCalcViewModel()
     @Query private var userPrefs: [UserPrefs]
-    @State private var yardage: String = ""
-    @State private var windSpeed: Double = 0
-    @State private var selectedDirection: String = "multiply.circle"
-    @State private var selectedDirectionIndex = 0
-    @State private var selectedSlope = ""
-    @State private var isRaining: Bool = false
-    @State private var selected: String = ""
-    @State private var sheetIsPresented = false
-    @State private var showingAlert = false
-    @State private var alertType: AlertType = .distance
-    
-    let arrowImages = ["multiply.circle","arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
-    let selectionOptions = ["Tee", "Fairway","Rough","Bunker", "Deep Rough"]
-    let slopes = ["Flat","Down","Up"]
-    
+        
     var body: some View {
         NavigationStack {
             List {
@@ -35,8 +24,9 @@ struct DistanceCalcView: View {
                         Text("Distance (Yards)")
                             .font(.headline)
                         Button(action: {
-                            alertType = .distance
-                            showingAlert.toggle()
+                            viewModel.alertType = .distance
+                            viewModel.showingAlert.toggle()
+
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
@@ -44,7 +34,7 @@ struct DistanceCalcView: View {
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
-                    TextField("150", text: $yardage)
+                    TextField("150", text: $viewModel.yardage)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 100)
                         .keyboardType(.numberPad)
@@ -54,8 +44,9 @@ struct DistanceCalcView: View {
                         Text("Adjusted Distance (Yards)")
                             .font(.headline)
                         Button(action: {
-                            alertType = .adjustedDistance
-                            showingAlert.toggle()
+                            viewModel.alertType = .adjustedDistance
+                            viewModel.showingAlert.toggle()
+                            
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
@@ -63,7 +54,7 @@ struct DistanceCalcView: View {
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
-                    TextField("150", text: $yardage)
+                    TextField("150", text: $viewModel.adjYardage)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 100)
                         .keyboardType(.numberPad)
@@ -73,8 +64,8 @@ struct DistanceCalcView: View {
                         Text("Wind Direction")
                             .font(.headline)
                         Button(action: {
-                            alertType = .windDirection
-                            showingAlert.toggle()
+                            viewModel.alertType = .windDirection
+                            viewModel.showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
@@ -82,8 +73,8 @@ struct DistanceCalcView: View {
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
-                    Picker(selection: $selectedDirection, label: Text("Wind Direction")) {
-                        ForEach(arrowImages, id: \.self) {
+                    Picker(selection: $viewModel.windDirection, label: Text("Wind Direction")) {
+                        ForEach(viewModel.arrowImages, id: \.self) {
                             Image(systemName: $0)
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
@@ -96,39 +87,41 @@ struct DistanceCalcView: View {
                         Text("Lie")
                             .font(.headline)
                         Button(action: {
-                            alertType = .lie
-                            showingAlert.toggle()
+                            viewModel.alertType = .lie
+                            viewModel.showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
                         .buttonStyle(BorderlessButtonStyle())
-                        Picker("Lie", selection: $selected) {
-                            ForEach(selectionOptions, id: \.self) {
+                        Picker("Lie", selection: $viewModel.lie) {
+                            ForEach(viewModel.selectionOptions, id: \.self) {
                                 Text($0)
                             }
-                         }.pickerStyle(.wheel)
+                         }
+                        .pickerStyle(.wheel)
+                        .frame(height: 100)
                     }
-
                     HStack {
                         Text("Slope")
                             .font(.headline)
                         Button(action: {
-                            alertType = .slope
-                            showingAlert.toggle()
+                            viewModel.alertType = .slope
+                            viewModel.showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
                                 .padding(.trailing, 8)
                         }
                         .buttonStyle(BorderlessButtonStyle())
-                        Picker("Slope", selection: $selectedSlope) {
-                            ForEach(slopes, id: \.self) {
+                        Picker("Slope", selection: $viewModel.slope) {
+                            ForEach(viewModel.slopes, id: \.self) {
                                 Text($0)
                             }
                         }
                         .pickerStyle(.wheel)
+                        .frame(height: 100)
                     }
                     
                     Button(action: temp) {
@@ -142,8 +135,8 @@ struct DistanceCalcView: View {
                                 Text("Temp")
                                     .font(.headline)
                                 Button(action: {
-                                    alertType = .temperature
-                                    showingAlert.toggle()
+                                    viewModel.alertType = .temperature
+                                    viewModel.showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -151,7 +144,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $yardage)
+                            TextField("77", text: $viewModel.yardage)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -160,8 +153,8 @@ struct DistanceCalcView: View {
                                 Text("Humidity")
                                     .font(.headline)
                                 Button(action: {
-                                    alertType = .humidity
-                                    showingAlert.toggle()
+                                    viewModel.alertType = .humidity
+                                    viewModel.showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -169,7 +162,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $yardage)
+                            TextField("77", text: $viewModel.yardage)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -181,8 +174,8 @@ struct DistanceCalcView: View {
                                 Text("Air Pressure")
                                     .font(.headline)
                                 Button(action: {
-                                    alertType = .airPressure
-                                    showingAlert.toggle()
+                                    viewModel.alertType = .airPressure
+                                    viewModel.showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -190,7 +183,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $yardage)
+                            TextField("77", text: $viewModel.yardage)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -199,8 +192,8 @@ struct DistanceCalcView: View {
                                 Text("Altitude")
                                     .font(.headline)
                                 Button(action: {
-                                    alertType = .altitude
-                                    showingAlert.toggle()
+                                    viewModel.alertType = .altitude
+                                    viewModel.showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
                                         .foregroundColor(.blue)
@@ -208,7 +201,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $yardage)
+                            TextField("77", text: $viewModel.yardage)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -216,14 +209,12 @@ struct DistanceCalcView: View {
                         }
                     }
                     .padding()
-                    
-                    
                     HStack {
                         Text("Wind Speed")
                             .font(.headline)
                         Button(action: {
-                            alertType = .windSpeed
-                            showingAlert.toggle()
+                            viewModel.alertType = .windSpeed
+                            viewModel.showingAlert.toggle()
                         }) {
                             Image(systemName: "info.circle")
                                 .foregroundColor(.blue)
@@ -231,20 +222,20 @@ struct DistanceCalcView: View {
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
-                    Slider(value: $windSpeed, in: 0...100, step: 1)
+                    Slider(value: $viewModel.windSpeed, in: 0...100, step: 1)
                         .padding(.horizontal)
                     
-                    Text("\(Int(windSpeed)) mph")
+                    Text("\(Int(viewModel.windSpeed)) mph")
                         .font(.headline)
                         .foregroundColor(.gray)
                     
-                    Toggle(isOn: $isRaining) {
+                    Toggle(isOn: $viewModel.isRaining) {
                         HStack {
                             Text("Raining")
                                 .font(.headline)
                             Button(action: {
-                                alertType = .rain
-                                showingAlert.toggle()
+                                viewModel.alertType = .rain
+                                viewModel.showingAlert.toggle()
                             }) {
                                 Image(systemName: "info.circle")
                                     .foregroundColor(.blue)
@@ -255,8 +246,8 @@ struct DistanceCalcView: View {
                     }
 
                 }
-                .alert(isPresented: $showingAlert) {
-                    Alert(title: Text(alertType.title), message: Text("Wear sunscreen"), dismissButton: .default(Text("Got it!")))
+                .alert(isPresented: $viewModel.showingAlert) {
+                    Alert(title: Text(viewModel.alertType.title), message: Text("Wear sunscreen"), dismissButton: .default(Text("Got it!")))
                 }
             }
             .toolbar {
@@ -277,13 +268,13 @@ struct DistanceCalcView: View {
                 }
                 ToolbarItem(placement: .bottomBar) {
                     Button("Calculate") {
-                        sheetIsPresented.toggle()
+                        viewModel.showingResult.toggle()
                     }
                     .buttonStyle(.borderedProminent)
                 }
             }
         }
-        .sheet(isPresented: $sheetIsPresented, content: {
+            .sheet(isPresented: $viewModel.showingResult, content: {
             NavigationStack {
                 DistanceFoundView()
             }

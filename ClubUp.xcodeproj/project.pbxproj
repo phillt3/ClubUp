@@ -17,6 +17,7 @@
 		A481CFAA2BA6458D00121B44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A481CFA92BA6458D00121B44 /* Preview Assets.xcassets */; };
 		A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */; };
 		A4B3D5BE2BA895A4001E101B /* ClubsListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */; };
+		A4C88DFD2BEC0B680063497D /* DistanceCalcViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */; };
 		A4D19BA62BD70E79002A0EE3 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D19BA52BD70E79002A0EE3 /* UserPrefs.swift */; };
 		A4D19BAA2BD71335002A0EE3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D19BA92BD71335002A0EE3 /* SettingsView.swift */; };
 		A4F84C192BE83B9F00C3A424 /* DistanceResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F84C182BE83B9F00C3A424 /* DistanceResultView.swift */; };
@@ -36,6 +37,7 @@
 		A481CFA92BA6458D00121B44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialTypes.swift; sourceTree = "<group>"; };
 		A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsListCellView.swift; sourceTree = "<group>"; };
+		A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceCalcViewModel.swift; sourceTree = "<group>"; };
 		A4D19BA52BD70E79002A0EE3 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
 		A4D19BA92BD71335002A0EE3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A4F84C182BE83B9F00C3A424 /* DistanceResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceResultView.swift; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				A471C8732BC49BBD0033D68C /* Documentation */,
 				A481CFA02BA6458B00121B44 /* ClubUpApp.swift */,
 				A4C6D7B12BB9DA3100DEF7E8 /* View */,
+				A4C88DFB2BEC0B450063497D /* ViewModel */,
 				A4C6D7AF2BB9D9C200DEF7E8 /* Model */,
 				A481CFA62BA6458D00121B44 /* Assets.xcassets */,
 				A481CFA82BA6458D00121B44 /* Preview Content */,
@@ -120,6 +123,14 @@
 				A4F84C182BE83B9F00C3A424 /* DistanceResultView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		A4C88DFB2BEC0B450063497D /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,6 +211,7 @@
 				A481CFA52BA6458B00121B44 /* Club.swift in Sources */,
 				A44C330E2BE10EC300DDC2FB /* DistanceCalcView.swift in Sources */,
 				A481CFA12BA6458B00121B44 /* ClubUpApp.swift in Sources */,
+				A4C88DFD2BEC0B680063497D /* DistanceCalcViewModel.swift in Sources */,
 				A4F84C192BE83B9F00C3A424 /* DistanceResultView.swift in Sources */,
 				A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */,
 				A47986282BB1FF4A009F6DB2 /* ClubCreateView.swift in Sources */,

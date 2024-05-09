@@ -27,4 +27,6 @@ Currently the calculation of which rec clubs to display, or if the section is di
 
 ## Outsource All Phrases to its own class?
 
+##Enusre all views have properties that only relate to UI otherwise might be worth adding a viewmodel for them
+
 
