@@ -7,11 +7,12 @@
 
 import SwiftUI
 
-struct DistanceFoundView: View {
+struct DistanceResultView: View {
     @Environment(\.dismiss) private var dismiss
+    var distance: Int
     var body: some View {
         VStack{
-            Text("000 Yards")
+            Text("\(distance)" + " " + "Yards")
                 .font(.system(size: 55, weight: .bold, design: .monospaced))
                 //.padding(.bottom, 10)
                 .foregroundColor(.black)
@@ -56,5 +57,5 @@ struct DistanceFoundView: View {
 }
 
 #Preview {
-    DistanceFoundView()
+    return DistanceResultView(distance: 150)
 }

@@ -9,10 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct ClubDetailView: View {
-    @State var club: Club
-    @Query private var userPrefs: [UserPrefs]
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) private var dismiss
+    
+    @State var club: Club
+    @Query private var userPrefs: [UserPrefs]
     
     var prefs: UserPrefs
     

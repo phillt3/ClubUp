@@ -13,8 +13,11 @@ import SwiftData
 //TODO: Either way, step one is just to put together the UI
 
 struct DistanceCalcView: View {
+    @Environment(\.modelContext) var modelContext
+    @Query public var userPrefs: [UserPrefs]
+    @Query public var clubs: [Club]
+    
     @StateObject var viewModel = DistanceCalcViewModel()
-    @Query private var userPrefs: [UserPrefs]
         
     var body: some View {
         NavigationStack {
@@ -276,7 +279,8 @@ struct DistanceCalcView: View {
         }
             .sheet(isPresented: $viewModel.showingResult, content: {
             NavigationStack {
-                DistanceFoundView()
+                let result = viewModel.calculateTrueDistance()
+                DistanceResultView(distance: result)
             }
             .presentationDetents([.medium])
         })

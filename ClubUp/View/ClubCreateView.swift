@@ -7,38 +7,19 @@
 
 import SwiftUI
 
-let woodValues = (1...10).map { String($0) }
-let hybridValues = (1...10).map { String($0) }
-let ironValues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "P"]
-let wedgeValues = ["E", "A", "D", "F", "G", "M", "MB", "S", "L"] + (46...72).map { String($0) }
-
 struct ClubCreateView: View {
     @Environment(\.modelContext) var modelContext
-    @State private var brand: String = ""
-    @State private var model: String = ""
-    @State private var distance: Int = 0
-    @State private var isFavorite: Bool = false
-    @State private var type: ClubType?
-    @State private var selectedValue: String = ""
     @Environment(\.dismiss) private var dismiss
     
-    var prefs: UserPrefs
+    @StateObject var viewModel = ClubCreateViewModel()
+    
+    var prefs: UserPrefs //TODO: would like to add this to the vm somehow
     var body: some View {
         List {
-            //TODO: Club Lookup
-//            HStack(alignment: .center) {
-//                Spacer()
-//                Button(action: temp) {
-//                    Label("Search Club", systemImage: "magnifyingglass")
-//                }
-//                .buttonStyle(.bordered)
-//                Spacer()
-//            }
-//            .listRowSeparator(.hidden)
             VStack(alignment: .leading) {
                 Text("Brand").font(.headline).bold()
                     .padding(.bottom, -10)
-                TextField("Brand", text: $brand)
+                TextField("Brand", text: $viewModel.brand)
                     .font(.title)
                     .textFieldStyle(.roundedBorder)
                     .listRowSeparator(.hidden)
@@ -49,7 +30,7 @@ struct ClubCreateView: View {
             VStack(alignment: .leading) {
                 Text("Model").font(.headline).bold()
                     .padding(.bottom, -10)
-                TextField("Model", text: $model)
+                TextField("Model", text: $viewModel.model)
                     .font(.title)
                     .textFieldStyle(.roundedBorder)
                     .listRowSeparator(.hidden)
@@ -61,7 +42,7 @@ struct ClubCreateView: View {
                 Text("Club Type").font(.headline).bold()
                 HStack {
                     Button(action: {
-                        type = ClubType.wood
+                        viewModel.type = ClubType.wood
                     }) {
                         VStack(alignment: .center) {
                             Text("Wood")
@@ -71,10 +52,10 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.wood))
+                    .buttonStyle(CustomButtonStyle(selected: viewModel.type == ClubType.wood))
                     
                     Button(action: {
-                        type = ClubType.hybrid
+                        viewModel.type = ClubType.hybrid
                     }) {
                         VStack(alignment: .center) {
                             Text("Hybrid")
@@ -84,12 +65,12 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.hybrid))
+                    .buttonStyle(CustomButtonStyle(selected: viewModel.type == ClubType.hybrid))
                 }
                 
                 HStack {
                     Button(action: {
-                        type = ClubType.iron //TODO: should make these capitalized
+                        viewModel.type = ClubType.iron //TODO: should make these capitalized
                     }) {
                         VStack(alignment: .center) {
                             Text("Iron")
@@ -99,10 +80,10 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.iron))
+                    .buttonStyle(CustomButtonStyle(selected: viewModel.type == ClubType.iron))
                     
                     Button(action: {
-                        type = ClubType.wedge
+                        viewModel.type = ClubType.wedge
                     }) {
                         VStack(alignment: .center) {
                             Text("Wedge")
@@ -112,20 +93,20 @@ struct ClubCreateView: View {
                                 .aspectRatio(contentMode: .fit)
                         }
                     }
-                    .buttonStyle(CustomButtonStyle(selected: type == ClubType.wedge))
+                    .buttonStyle(CustomButtonStyle(selected: viewModel.type == ClubType.wedge))
                 }
             }
             .padding()
             .listRowSeparator(.hidden)
             
-            if type != nil {
+            if viewModel.type != nil {
                 HStack {
                     Label("Select Club Number", systemImage: "number")
                         .font(.headline)
                         .foregroundColor(.blue)
                     
-                    Picker(selection: $selectedValue, label: Text("Select Club Number")) {
-                        let themes = getSelection(type: type!)
+                    Picker(selection: $viewModel.selectedValue, label: Text("Select Club Number")) {
+                        let themes = viewModel.getSelection(type: viewModel.type!)
                         ForEach(themes, id: \.self) {
                             Text($0)
                         }
@@ -135,6 +116,7 @@ struct ClubCreateView: View {
                 .frame(height: 100)
                 
                 HStack {
+                    //TODO: Could move this logic to the viewModel
                     if (prefs.distanceUnit == Unit.Imperial) {
                         Text("Distance (Yards)")
                             .font(.title2)
@@ -147,7 +129,7 @@ struct ClubCreateView: View {
                             .bold()
                     }
                     Spacer()
-                    TextField("0", value: $distance, format: .number)
+                    TextField("0", value: $viewModel.distance, format: .number)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.numberPad)
                         .frame(width: 75)
@@ -165,7 +147,7 @@ struct ClubCreateView: View {
                             .padding(.leading)
                             .bold()
                         Spacer()
-                        Image(systemName: isFavorite ? "star.fill" : "star")
+                        Image(systemName: viewModel.isFavorite ? "star.fill" : "star")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 40, height: 40)
@@ -173,31 +155,31 @@ struct ClubCreateView: View {
                             .foregroundStyle(.yellow)
                             .padding(.trailing, 25)
                             .onTapGesture {
-                                isFavorite.toggle()
+                                viewModel.isFavorite.toggle()
                             }
                     }
                 }
                 HStack(alignment: .center) {
                     Spacer()
                     Button(action: {
-                        
-                        if (selectedValue == "") {
-                            switch type! {
+                        //TODO: Move below to VM
+                        if (viewModel.selectedValue == "") {
+                            switch viewModel.type! {
                             case .wood:
                                 fallthrough
                             case .iron:
                                 fallthrough
                             case .hybrid:
-                                selectedValue = "1"
+                                viewModel.selectedValue = "1"
                             case .wedge:
-                                selectedValue = "E"
+                                viewModel.selectedValue = "E"
                             }
                         }
                         if (prefs.distanceUnit == Unit.Imperial) { //TODO: This can be cleaned up
-                            let newClub = Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: distance, distanceMeters: nil, favorite: isFavorite)
+                            let newClub = Club.createClub(brand: viewModel.brand, model: viewModel.model, name: "", type: viewModel.type!, number: viewModel.selectedValue, degree: viewModel.selectedValue, distanceYards: viewModel.distance, distanceMeters: nil, favorite: viewModel.isFavorite)
                             modelContext.insert(newClub)
                         } else if (prefs.distanceUnit == Unit.Metric) {
-                            let newClub = Club.createClub(brand: brand, model: model, name: "", type: type!, number: selectedValue, degree: selectedValue, distanceYards: nil, distanceMeters: distance, favorite: isFavorite)
+                            let newClub = Club.createClub(brand: viewModel.brand, model: viewModel.model, name: "", type: viewModel.type!, number: viewModel.selectedValue, degree: viewModel.selectedValue, distanceYards: nil, distanceMeters: viewModel.distance, favorite: viewModel.isFavorite)
                             modelContext.insert(newClub)
                         }
                         dismiss()
@@ -214,18 +196,7 @@ struct ClubCreateView: View {
     }
 }
 
-func getSelection(type: ClubType) -> [String] {
-    switch type {
-    case .wood:
-        return woodValues
-    case .iron:
-        return ironValues
-    case .hybrid:
-        return hybridValues
-    case .wedge:
-        return wedgeValues
-    }
-}
+
 
 private func temp() {
     
