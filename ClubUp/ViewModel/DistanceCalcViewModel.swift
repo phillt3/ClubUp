@@ -44,41 +44,46 @@ extension DistanceCalcView{
         }
         
         public func calculateTrueDistance() -> Int {
-            return 120
+            return Int(yardage) ?? 0
         }
         
         public func getRecommendedClub(distance: Int) -> Club? {
             
-            //will need to convert distanve to yardage if it is meters
+            //TODO: will need to convert distanve to yardage if it is meters
             
             guard !clubs.isEmpty else { return nil }
+            
+            if (distance <= (clubs.first?.distanceYards)!) {
+                return clubs.first
+            } else if (distance >= (clubs.last?.distanceYards)!){
+                return clubs.last
+            }
                 
             var low = 0
+            var mid = 0
             var high = clubs.count - 1
+            
             // Binary search
-            while low <= high {
+            while low < high {
                 
-                let mid = low + (high - low) / 2
-                let currentClubDistance = clubs[mid].distanceYards ?? 0
+                mid = low + (high - low) / 2
                 
-                // Check if value is present at mid
-                if currentClubDistance == distance {
+                if clubs[mid].distanceYards! == distance {
                     return clubs[mid]
                 }
                 
-                // Update closest if the current element is closer to the value
-                if abs(currentClubDistance - distance) < abs(currentClubDistance - distance) {
-                    low = mid
-                }
-                
-                // Move search range accordingly
-                if currentClubDistance < distance {
-                    low = mid + 1
+                if distance < clubs[mid].distanceYards! {
+                    high = mid
+                    low += (abs(distance - clubs[high].distanceYards!) < abs(distance - clubs[low].distanceYards!)) ? 1 : 0
                 } else {
-                    high = mid - 1
+                    low = mid
+                    high -= (abs(distance - clubs[low].distanceYards!) < abs(distance - clubs[high].distanceYards!)) ? 1 : 0
                 }
+
             }
-            return clubs[low]
+            
+            return clubs[low] //TODO: May have to reinclude difference check between low index and mid index but it algorithm should work as is
+            
         }
     }
 }
