@@ -15,8 +15,6 @@ import SwiftData
 struct DistanceCalcView: View {
     @Environment(\.modelContext) var modelContext
     @Query public var userPrefs: [UserPrefs]
-    @Query public var clubs: [Club]
-    
     @State private var viewModel: DistanceCalcViewModel
     
     init(modelContext: ModelContext) {
@@ -29,7 +27,7 @@ struct DistanceCalcView: View {
             List {
                 VStack {
                     HStack {
-                        Text("Distance (Yards)")
+                        Text("Distance" + (viewModel.prefs.distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
                             .font(.headline)
                         Button(action: {
                             viewModel.alertType = .distance
@@ -42,14 +40,14 @@ struct DistanceCalcView: View {
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
-                    TextField("150", text: $viewModel.yardage)
+                    TextField("150", text: $viewModel.yardage) //TODO: I know we had issues in other areas with a number formatter, maybe just forcing a number pad will be good enough, otherwise do research
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 100)
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                     
                     HStack {
-                        Text("Adjusted Distance (Yards)")
+                        Text("Adjusted Distance" + (viewModel.prefs.distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
                             .font(.headline)
                         Button(action: {
                             viewModel.alertType = .adjustedDistance

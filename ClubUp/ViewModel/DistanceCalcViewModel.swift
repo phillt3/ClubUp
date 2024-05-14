@@ -24,6 +24,7 @@ extension DistanceCalcView{
         
         var modelContext: ModelContext
         var clubs = [Club]()
+        public var prefs: UserPrefs = UserPrefs() //TODO: How we set prefs here is how we should do it in other viewmodels probablys
         
         init(modelContext: ModelContext) {
             self.modelContext = modelContext
@@ -39,7 +40,17 @@ extension DistanceCalcView{
                 let descriptor = FetchDescriptor<Club>(sortBy: [SortDescriptor(\.distanceYards)])
                 clubs = try modelContext.fetch(descriptor)
             } catch {
-                print("Fetch failed")
+                print("Club Fetch failed")
+            }
+            
+            do {
+                let descriptor = FetchDescriptor<UserPrefs>()
+                let fetchedPrefs = try modelContext.fetch(descriptor)
+                if (fetchedPrefs.first != nil) {
+                    prefs = fetchedPrefs.first!
+                }
+            } catch {
+                print("Prefs Fetch failed")
             }
         }
         
@@ -49,40 +60,45 @@ extension DistanceCalcView{
         
         public func getRecommendedClub(distance: Int) -> Club? {
             
-            //TODO: will need to convert distanve to yardage if it is meters
+            var resultDist = distance
+            
+            if (prefs.distanceUnit == .Metric) {
+                resultDist = Club.metersToYards(meters: resultDist)
+            }
             
             guard !clubs.isEmpty else { return nil }
             
-            if (distance <= (clubs.first?.distanceYards)!) {
+            if (resultDist <= (clubs.first?.distanceYards)!) {
                 return clubs.first
-            } else if (distance >= (clubs.last?.distanceYards)!){
+            } else if (resultDist >= (clubs.last?.distanceYards)!){
                 return clubs.last
             }
-                
+            
             var low = 0
             var mid = 0
             var high = clubs.count - 1
             
-            // Binary search
-            while low < high {
+            while(low < high) {
+                mid = (low + high) / 2
                 
-                mid = low + (high - low) / 2
-                
-                if clubs[mid].distanceYards! == distance {
+                if (clubs[mid].distanceYards! == resultDist) {
                     return clubs[mid]
                 }
                 
-                if distance < clubs[mid].distanceYards! {
+                if (resultDist < clubs[mid].distanceYards!) {
+                    if (mid > 0 && resultDist > clubs[mid - 1].distanceYards!) {
+                        return abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid - 1].distanceYards!) ? clubs[mid] : clubs[mid - 1]
+                    }
                     high = mid
-                    low += (abs(distance - clubs[high].distanceYards!) < abs(distance - clubs[low].distanceYards!)) ? 1 : 0
                 } else {
+                    if (mid < clubs.count - 1 && resultDist < clubs[mid + 1].distanceYards!) {
+                        return abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid + 1].distanceYards!) ? clubs[mid] : clubs[mid + 1]
+                    }
                     low = mid
-                    high -= (abs(distance - clubs[low].distanceYards!) < abs(distance - clubs[high].distanceYards!)) ? 1 : 0
                 }
-
             }
-            
-            return clubs[low] //TODO: May have to reinclude difference check between low index and mid index but it algorithm should work as is
+                
+            return clubs[mid]
             
         }
     }

@@ -200,11 +200,12 @@ class Club: CustomStringConvertible {
     }
         
     //HelperMethods
-    private static func yardsToMeters(yards: Int) -> Int {
+    //TODO: May want to move these to a utility class
+    public static func yardsToMeters(yards: Int) -> Int {
         return Int(round(Double(yards) * 0.9144))
     }
     
-    private static func metersToYards(meters: Int) -> Int {
+    public static func metersToYards(meters: Int) -> Int {
         return Int(round(Double(meters) / 0.9144))
     }
     
