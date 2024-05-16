@@ -16,6 +16,7 @@ struct DistanceCalcView: View {
     @Environment(\.modelContext) var modelContext
     @Query public var userPrefs: [UserPrefs]
     @State private var viewModel: DistanceCalcViewModel
+    @FocusState private var focusItem: Bool
     
     init(modelContext: ModelContext) {
         let viewModel = DistanceCalcViewModel(modelContext: modelContext)
@@ -40,11 +41,15 @@ struct DistanceCalcView: View {
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
+                    .padding(.top)
                     TextField("150", text: $viewModel.yardage) //TODO: I know we had issues in other areas with a number formatter, maybe just forcing a number pad will be good enough, otherwise do research
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 100)
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
+                        .onSubmit { focusItem = false }
+                        .focused($focusItem)
+
                     
                     HStack {
                         Text("Adjusted Distance" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
@@ -60,11 +65,13 @@ struct DistanceCalcView: View {
                         }
                         .buttonStyle(BorderlessButtonStyle())
                     }
-                    TextField("150", text: $viewModel.adjYardage)
+                    TextField("158", text: $viewModel.adjYardage)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .frame(width: 100)
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
+                        .onSubmit { focusItem = false }
+                        .focused($focusItem)
                     
                     HStack {
                         Text("Wind Direction")
@@ -130,6 +137,9 @@ struct DistanceCalcView: View {
                         .frame(height: 100)
                     }
                     
+                    Divider()
+                        .padding(.vertical)
+                    
                     Button(action: temp) {
                         Label(" Auto Fill", systemImage: "square.and.pencil")
                     }
@@ -138,8 +148,10 @@ struct DistanceCalcView: View {
                     HStack(alignment:.center) {
                         VStack {
                             HStack {
-                                Text("Temp" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? " (°F)" : " (°C)"))
+                                Text("Temperature" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? " (°F)" : " (°C)"))
                                     .font(.headline)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                                 Button(action: {
                                     viewModel.alertType = .temperature
                                     viewModel.showingAlert.toggle()
@@ -150,14 +162,19 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.temperature)
+                            TextField((UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "82" : "28"), text: $viewModel.temperature)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
                                 .multilineTextAlignment(.center)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
+                            Spacer()
                             HStack {
-                                Text("Humidity")
+                                Text("Humidity %")
                                     .font(.headline)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                                 Button(action: {
                                     viewModel.alertType = .humidity
                                     viewModel.showingAlert.toggle()
@@ -168,17 +185,21 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.humidity)
+                            TextField("61", text: $viewModel.humidity)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
                                 .multilineTextAlignment(.center)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
                         }
                         Spacer()
                         VStack {
                             HStack {
-                                Text("Air Pressure")
+                                Text("Air Pressure (Pa)")
                                     .font(.headline)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                                 Button(action: {
                                     viewModel.alertType = .airPressure
                                     viewModel.showingAlert.toggle()
@@ -189,14 +210,19 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.airPressure)
+                            TextField("1010", text: $viewModel.airPressure)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
-                                .keyboardType(.numberPad)
+                                .keyboardType(.decimalPad)
                                 .multilineTextAlignment(.center)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
+                            Spacer()
                             HStack {
-                                Text("Altitude")
+                                Text("Altitude" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Feet)" : " (Meters)"))
                                     .font(.headline)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.5)
                                 Button(action: {
                                     viewModel.alertType = .altitude
                                     viewModel.showingAlert.toggle()
@@ -207,14 +233,16 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.altitude)
+                            TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "1803" : "550", text: $viewModel.altitude)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
                                 .multilineTextAlignment(.center)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
                         }
                     }
-                    .padding()
+                    .padding(.vertical)
                     HStack {
                         Text("Wind Speed")
                             .font(.headline)
@@ -278,6 +306,9 @@ struct DistanceCalcView: View {
                     .buttonStyle(.borderedProminent)
                 }
             }
+            .onTapGesture{
+                focusItem = false
+             }
             .onAppear {
                 viewModel.fetchData()
             }
