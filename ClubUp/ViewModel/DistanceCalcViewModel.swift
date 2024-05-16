@@ -11,31 +11,48 @@ import SwiftData
 extension DistanceCalcView{
     @Observable
     class DistanceCalcViewModel: ObservableObject {
-         public var yardage: String = ""
-         public var adjYardage: String = ""
-         public var windSpeed: Double = 0
-         public var windDirection: String = "multiply.circle"
-         public var slope = ""
-         public var isRaining: Bool = false
-         public var lie: String = ""
-         public var showingResult = false
-         public var showingAlert = false
-         public var alertType: AlertType = .distance
+        public var yardage: String = ""
+        public var adjYardage: String = ""
+        public var windSpeed: Double = 0
+        public var windDirection: String = "multiply.circle"
+        public var slope: String = "Flat"
+        public var temperature: String = ""
+        public var humidity: String = ""
+        public var airPressure: String = ""
+        public var altitude: String = ""
+        public var isRaining: Bool = false
+        public var lie: String = "Tee"
+        public var showingResult = false
+        public var showingAlert = false
+        public var alertType: AlertType = .distance
         
         var modelContext: ModelContext
         var clubs = [Club]()
-        public var prefs: UserPrefs = UserPrefs() //TODO: How we set prefs here is how we should do it in other viewmodels probablys
+        public var prefs: UserPrefs = UserPrefs() //TODO: How we set prefs here is how we should do it in other viewmodels probably
         
         init(modelContext: ModelContext) {
             self.modelContext = modelContext
-            fetchData()
         }
         
         let arrowImages = ["multiply.circle","arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
         let selectionOptions = ["Tee", "Fairway","Rough","Bunker", "Deep Rough"]
         let slopes = ["Flat","Down","Up"]
         
-        func fetchData() {
+        func reset() {
+            yardage = ""
+            adjYardage = ""
+            windSpeed = 0
+            windDirection = "multiply.circle"
+            slope = "Flat"
+            temperature = ""
+            humidity = ""
+            airPressure = ""
+            altitude = ""
+            isRaining = false
+            lie = "Tee"
+        }
+        
+        public func fetchData() {
             do {
                 let descriptor = FetchDescriptor<Club>(sortBy: [SortDescriptor(\.distanceYards)])
                 clubs = try modelContext.fetch(descriptor)
@@ -97,7 +114,6 @@ extension DistanceCalcView{
                     low = mid
                 }
             }
-                
             return clubs[mid]
             
         }

@@ -27,7 +27,7 @@ struct DistanceCalcView: View {
             List {
                 VStack {
                     HStack {
-                        Text("Distance" + (viewModel.prefs.distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
+                        Text("Distance" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
                             .font(.headline)
                         Button(action: {
                             viewModel.alertType = .distance
@@ -47,7 +47,7 @@ struct DistanceCalcView: View {
                         .multilineTextAlignment(.center)
                     
                     HStack {
-                        Text("Adjusted Distance" + (viewModel.prefs.distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
+                        Text("Adjusted Distance" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
                             .font(.headline)
                         Button(action: {
                             viewModel.alertType = .adjustedDistance
@@ -131,14 +131,14 @@ struct DistanceCalcView: View {
                     }
                     
                     Button(action: temp) {
-                        Label("Fill In", systemImage: "square.and.pencil")
+                        Label(" Auto Fill", systemImage: "square.and.pencil")
                     }
                     .buttonStyle(.bordered)
                     
                     HStack(alignment:.center) {
                         VStack {
                             HStack {
-                                Text("Temp")
+                                Text("Temp" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? " (°F)" : " (°C)"))
                                     .font(.headline)
                                 Button(action: {
                                     viewModel.alertType = .temperature
@@ -150,7 +150,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.yardage)
+                            TextField("77", text: $viewModel.temperature)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -168,7 +168,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.yardage)
+                            TextField("77", text: $viewModel.humidity)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -189,7 +189,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.yardage)
+                            TextField("77", text: $viewModel.airPressure)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -207,7 +207,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField("77", text: $viewModel.yardage)
+                            TextField("77", text: $viewModel.altitude)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -231,7 +231,7 @@ struct DistanceCalcView: View {
                     Slider(value: $viewModel.windSpeed, in: 0...100, step: 1)
                         .padding(.horizontal)
                     
-                    Text("\(Int(viewModel.windSpeed)) mph")
+                    Text("\(Int(viewModel.windSpeed))" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).speedUnit == .Imperial ? " (mph)" : " (km/h)"))
                         .font(.headline)
                         .foregroundColor(.gray)
                     
@@ -250,7 +250,6 @@ struct DistanceCalcView: View {
                             .buttonStyle(BorderlessButtonStyle())
                         }
                     }
-
                 }
                 .alert(isPresented: $viewModel.showingAlert) {
                     Alert(title: Text(viewModel.alertType.title), message: Text("Wear sunscreen"), dismissButton: .default(Text("Got it!")))
@@ -279,12 +278,15 @@ struct DistanceCalcView: View {
                     .buttonStyle(.borderedProminent)
                 }
             }
+            .onAppear {
+                viewModel.fetchData()
+            }
         }
             .sheet(isPresented: $viewModel.showingResult, content: {
             NavigationStack {
                 let result = viewModel.calculateTrueDistance()
                 let recClub = viewModel.getRecommendedClub(distance: result)
-                DistanceResultView(distance: result, club: recClub)
+                DistanceResultView(distanceCalcVM: viewModel, distance: result, club: recClub)
             }
             .presentationDetents([.medium])
         })

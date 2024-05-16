@@ -9,6 +9,8 @@ import SwiftUI
 
 struct DistanceResultView: View {
     @Environment(\.dismiss) private var dismiss
+    @State var distanceCalcVM: DistanceCalcView.DistanceCalcViewModel
+    
     var distance: Int
     var club: Club?
     var body: some View {
@@ -53,13 +55,29 @@ struct DistanceResultView: View {
                     }
                     .buttonStyle(BorderlessButtonStyle())
                 }
+            } else {
+                Text("\(distance)" + " " + "Yards")
+                    .font(.system(size: 55, weight: .bold, design: .monospaced))
+                    .foregroundColor(.black)
+                    .shadow(color: .gray, radius: 2, x: 0, y: 2)
+                    .padding()
+                
+                Text("Add Clubs To Get Recommendation")
+                    .font(.headline)
+                    .foregroundColor(.gray)
+                    .padding()
+                
+                VStack {
+                    Button("Reset") {
+                        distanceCalcVM.reset()
+                        dismiss()
+                    }
+                    .buttonStyle(.bordered)
+                }
+                .padding()
             }
         }
         .padding()
     }
 }
 
-#Preview {
-    let club = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.iron, number: "9", degree: "", distanceYards: 140, distanceMeters: nil, favorite: false)
-    return DistanceResultView(distance: 150, club: club)
-}

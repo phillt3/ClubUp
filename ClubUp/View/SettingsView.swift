@@ -26,6 +26,12 @@ struct SettingsView: View {
                 }
             }
             .pickerStyle(.inline)
+            Picker("Temperature Unit", selection: $userPrefs.tempUnit) {
+                ForEach(TempUnit.allCases, id: \.self) {
+                    Text($0.rawValue)
+                }
+            }
+            .pickerStyle(.inline)
             Toggle("Favorites", isOn: $userPrefs.favoritesOn)
             Toggle("Shot Tracker", isOn: $userPrefs.trackersOn)
         }

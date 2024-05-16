@@ -18,6 +18,10 @@ enum Unit: String, CaseIterable, Codable {
     case Imperial = "Imperial (Yards, Miles)"
     case Metric = "Metric (Meters, Kilometers)"
 }
+enum TempUnit: String, CaseIterable, Codable {
+    case Fahrenheit = "°F (Fahrenheit)"
+    case Celsius = "°C (Celsius)"
+}
 
 enum AlertType {
     case distance

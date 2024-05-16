@@ -30,21 +30,21 @@ class Club: CustomStringConvertible {
     
     public static let recommendedClubs : [String : Club] =
     [
-        "Dr" : Club.createWood(brand: "", model: "", number: "1", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 1),
-        "3w" : Club.createWood(brand: "", model: "", number: "3", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 3),
-        "5w" : Club.createWood(brand: "", model: "", number: "5", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 5),
-        "3i" : Club.createIron(brand: "", model: "", number: "3", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 23),
-        "4i" : Club.createIron(brand: "", model: "", number: "4", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 24),
-        "5i" : Club.createIron(brand: "", model: "", number: "5", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 25),
-        "6i" : Club.createIron(brand: "", model: "", number: "6", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 26),
-        "7i" : Club.createIron(brand: "", model: "", number: "7", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 27),
-        "8i" : Club.createIron(brand: "", model: "", number: "8", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 28),
-        "9i" : Club.createIron(brand: "", model: "", number: "9", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 29),
-        "Pw" : Club.createIron(brand: "", model: "", number: "P", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 30),
-        "Aw" : Club.createWedge(brand: "", model: "", degree: "A", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 51),
-        "W52" : Club.createWedge(brand: "", model: "", degree: "52", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 52),
-        "W56" : Club.createWedge(brand: "", model: "", degree: "56", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 56),
-        "W60" : Club.createWedge(brand: "", model: "", degree: "60", distanceYards: nil, distanceMeters: nil, favorite: false, rank: 60)
+        "Dr" : Club.createWood(brand: "", model: "", number: "1", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 1),
+        "3w" : Club.createWood(brand: "", model: "", number: "3", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 3),
+        "5w" : Club.createWood(brand: "", model: "", number: "5", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 5),
+        "3i" : Club.createIron(brand: "", model: "", number: "3", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 23),
+        "4i" : Club.createIron(brand: "", model: "", number: "4", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 24),
+        "5i" : Club.createIron(brand: "", model: "", number: "5", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 25),
+        "6i" : Club.createIron(brand: "", model: "", number: "6", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 26),
+        "7i" : Club.createIron(brand: "", model: "", number: "7", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 27),
+        "8i" : Club.createIron(brand: "", model: "", number: "8", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 28),
+        "9i" : Club.createIron(brand: "", model: "", number: "9", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 29),
+        "Pw" : Club.createIron(brand: "", model: "", number: "P", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 30),
+        "Aw" : Club.createWedge(brand: "", model: "", degree: "A", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 51),
+        "W52" : Club.createWedge(brand: "", model: "", degree: "52", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 52),
+        "W56" : Club.createWedge(brand: "", model: "", degree: "56", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 56),
+        "W60" : Club.createWedge(brand: "", model: "", degree: "60", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 60)
     ]
     
     //General Init
