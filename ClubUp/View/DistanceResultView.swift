@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DistanceResultView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) var modelContext
     @State var distanceCalcVM: DistanceCalcView.DistanceCalcViewModel
+    
+    @Query public var userPrefs: [UserPrefs]
     
     var distance: Int
     var club: Club?
@@ -32,29 +36,58 @@ struct DistanceResultView: View {
                             .shadow(color: .black.opacity(0.3), radius: 5, x: 0, y: 3) // Add a shadow to the background
                     )
                 
-                Image(recClub.imageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-
-                .padding()
+                if (UserPrefs.getCurrentPrefs(prefs: userPrefs).favoritesOn && recClub.favorite) {
+                    ZStack {
+                        // Background image
+                        Image(systemName: "star.fill")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .foregroundStyle(.yellow)
+                            .fontWeight(.thin)
+                        
+                        // Foreground image
+                        Image(recClub.imageName)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                } else {
+                    Image(recClub.imageName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
                 
-                HStack {
+                if (UserPrefs.getCurrentPrefs(prefs: userPrefs).trackersOn) {
+                    HStack { //TODO: Need to implement shot tracker preferences here
+                        Button("Bad Shot") {
+                            recClub.addShot()
+                            distanceCalcVM.reset()
+                            dismiss()
+                        }
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(.red)
+                        .cornerRadius(10)
+                        Button(action: {
+                            recClub.addGoodShot() //will this add to the correct club?
+                            distanceCalcVM.reset()
+                            dismiss()
+                        }) {
+                          Text("Good Shot")
+                            .padding()
+                            .foregroundColor(.white)
+                            .background(.green)
+                            .cornerRadius(10)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
+                } else {
                     Button("Reset") {
+                        distanceCalcVM.reset()
                         dismiss()
                     }
                     .buttonStyle(.bordered)
-                    Button(action: {
-                        recClub.addGoodShot() //will this add to the correct club? 
-                        dismiss()
-                    }) {
-                      Text("Good Shot")
-                        .padding()
-                        .foregroundColor(.white)
-                        .background(.green)
-                        .cornerRadius(10)
-                    }
-                    .buttonStyle(BorderlessButtonStyle())
                 }
+
             } else {
                 Text("\(distance)" + " " + "Yards")
                     .font(.system(size: 55, weight: .bold, design: .monospaced))
@@ -67,17 +100,16 @@ struct DistanceResultView: View {
                     .foregroundColor(.gray)
                     .padding()
                 
-                VStack {
-                    Button("Reset") {
-                        distanceCalcVM.reset()
-                        dismiss()
-                    }
-                    .buttonStyle(.bordered)
+                Button("Reset") {
+                    distanceCalcVM.reset()
+                    dismiss()
                 }
-                .padding()
+                .buttonStyle(.bordered)
             }
         }
         .padding()
     }
+    
 }
+
 

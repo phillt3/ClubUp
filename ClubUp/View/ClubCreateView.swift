@@ -10,6 +10,7 @@ import SwiftUI
 struct ClubCreateView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var focusItem: Bool
     
     @State var viewModel: ClubCreateViewModel
 
@@ -22,6 +23,8 @@ struct ClubCreateView: View {
                     .font(.title)
                     .textFieldStyle(.roundedBorder)
                     .listRowSeparator(.hidden)
+                    .onSubmit { focusItem = false }
+                    .focused($focusItem)
             }
             .padding(.horizontal)
             .padding(.bottom)
@@ -33,6 +36,8 @@ struct ClubCreateView: View {
                     .font(.title)
                     .textFieldStyle(.roundedBorder)
                     .listRowSeparator(.hidden)
+                    .onSubmit { focusItem = false }
+                    .focused($focusItem)
             }
             .padding(.horizontal)
             .listRowSeparator(.hidden)
@@ -130,6 +135,8 @@ struct ClubCreateView: View {
                         .bold()
                         .multilineTextAlignment(.center)
                         .padding(.trailing)
+                        .onSubmit { focusItem = false }
+                        .focused($focusItem)
                 }
                 .listRowSeparator(.hidden)
                 
@@ -166,6 +173,9 @@ struct ClubCreateView: View {
                 }
                 .listRowSeparator(.hidden)
             }
+        }
+        .onTapGesture{
+            focusItem = false
         }
     }
 }

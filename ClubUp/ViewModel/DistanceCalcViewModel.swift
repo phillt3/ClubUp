@@ -11,20 +11,29 @@ import SwiftData
 extension DistanceCalcView{
     @Observable
     class DistanceCalcViewModel: ObservableObject {
+        
+        //TODO: Might be better to transfer these to a model
         public var yardage: String = ""
         public var adjYardage: String = ""
-        public var windSpeed: Double = 0
-        public var windDirection: String = "multiply.circle"
-        public var slope: String = "Flat"
-        public var temperature: String = ""
-        public var humidity: String = ""
-        public var airPressure: String = ""
-        public var altitude: String = ""
-        public var isRaining: Bool = false
-        public var lie: String = "Tee"
+        public var windSpeed: Double = 0 //got
+        public var windDirection: String = "multiply.circle" //got
+        public var slope: String = "Flat" //got but will actually be used in club algorithm
+        public var temperature: String = "" //GOT
+        public var humidity: String = "" //got - ngeligible
+        public var airPressure: String = "" //might be begligble
+        public var altitude: String = "" //got
+        public var isRaining: Bool = false //got
+        public var lie: String = "Tee" //got a working theory but also would be used in club algorithm
         public var showingResult = false
         public var showingAlert = false
         public var alertType: AlertType = .distance
+        
+        var yardageValue: Int? { Int(yardage) }
+        var adjYardageValue: Int? { Int(adjYardage) }
+        var tempValue: Int? { Int(temperature) }
+        var humidityValue: Int? { Int(humidity) }
+        var airPressValue: Double? { Double(airPressure) }
+        var altitudeValue: Int? { Int(altitude) }
         
         var modelContext: ModelContext
         var clubs = [Club]()
@@ -71,8 +80,75 @@ extension DistanceCalcView{
             }
         }
         
+        private func getDistanceWithWind(distance: Int, windSpeedMph: Double)  -> Int {
+            let windDirectionPercentage = getWindDirectionPercentage()
+            var newDistance: Double = Double(distance)
+            
+            if (windDirectionPercentage > 0) {
+                newDistance = newDistance + (windDirectionPercentage * ((windSpeedMph / 100.0) * newDistance))
+                return Int(newDistance)
+            } else if (windDirectionPercentage < 0) {
+                newDistance = newDistance + (windDirectionPercentage * (((windSpeedMph / 2) / 100.0) * newDistance))
+                return Int(newDistance)
+            } else {
+                return distance
+            }
+        }
+        
+        private func getDistanceWithAltitude(distance: Int, altitudeMeters: Int) -> Int {
+            let increasePercentage = Double(altitudeMeters) / 300.0
+            var newDistance = Double(distance)
+            newDistance = newDistance - (newDistance * (increasePercentage / 100.0))
+            return Int(newDistance)
+        }
+        
+        private func getDistanceWithRain(distance: Int) -> Int {
+            var newDistance = Double(distance)
+            newDistance = newDistance + (newDistance * 0.04)
+            return Int(newDistance)
+        }
+        
+        private func getWindDirectionPercentage() -> Double {
+            let currentDirection = windDirection
+            
+            switch currentDirection {
+            case "multiply.circle", "arrow.right", "arrow.left":
+                return 0
+            case "arrow.up":
+                return -1
+            case "arrow.down":
+                return 1
+            case "arrow.up.right", "arrow.up.left":
+                return -0.5
+            case "arrow.down.right", "arrow.down.left":
+                return 0.5
+            default:
+                return 0
+            }
+        }
+        
+        private func getDistanceWithTemperature(distance: Int, tempF: Int) -> Int {
+            let tempFromBase = tempF - 75
+            let tempVar = Double(tempFromBase) / 10.0
+            var newDistance = Double(distance)
+            newDistance = newDistance + (-2.0 * tempVar)
+            return Int(newDistance)
+        }
+        
         public func calculateTrueDistance() -> Int {
-            return Int(yardage) ?? 0
+            var calcDistance = Int(adjYardage) ?? Int(yardage) ?? 0
+            let calcAltitude = Int(altitude) ?? 0
+            let calcTemp = Int(temperature) ?? 75
+            
+            calcDistance = getDistanceWithWind(distance: calcDistance, windSpeedMph: prefs.speedUnit == .Imperial ? windSpeed : UserPrefs.convertKmhToMph(speedKmh: windSpeed))
+            calcDistance = getDistanceWithAltitude(distance: calcDistance, altitudeMeters: prefs.distanceUnit == .Imperial ? UserPrefs.convertFeetToMeters(distanceFeet: Double(calcAltitude)) : calcAltitude)
+            calcDistance = getDistanceWithTemperature(distance: calcDistance, tempF: prefs.tempUnit == TempUnit.Fahrenheit ? calcTemp : UserPrefs.convertCToF(tempC: calcTemp))
+            
+            if (isRaining) {
+                calcDistance = getDistanceWithRain(distance: calcDistance)
+            }
+            
+            return calcDistance
         }
         
         public func getRecommendedClub(distance: Int) -> Club? {
@@ -102,20 +178,67 @@ extension DistanceCalcView{
                     return clubs[mid]
                 }
                 
+                //I think the way to implement favorites is if the yardages are equedistant, choose the favorite, otherwise random?
                 if (resultDist < clubs[mid].distanceYards!) {
                     if (mid > 0 && resultDist > clubs[mid - 1].distanceYards!) {
-                        return abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid - 1].distanceYards!) ? clubs[mid] : clubs[mid - 1]
+                        if (prefs.favoritesOn && abs(resultDist - clubs[mid].distanceYards!) == abs(resultDist - clubs[mid - 1].distanceYards!)) {
+                            if (clubs[mid].favorite) {
+                                return accountForLie(index: mid)
+                            } else if (clubs[mid - 1].favorite) {
+                                return accountForLie(index: mid - 1)
+                            }
+                        }
+                        let foundIndex = abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid - 1].distanceYards!) ? mid : mid - 1 //abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid - 1].distanceYards!) ? clubs[mid] : clubs[mid - 1]
+                        return accountForLie(index: foundIndex)
                     }
                     high = mid
                 } else {
                     if (mid < clubs.count - 1 && resultDist < clubs[mid + 1].distanceYards!) {
-                        return abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid + 1].distanceYards!) ? clubs[mid] : clubs[mid + 1]
+                        if (prefs.favoritesOn &&  abs(resultDist - clubs[mid].distanceYards!) == abs(resultDist - clubs[mid + 1].distanceYards!)) {
+                            if (clubs[mid].favorite) {
+                                return accountForLie(index: mid)
+                            } else if (clubs[mid + 1].favorite) {
+                                return accountForLie(index: mid + 1)
+                            }
+                        }
+                        let foundIndex = abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid + 1].distanceYards!) ? mid : mid + 1 //abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid + 1].distanceYards!) ? clubs[mid] : clubs[mid + 1]
+                        return accountForLie(index: foundIndex)
                     }
                     low = mid
                 }
             }
-            return clubs[mid]
+            return accountForLie(index: mid)
+        }
+        
+        private func accountForLie(index: Int) -> Club? {
+            var newIndex = index
             
+            if (slope == "Down") {
+                newIndex -= 1
+            } else if (slope == "Up") {
+                newIndex += 1
+            }
+            
+            if (lie == "Rough" || lie == "Bunker") {
+                newIndex += 1
+            } else if (lie == "Deep Rough") {
+                while newIndex > 0 {
+                    if (clubs[newIndex].rank >= 29) {
+                        return clubs[newIndex]
+                    } else {
+                        newIndex -= 1
+                    }
+                }
+                return clubs[newIndex] //return the highest lofted club
+            }
+            
+            if (newIndex < 0) {
+                return clubs.first
+            } else if (newIndex > clubs.endIndex) {
+                return clubs.last
+            } else {
+                return clubs[newIndex]
+            }
         }
     }
 }

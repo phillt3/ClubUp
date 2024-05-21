@@ -33,4 +33,16 @@ class UserPrefs {
     public static func getCurrentPrefs(prefs: [UserPrefs]) -> UserPrefs { //TODO: THis method could either be useful in other places or could be redundant and ultimately removed
         return prefs.first ?? UserPrefs()
     }
+    
+    public static func convertKmhToMph(speedKmh: Double) -> Double {
+        return speedKmh / 1.609
+    }
+    
+    public static func convertFeetToMeters(distanceFeet: Double) -> Int {
+        return Int(distanceFeet / 3.281)
+    }
+    
+    public static func convertCToF(tempC: Int) -> Int {
+        return Int((Double(tempC) * (9/5)) + 32)
+    }
 }

@@ -11,6 +11,7 @@ import SwiftData
 struct ClubDetailView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var focusItem: Bool
     
     @State var club: Club
     @Query private var userPrefs: [UserPrefs]
@@ -62,7 +63,7 @@ struct ClubDetailView: View {
                         .frame(height: 75)
                         .padding(.horizontal)
                     HStack {
-                        if (prefs.distanceUnit == Unit.Imperial) {
+                        if (prefs.distanceUnit == Unit.Imperial) { //TODO: THis can be done better
                             Text("Distance (Yards)")
                                 .font(.title2)
                                 .padding(.leading)
@@ -76,6 +77,8 @@ struct ClubDetailView: View {
                                 .bold()
                                 .multilineTextAlignment(.center)
                                 .padding(.trailing)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
                         } else if (prefs.distanceUnit == Unit.Metric) {
                             Text("Distance (Meters)")
                                 .font(.title2)
@@ -90,6 +93,8 @@ struct ClubDetailView: View {
                                 .bold()
                                 .multilineTextAlignment(.center)
                                 .padding(.trailing)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
                         }
 
                     }
@@ -175,6 +180,9 @@ struct ClubDetailView: View {
                     }
                 }
             }
+        }
+        .onTapGesture{
+            focusItem = false
         }
     }
 }
