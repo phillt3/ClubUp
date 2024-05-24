@@ -42,6 +42,10 @@ class UserPrefs {
         return Int(distanceFeet / 3.281)
     }
     
+    public static func convertMetersToFeet(distanceMeters: Double) -> Int {
+        return Int(distanceMeters * 3.281)
+    }
+    
     public static func convertCToF(tempC: Int) -> Int {
         return Int((Double(tempC) * (9/5)) + 32)
     }

@@ -63,12 +63,12 @@ struct ClubDetailView: View {
                         .frame(height: 75)
                         .padding(.horizontal)
                     HStack {
+                        Text("Distance " + (prefs.distanceUnit == Unit.Imperial ? "(Yards)" : "(Meters)"))
+                            .font(.title2)
+                            .padding(.leading)
+                            .bold()
+                        Spacer()
                         if (prefs.distanceUnit == Unit.Imperial) { //TODO: THis can be done better
-                            Text("Distance (Yards)")
-                                .font(.title2)
-                                .padding(.leading)
-                                .bold()
-                            Spacer()
                             TextField("0", value: $club.distanceYards, format: .number)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .keyboardType(.numberPad)
@@ -80,11 +80,6 @@ struct ClubDetailView: View {
                                 .onSubmit { focusItem = false }
                                 .focused($focusItem)
                         } else if (prefs.distanceUnit == Unit.Metric) {
-                            Text("Distance (Meters)")
-                                .font(.title2)
-                                .padding(.leading)
-                                .bold()
-                            Spacer()
                             TextField("0", value: $club.distanceMeters, format: .number)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .keyboardType(.numberPad)

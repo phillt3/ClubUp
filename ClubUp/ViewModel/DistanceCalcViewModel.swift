@@ -7,10 +7,13 @@
 
 import SwiftUI
 import SwiftData
+import CoreLocation
 // ViewModel or Model to handle the calculation logic
 extension DistanceCalcView{
     @Observable
-    class DistanceCalcViewModel: ObservableObject {
+    class DistanceCalcViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
+        
+        var locationManager = CLLocationManager()
         
         //TODO: Might be better to transfer these to a model
         public var yardage: String = ""
@@ -27,6 +30,7 @@ extension DistanceCalcView{
         public var showingResult = false
         public var showingAlert = false
         public var alertType: AlertType = .distance
+        public var isLoading: Bool = false
         
         var yardageValue: Int? { Int(yardage) }
         var adjYardageValue: Int? { Int(adjYardage) }
@@ -41,6 +45,10 @@ extension DistanceCalcView{
         
         init(modelContext: ModelContext) {
             self.modelContext = modelContext
+            
+            super.init()
+            locationManager.delegate = self
+            locationManager.requestWhenInUseAuthorization()
         }
         
         let arrowImages = ["multiply.circle","arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
@@ -151,6 +159,58 @@ extension DistanceCalcView{
             return calcDistance
         }
         
+        private func accountForLie(index: Int) -> Club? {
+            var newIndex = index
+            
+            if (slope == "Down") {
+                newIndex -= 1
+            } else if (slope == "Up") {
+                newIndex += 1
+            }
+            
+            if (lie == "Rough" || lie == "Bunker") {
+                newIndex += 1
+            } else if (lie == "Deep Rough") {
+                while newIndex > 0 {
+                    if (clubs[newIndex].rank >= 29) {
+                        return clubs[newIndex]
+                    } else {
+                        newIndex -= 1
+                    }
+                }
+                return clubs[newIndex] //return the highest lofted club
+            }
+            
+            if (newIndex < 0) {
+                return clubs.first
+            } else if (newIndex > clubs.endIndex) {
+                return clubs.last
+            } else {
+                return clubs[newIndex]
+            }
+        }
+        
+        public func fillInData() {
+            locationManager.requestLocation()
+        }
+        
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            guard let location = locations.last else { return }
+            
+            altitude = String(Int(location.altitude.magnitude)) //TODO: Need to figure out converting this and all values when changing preferences, maybe even just reset the page more often
+            
+            DispatchQueue.global().async {
+                // Simulate some network or data fetching delay
+                sleep(2)
+                self.isLoading = false
+            }
+            //isLoading = false
+        }
+        
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print("error: \(error.localizedDescription)")
+        }
+        
         public func getRecommendedClub(distance: Int) -> Club? {
             
             var resultDist = distance
@@ -208,37 +268,6 @@ extension DistanceCalcView{
                 }
             }
             return accountForLie(index: mid)
-        }
-        
-        private func accountForLie(index: Int) -> Club? {
-            var newIndex = index
-            
-            if (slope == "Down") {
-                newIndex -= 1
-            } else if (slope == "Up") {
-                newIndex += 1
-            }
-            
-            if (lie == "Rough" || lie == "Bunker") {
-                newIndex += 1
-            } else if (lie == "Deep Rough") {
-                while newIndex > 0 {
-                    if (clubs[newIndex].rank >= 29) {
-                        return clubs[newIndex]
-                    } else {
-                        newIndex -= 1
-                    }
-                }
-                return clubs[newIndex] //return the highest lofted club
-            }
-            
-            if (newIndex < 0) {
-                return clubs.first
-            } else if (newIndex > clubs.endIndex) {
-                return clubs.last
-            } else {
-                return clubs[newIndex]
-            }
         }
     }
 }
