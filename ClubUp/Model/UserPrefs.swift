@@ -21,13 +21,15 @@ class UserPrefs {
     var tempUnit: TempUnit
     var favoritesOn: Bool
     var trackersOn: Bool
+    var quickAddClubsOn: Bool
     
-    init(distanceUnit: Unit = Unit.Imperial, speedUnit: Unit = Unit.Imperial, tempUnit: TempUnit = TempUnit.Fahrenheit, favoritesOn: Bool = true, trackersOn: Bool = true) {
+    init(distanceUnit: Unit = Unit.Imperial, speedUnit: Unit = Unit.Imperial, tempUnit: TempUnit = TempUnit.Fahrenheit, favoritesOn: Bool = true, trackersOn: Bool = true, quickAddClubsOn: Bool = true) {
         self.distanceUnit = distanceUnit
         self.speedUnit = speedUnit
         self.tempUnit = tempUnit
         self.favoritesOn = favoritesOn
         self.trackersOn = trackersOn
+        self.quickAddClubsOn = quickAddClubsOn
     }
     
     public static func getCurrentPrefs(prefs: [UserPrefs]) -> UserPrefs { //TODO: THis method could either be useful in other places or could be redundant and ultimately removed
@@ -36,6 +38,10 @@ class UserPrefs {
     
     public static func convertKmhToMph(speedKmh: Double) -> Double {
         return speedKmh / 1.609
+    }
+    
+    public static func convertMphToKmh(speedMph: Double) -> Double {
+        return speedMph * 1.609
     }
     
     public static func convertFeetToMeters(distanceFeet: Double) -> Int {
@@ -48,5 +54,9 @@ class UserPrefs {
     
     public static func convertCToF(tempC: Int) -> Int {
         return Int((Double(tempC) * (9/5)) + 32)
+    }
+    
+    public static func convertFToC(tempF: Int) -> Int {
+        return Int((Double(tempF - 32) * (5/9)))
     }
 }

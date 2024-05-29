@@ -34,6 +34,7 @@ struct SettingsView: View {
             .pickerStyle(.inline)
             Toggle("Favorites", isOn: $userPrefs.favoritesOn)
             Toggle("Shot Tracker", isOn: $userPrefs.trackersOn)
+            Toggle("Clubs Quick Add", isOn: $userPrefs.quickAddClubsOn)
         }
         .navigationTitle("Settings")
         .navigationBarBackButtonHidden()

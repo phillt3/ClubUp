@@ -43,7 +43,7 @@ struct DistanceCalcView: View {
                             .buttonStyle(BorderlessButtonStyle())
                         }
                         .padding(.top)
-                        TextField("150", text: $viewModel.yardage) //TODO: I know we had issues in other areas with a number formatter, maybe just forcing a number pad will be good enough, otherwise do research
+                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "150" : "137", text: $viewModel.yardage) //TODO: I know we had issues in other areas with a number formatter, maybe just forcing a number pad will be good enough, otherwise do research
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 100)
                             .keyboardType(.numberPad)
@@ -66,7 +66,7 @@ struct DistanceCalcView: View {
                             }
                             .buttonStyle(BorderlessButtonStyle())
                         }
-                        TextField("158", text: $viewModel.adjYardage)
+                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "158" : "144", text: $viewModel.adjYardage)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 100)
                             .keyboardType(.numberPad)
@@ -261,10 +261,22 @@ struct DistanceCalcView: View {
                         }
                     }
                     ToolbarItem(placement: .bottomBar) {
-                        Button("Calculate") {
-                            viewModel.showingResult.toggle()
+                        HStack{
+                            Spacer()
+                            Button("Calculate") {
+                                viewModel.showingResult.toggle()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            Button("Clear") {
+                                viewModel.reset()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            Spacer()
                         }
-                        .buttonStyle(.borderedProminent)
+
+                    }
+                    ToolbarItem(placement: .bottomBar) {
+  
                     }
                 }
                 .onTapGesture{
@@ -283,17 +295,6 @@ struct DistanceCalcView: View {
                 }
                 .presentationDetents([.medium])
             })
-//            if viewModel.isLoading {
-//                Color.black.opacity(0.4)
-//                    .edgesIgnoringSafeArea(.all)
-//                
-//                ProgressView("Loading...")
-//                    .padding()
-//                    .background(Color.white)
-//                    .cornerRadius(10)
-//                    .shadow(radius: 10)
-//            }
-//            
             if viewModel.isLoading {
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)

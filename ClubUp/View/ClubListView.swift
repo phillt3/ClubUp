@@ -27,7 +27,7 @@ struct ClubListView: View {
     var body: some View {
         NavigationStack {
             VStack() {
-                if(Club.isMissingRecommendedClubs(clubs: userClubs)) { //TODO: will need to optimize this method and below
+                if(Club.isMissingRecommendedClubs(clubs: userClubs) && UserPrefs.getCurrentPrefs(prefs: userPrefs).quickAddClubsOn) { //TODO: will need to optimize this method and below
                     HStack{
                         Text("Add Recommended Clubs (\(userClubs.count))")
                             .padding(.leading, 20)
@@ -64,7 +64,7 @@ struct ClubListView: View {
                     .padding()
                 } else {
                     HStack(alignment: .center){
-                        Text("Your Complete Bag (\(userClubs.count))")
+                        Text("Your Bag (\(userClubs.count))")
                             .font(.title3)
                     }
                 }

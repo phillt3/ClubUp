@@ -18,6 +18,7 @@
 		A4916C892BFCDF5B006A721D /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4916C882BFCDF5B006A721D /* LocationDataManager.swift */; };
 		A491E89D2BEC688C005DA03A /* ClubCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A491E89C2BEC688C005DA03A /* ClubCreateViewModel.swift */; };
 		A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */; };
+		A4B12CA12C0513F00094051F /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B12CA02C0513F00094051F /* WeatherData.swift */; };
 		A4B3D5BE2BA895A4001E101B /* ClubsListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */; };
 		A4C88DFD2BEC0B680063497D /* DistanceCalcViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */; };
 		A4D19BA62BD70E79002A0EE3 /* UserPrefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4D19BA52BD70E79002A0EE3 /* UserPrefs.swift */; };
@@ -40,6 +41,7 @@
 		A4916C882BFCDF5B006A721D /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		A491E89C2BEC688C005DA03A /* ClubCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubCreateViewModel.swift; sourceTree = "<group>"; };
 		A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialTypes.swift; sourceTree = "<group>"; };
+		A4B12CA02C0513F00094051F /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsListCellView.swift; sourceTree = "<group>"; };
 		A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceCalcViewModel.swift; sourceTree = "<group>"; };
 		A4D19BA52BD70E79002A0EE3 /* UserPrefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPrefs.swift; sourceTree = "<group>"; };
@@ -86,9 +88,9 @@
 		A481CF9F2BA6458B00121B44 /* ClubUp */ = {
 			isa = PBXGroup;
 			children = (
-				A4916C872BFCDF43006A721D /* Manager */,
 				A471C8732BC49BBD0033D68C /* Documentation */,
 				A481CFA02BA6458B00121B44 /* ClubUpApp.swift */,
+				A4916C872BFCDF43006A721D /* Manager */,
 				A4C6D7B12BB9DA3100DEF7E8 /* View */,
 				A4C88DFB2BEC0B450063497D /* ViewModel */,
 				A4C6D7AF2BB9D9C200DEF7E8 /* Model */,
@@ -143,6 +145,7 @@
 			children = (
 				A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */,
 				A491E89C2BEC688C005DA03A /* ClubCreateViewModel.swift */,
+				A4B12CA02C0513F00094051F /* WeatherData.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A4916C892BFCDF5B006A721D /* LocationDataManager.swift in Sources */,
+				A4B12CA12C0513F00094051F /* WeatherData.swift in Sources */,
 				A4B3D5BE2BA895A4001E101B /* ClubsListCellView.swift in Sources */,
 				A43BAE382BAA161C005CBEE5 /* ClubDetailView.swift in Sources */,
 				A4D19BA62BD70E79002A0EE3 /* UserPrefs.swift in Sources */,

@@ -55,6 +55,14 @@ extension DistanceCalcView{
         let selectionOptions = ["Tee", "Fairway","Rough","Bunker", "Deep Rough"]
         let slopes = ["Flat","Down","Up"]
         
+        var isRunningOnSimulator: Bool {
+            #if targetEnvironment(simulator)
+            return true
+            #else
+            return false
+            #endif
+        }
+        
         func reset() {
             yardage = ""
             adjYardage = ""
@@ -86,6 +94,46 @@ extension DistanceCalcView{
             } catch {
                 print("Prefs Fetch failed")
             }
+        }
+        
+        public func fillInData() {
+            locationManager.requestLocation()
+        }
+        
+        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+            guard let location = locations.last else { return }
+            
+            //altitude = String(Int(location.altitude.magnitude)) //TODO: Need to figure out converting this and all values when changing preferences, maybe even just reset the page more often
+            
+
+            let apiKey = "42a493b5a9bc8292e947324d1b94fc53"
+            
+            let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(!isRunningOnSimulator ? String(location.coordinate.latitude) : "40.392")&lon=\(!isRunningOnSimulator ?  String(location.coordinate.longitude) : "74.118")&units=imperial&appid=\(apiKey)"
+            
+            guard let url = URL(string: urlString) else {return}
+            
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard let data = data else{return}
+                do {
+                    let decoder = JSONDecoder()
+                    let weatherResponse = try decoder.decode(WeatherResponse.self, from: data)
+                    DispatchQueue.main.async {
+                        let weatherData = WeatherData(altitude: weatherResponse.main.sea_level, temperature: weatherResponse.main.temp, condition: weatherResponse.weather.first?.main ?? "", windSpeed: weatherResponse.wind.speed, windGust: weatherResponse.wind.gust)
+                        self.altitude = self.prefs.distanceUnit == .Imperial ? String(weatherData.altitude) : String(UserPrefs.convertFeetToMeters(distanceFeet: Double(weatherData.altitude)))
+                        self.temperature = self.prefs.tempUnit == .Fahrenheit ? String(weatherData.temperature) : String(UserPrefs.convertFToC(tempF: Int(weatherData.temperature)))
+                        self.windSpeed = self.prefs.speedUnit == .Imperial ? weatherData.windSpeed : UserPrefs.convertMphToKmh(speedMph: weatherData.windSpeed)
+                        self.isRaining = weatherData.condition == "Rain"
+                    }
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }.resume()
+            
+            self.isLoading = false
+        }
+        
+        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print("error: \(error.localizedDescription)")
         }
         
         private func getDistanceWithWind(distance: Int, windSpeedMph: Double)  -> Int {
@@ -188,27 +236,6 @@ extension DistanceCalcView{
             } else {
                 return clubs[newIndex]
             }
-        }
-        
-        public func fillInData() {
-            locationManager.requestLocation()
-        }
-        
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            guard let location = locations.last else { return }
-            
-            altitude = String(Int(location.altitude.magnitude)) //TODO: Need to figure out converting this and all values when changing preferences, maybe even just reset the page more often
-            
-            DispatchQueue.global().async {
-                // Simulate some network or data fetching delay
-                sleep(2)
-                self.isLoading = false
-            }
-            //isLoading = false
-        }
-        
-        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            print("error: \(error.localizedDescription)")
         }
         
         public func getRecommendedClub(distance: Int) -> Club? {
