@@ -10,6 +10,7 @@ import Foundation
 extension ClubCreateView{
     @Observable
     class ClubCreateViewModel: ObservableObject {
+        
         public var brand: String = ""
         public var model: String = ""
         public var distance: Int = 0

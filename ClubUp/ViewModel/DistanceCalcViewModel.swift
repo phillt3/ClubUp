@@ -119,9 +119,9 @@ extension DistanceCalcView{
                     let weatherResponse = try decoder.decode(WeatherResponse.self, from: data)
                     DispatchQueue.main.async {
                         let weatherData = WeatherData(altitude: weatherResponse.main.sea_level, temperature: weatherResponse.main.temp, condition: weatherResponse.weather.first?.main ?? "", windSpeed: weatherResponse.wind.speed, windGust: weatherResponse.wind.gust)
-                        self.altitude = self.prefs.distanceUnit == .Imperial ? String(weatherData.altitude) : String(UserPrefs.convertFeetToMeters(distanceFeet: Double(weatherData.altitude)))
-                        self.temperature = self.prefs.tempUnit == .Fahrenheit ? String(weatherData.temperature) : String(UserPrefs.convertFToC(tempF: Int(weatherData.temperature)))
-                        self.windSpeed = self.prefs.speedUnit == .Imperial ? weatherData.windSpeed : UserPrefs.convertMphToKmh(speedMph: weatherData.windSpeed)
+                        self.altitude = self.prefs.distanceUnit == .Imperial ? String(weatherData.altitude) : String(HelperMethods.convertFeetToMeters(distanceFeet: Double(weatherData.altitude)))
+                        self.temperature = self.prefs.tempUnit == .Fahrenheit ? String(weatherData.temperature) : String(HelperMethods.convertFToC(tempF: Int(weatherData.temperature)))
+                        self.windSpeed = self.prefs.speedUnit == .Imperial ? weatherData.windSpeed : HelperMethods.convertMphToKmh(speedMph: weatherData.windSpeed)
                         self.isRaining = weatherData.condition == "Rain"
                     }
                 } catch {
@@ -196,9 +196,9 @@ extension DistanceCalcView{
             let calcAltitude = Int(altitude) ?? 0
             let calcTemp = Int(temperature) ?? 75
             
-            calcDistance = getDistanceWithWind(distance: calcDistance, windSpeedMph: prefs.speedUnit == .Imperial ? windSpeed : UserPrefs.convertKmhToMph(speedKmh: windSpeed))
-            calcDistance = getDistanceWithAltitude(distance: calcDistance, altitudeMeters: prefs.distanceUnit == .Imperial ? UserPrefs.convertFeetToMeters(distanceFeet: Double(calcAltitude)) : calcAltitude)
-            calcDistance = getDistanceWithTemperature(distance: calcDistance, tempF: prefs.tempUnit == TempUnit.Fahrenheit ? calcTemp : UserPrefs.convertCToF(tempC: calcTemp))
+            calcDistance = getDistanceWithWind(distance: calcDistance, windSpeedMph: prefs.speedUnit == .Imperial ? windSpeed : HelperMethods.convertKmhToMph(speedKmh: windSpeed))
+            calcDistance = getDistanceWithAltitude(distance: calcDistance, altitudeMeters: prefs.distanceUnit == .Imperial ? HelperMethods.convertFeetToMeters(distanceFeet: Double(calcAltitude)) : calcAltitude)
+            calcDistance = getDistanceWithTemperature(distance: calcDistance, tempF: prefs.tempUnit == TempUnit.Fahrenheit ? calcTemp : HelperMethods.convertCToF(tempC: calcTemp))
             
             if (isRaining) {
                 calcDistance = getDistanceWithRain(distance: calcDistance)
