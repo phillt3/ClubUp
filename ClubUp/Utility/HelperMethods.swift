@@ -31,4 +31,12 @@ class HelperMethods {
     public static func convertFToC(tempF: Int) -> Int {
         return Int((Double(tempF - 32) * (5/9)))
     }
+    
+    public static func yardsToMeters(yards: Int) -> Int {
+        return Int(round(Double(yards) * 0.9144))
+    }
+    
+    public static func metersToYards(meters: Int) -> Int {
+        return Int(round(Double(meters) / 0.9144))
+    }
 }

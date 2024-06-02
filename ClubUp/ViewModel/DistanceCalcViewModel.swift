@@ -243,7 +243,7 @@ extension DistanceCalcView{
             var resultDist = distance
             
             if (prefs.distanceUnit == .Metric) {
-                resultDist = Club.metersToYards(meters: resultDist)
+                resultDist = HelperMethods.metersToYards(meters: resultDist)
             }
             
             guard !clubs.isEmpty else { return nil }

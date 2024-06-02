@@ -23,7 +23,7 @@ extension ClubCreateView{
         let ironValues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "P"]
         let wedgeValues = ["E", "A", "D", "F", "G", "M", "MB", "S", "L"] + (46...72).map { String($0) }
         
-        public var prefs: UserPrefs
+        public var prefs: UserPrefs //TODO: Can we make it so that the user prefs are not passed in here?
         
         init(prefs: UserPrefs ) {
             self.prefs = prefs

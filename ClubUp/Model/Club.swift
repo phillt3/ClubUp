@@ -72,10 +72,10 @@ class Club: CustomStringConvertible {
         
         if let yardsValue = distanceYards {
             yards = yardsValue
-            meters = yardsToMeters(yards: yardsValue)
+            meters = HelperMethods.yardsToMeters(yards: yardsValue)
         } else if let metersValue = distanceMeters {
             meters = metersValue
-            yards = metersToYards(meters: metersValue)
+            yards = HelperMethods.metersToYards(meters: metersValue)
         }
         
         let rank = calculateRank(type: type, number: number, degree: degree)
@@ -174,12 +174,12 @@ class Club: CustomStringConvertible {
     //Class Functions
     func modifyDistanceYards(yards: Int) {
         self.distanceYards = yards
-        self.distanceMeters = Club.yardsToMeters(yards: yards)
+        self.distanceMeters = HelperMethods.yardsToMeters(yards: yards)
     }
     
     func modifyDistanceMeters(meters: Int) {
         self.distanceMeters = meters
-        self.distanceYards = Club.metersToYards(meters: meters)
+        self.distanceYards = HelperMethods.metersToYards(meters: meters)
     }
     
     func addGoodShot() {
@@ -197,16 +197,6 @@ class Club: CustomStringConvertible {
         }
         let decimalPercentage = Double(self.goodShots) / Double(self.shots)
         return Int(decimalPercentage * 100)
-    }
-        
-    //HelperMethods
-    //TODO: May want to move these to a utility class
-    public static func yardsToMeters(yards: Int) -> Int {
-        return Int(round(Double(yards) * 0.9144))
-    }
-    
-    public static func metersToYards(meters: Int) -> Int {
-        return Int(round(Double(meters) / 0.9144))
     }
     
     public static func calculateRank(type: ClubType, number: String, degree: String) -> Int {

@@ -241,7 +241,7 @@ struct DistanceCalcView: View {
                         .padding(.horizontal)
                     }
                     .alert(isPresented: $viewModel.showingAlert) {
-                        Alert(title: Text(viewModel.alertType.title), message: Text("Wear sunscreen"), dismissButton: .default(Text("Got it!")))
+                        Alert(title: Text(viewModel.alertType.title), message: Text(viewModel.alertType.message), dismissButton: .default(Text("Got it!")))
                     }
                 }
                 .toolbar {
