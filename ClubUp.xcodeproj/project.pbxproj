@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A43298BD2C0D6204006EF80E /* Calculation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43298BC2C0D6204006EF80E /* Calculation.swift */; };
 		A43BAE382BAA161C005CBEE5 /* ClubDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */; };
 		A44C330E2BE10EC300DDC2FB /* DistanceCalcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44C330D2BE10EC300DDC2FB /* DistanceCalcView.swift */; };
 		A47986282BB1FF4A009F6DB2 /* ClubCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47986272BB1FF4A009F6DB2 /* ClubCreateView.swift */; };
@@ -15,10 +16,12 @@
 		A481CFA52BA6458B00121B44 /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = A481CFA42BA6458B00121B44 /* Club.swift */; };
 		A481CFA72BA6458D00121B44 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A481CFA62BA6458D00121B44 /* Assets.xcassets */; };
 		A481CFAA2BA6458D00121B44 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A481CFA92BA6458D00121B44 /* Preview Assets.xcassets */; };
+		A48A40E52C16A3F900028870 /* TextFieldLimitModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = A48A40E42C16A3F900028870 /* TextFieldLimitModifier.swift */; };
 		A4916C892BFCDF5B006A721D /* LocationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4916C882BFCDF5B006A721D /* LocationDataManager.swift */; };
 		A491E89D2BEC688C005DA03A /* ClubCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A491E89C2BEC688C005DA03A /* ClubCreateViewModel.swift */; };
 		A49AEAD82C0AA81C00DF9312 /* HelperMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = A49AEAD72C0AA81C00DF9312 /* HelperMethods.swift */; };
 		A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */; };
+		A4AF93FA2C0FDA56009EC806 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4AF93F92C0FDA56009EC806 /* Config.swift */; };
 		A4B12CA12C0513F00094051F /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B12CA02C0513F00094051F /* WeatherData.swift */; };
 		A4B3D5BE2BA895A4001E101B /* ClubsListCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */; };
 		A4C88DFD2BEC0B680063497D /* DistanceCalcViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */; };
@@ -28,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A43298BC2C0D6204006EF80E /* Calculation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculation.swift; sourceTree = "<group>"; };
 		A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailView.swift; sourceTree = "<group>"; };
 		A44C330C2BDFD05A00DDC2FB /* TechDebt.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TechDebt.md; sourceTree = "<group>"; };
 		A44C330D2BE10EC300DDC2FB /* DistanceCalcView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceCalcView.swift; sourceTree = "<group>"; };
@@ -39,10 +43,12 @@
 		A481CFA42BA6458B00121B44 /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
 		A481CFA62BA6458D00121B44 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A481CFA92BA6458D00121B44 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A48A40E42C16A3F900028870 /* TextFieldLimitModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldLimitModifier.swift; sourceTree = "<group>"; };
 		A4916C882BFCDF5B006A721D /* LocationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDataManager.swift; sourceTree = "<group>"; };
 		A491E89C2BEC688C005DA03A /* ClubCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubCreateViewModel.swift; sourceTree = "<group>"; };
 		A49AEAD72C0AA81C00DF9312 /* HelperMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMethods.swift; sourceTree = "<group>"; };
 		A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialTypes.swift; sourceTree = "<group>"; };
+		A4AF93F92C0FDA56009EC806 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		A4B12CA02C0513F00094051F /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		A4B3D5BD2BA895A4001E101B /* ClubsListCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubsListCellView.swift; sourceTree = "<group>"; };
 		A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DistanceCalcViewModel.swift; sourceTree = "<group>"; };
@@ -123,6 +129,8 @@
 			isa = PBXGroup;
 			children = (
 				A49AEAD72C0AA81C00DF9312 /* HelperMethods.swift */,
+				A4AF93F92C0FDA56009EC806 /* Config.swift */,
+				A48A40E42C16A3F900028870 /* TextFieldLimitModifier.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -130,9 +138,11 @@
 		A4C6D7AF2BB9D9C200DEF7E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				A4B12CA02C0513F00094051F /* WeatherData.swift */,
 				A4AA13692BA71D7000F3AD35 /* SpecialTypes.swift */,
 				A481CFA42BA6458B00121B44 /* Club.swift */,
 				A4D19BA52BD70E79002A0EE3 /* UserPrefs.swift */,
+				A43298BC2C0D6204006EF80E /* Calculation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -156,7 +166,6 @@
 			children = (
 				A4C88DFC2BEC0B680063497D /* DistanceCalcViewModel.swift */,
 				A491E89C2BEC688C005DA03A /* ClubCreateViewModel.swift */,
-				A4B12CA02C0513F00094051F /* WeatherData.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -240,9 +249,12 @@
 				A4D19BAA2BD71335002A0EE3 /* SettingsView.swift in Sources */,
 				A481CFA32BA6458B00121B44 /* ClubListView.swift in Sources */,
 				A481CFA52BA6458B00121B44 /* Club.swift in Sources */,
+				A48A40E52C16A3F900028870 /* TextFieldLimitModifier.swift in Sources */,
 				A44C330E2BE10EC300DDC2FB /* DistanceCalcView.swift in Sources */,
 				A491E89D2BEC688C005DA03A /* ClubCreateViewModel.swift in Sources */,
+				A4AF93FA2C0FDA56009EC806 /* Config.swift in Sources */,
 				A481CFA12BA6458B00121B44 /* ClubUpApp.swift in Sources */,
+				A43298BD2C0D6204006EF80E /* Calculation.swift in Sources */,
 				A4C88DFD2BEC0B680063497D /* DistanceCalcViewModel.swift in Sources */,
 				A4F84C192BE83B9F00C3A424 /* DistanceResultView.swift in Sources */,
 				A4AA136A2BA71D7000F3AD35 /* SpecialTypes.swift in Sources */,

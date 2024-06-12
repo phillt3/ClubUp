@@ -4,79 +4,38 @@
 //
 //  Created by Phillip  Tracy on 5/8/24.
 //
+//  Description:
+//  This file contains the implementation of a viewmodel to support the data collection and
+//  calculation of the DistanceCalcView.
 
 import SwiftUI
 import SwiftData
 import CoreLocation
-// ViewModel or Model to handle the calculation logic
+
 extension DistanceCalcView{
     @Observable
     class DistanceCalcViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         
-        var locationManager = CLLocationManager()
-        
-        //TODO: Might be better to transfer these to a model
-        public var yardage: String = ""
-        public var adjYardage: String = ""
-        public var windSpeed: Double = 0 //got
-        public var windDirection: String = "multiply.circle" //got
-        public var slope: String = "Flat" //got but will actually be used in club algorithm
-        public var temperature: String = "" //GOT
-        public var humidity: String = "" //got - ngeligible
-        public var airPressure: String = "" //might be begligble
-        public var altitude: String = "" //got
-        public var isRaining: Bool = false //got
-        public var lie: String = "Tee" //got a working theory but also would be used in club algorithm
+        //UI Flags and Properties
         public var showingResult = false
         public var showingAlert = false
         public var alertType: AlertType = .distance
         public var isLoading: Bool = false
         
-        var yardageValue: Int? { Int(yardage) }
-        var adjYardageValue: Int? { Int(adjYardage) }
-        var tempValue: Int? { Int(temperature) }
-        var humidityValue: Int? { Int(humidity) }
-        var airPressValue: Double? { Double(airPressure) }
-        var altitudeValue: Int? { Int(altitude) }
-        
+        //Data Properties
         var modelContext: ModelContext
         var clubs = [Club]()
-        public var prefs: UserPrefs = UserPrefs() //TODO: How we set prefs here is how we should do it in other viewmodels probably
+        public var prefs: UserPrefs = UserPrefs()
+        public var calcData: Calculation
         
+        /// Initialize the view model and calculation model data object
+        /// - Parameter modelContext: ModelContext to get access to swiftdata objects
         init(modelContext: ModelContext) {
             self.modelContext = modelContext
-            
-            super.init()
-            locationManager.delegate = self
-            locationManager.requestWhenInUseAuthorization()
+            calcData = Calculation(modelContext: modelContext)
         }
         
-        let arrowImages = ["multiply.circle","arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
-        let selectionOptions = ["Tee", "Fairway","Rough","Bunker", "Deep Rough"]
-        let slopes = ["Flat","Down","Up"]
-        
-        var isRunningOnSimulator: Bool {
-            #if targetEnvironment(simulator)
-            return true
-            #else
-            return false
-            #endif
-        }
-        
-        func reset() {
-            yardage = ""
-            adjYardage = ""
-            windSpeed = 0
-            windDirection = "multiply.circle"
-            slope = "Flat"
-            temperature = ""
-            humidity = ""
-            airPressure = ""
-            altitude = ""
-            isRaining = false
-            lie = "Tee"
-        }
-        
+        /// Fetch relevant swiftdata objects
         public func fetchData() {
             do {
                 let descriptor = FetchDescriptor<Club>(sortBy: [SortDescriptor(\.distanceYards)])
@@ -96,48 +55,13 @@ extension DistanceCalcView{
             }
         }
         
-        public func fillInData() {
-            locationManager.requestLocation()
-        }
-        
-        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            guard let location = locations.last else { return }
-            
-            //altitude = String(Int(location.altitude.magnitude)) //TODO: Need to figure out converting this and all values when changing preferences, maybe even just reset the page more often
-            
-
-            let apiKey = "42a493b5a9bc8292e947324d1b94fc53"
-            
-            let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(!isRunningOnSimulator ? String(location.coordinate.latitude) : "40.392")&lon=\(!isRunningOnSimulator ?  String(location.coordinate.longitude) : "74.118")&units=imperial&appid=\(apiKey)"
-            
-            guard let url = URL(string: urlString) else {return}
-            
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                guard let data = data else{return}
-                do {
-                    let decoder = JSONDecoder()
-                    let weatherResponse = try decoder.decode(WeatherResponse.self, from: data)
-                    DispatchQueue.main.async {
-                        let weatherData = WeatherData(altitude: weatherResponse.main.sea_level, temperature: weatherResponse.main.temp, condition: weatherResponse.weather.first?.main ?? "", windSpeed: weatherResponse.wind.speed, windGust: weatherResponse.wind.gust)
-                        self.altitude = self.prefs.distanceUnit == .Imperial ? String(weatherData.altitude) : String(HelperMethods.convertFeetToMeters(distanceFeet: Double(weatherData.altitude)))
-                        self.temperature = self.prefs.tempUnit == .Fahrenheit ? String(weatherData.temperature) : String(HelperMethods.convertFToC(tempF: Int(weatherData.temperature)))
-                        self.windSpeed = self.prefs.speedUnit == .Imperial ? weatherData.windSpeed : HelperMethods.convertMphToKmh(speedMph: weatherData.windSpeed)
-                        self.isRaining = weatherData.condition == "Rain"
-                    }
-                } catch {
-                    print(error.localizedDescription)
-                }
-            }.resume()
-            
-            self.isLoading = false
-        }
-        
-        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-            print("error: \(error.localizedDescription)")
-        }
-        
+        /// Calculate adjusted distance for current wind conditions. Rule is to add 1% distance to shot for every 1 mph the wind is hurting offset by direction or  add 0.5% distance for every 1mph the wind is helping offset by direction
+        /// - Parameters:
+        ///   - distance: the current distance
+        ///   - windSpeedMph: the wind speed in mph
+        /// - Returns: returns new distance adjusted for wind
         private func getDistanceWithWind(distance: Int, windSpeedMph: Double)  -> Int {
-            let windDirectionPercentage = getWindDirectionPercentage()
+            let windDirectionPercentage = calcData.getWindDirectionPercentage()
             var newDistance: Double = Double(distance)
             
             if (windDirectionPercentage > 0) {
@@ -151,6 +75,11 @@ extension DistanceCalcView{
             }
         }
         
+        /// Calculate adjusted distance for current altitude. Rule is that distance increases 1% for every 300 meters above sea leve
+        /// - Parameters:
+        ///   - distance: current distance
+        ///   - altitudeMeters: altitude value in meters
+        /// - Returns: returns new distance adjusted for altitude
         private func getDistanceWithAltitude(distance: Int, altitudeMeters: Int) -> Int {
             let increasePercentage = Double(altitudeMeters) / 300.0
             var newDistance = Double(distance)
@@ -158,31 +87,20 @@ extension DistanceCalcView{
             return Int(newDistance)
         }
         
+        /// Calculate adjusted distance for rain. Rule is the target will play 4% farther if raining.
+        /// - Parameter distance: current distance
+        /// - Returns: returns new distance adjusted for rain
         private func getDistanceWithRain(distance: Int) -> Int {
             var newDistance = Double(distance)
             newDistance = newDistance + (newDistance * 0.04)
             return Int(newDistance)
         }
         
-        private func getWindDirectionPercentage() -> Double {
-            let currentDirection = windDirection
-            
-            switch currentDirection {
-            case "multiply.circle", "arrow.right", "arrow.left":
-                return 0
-            case "arrow.up":
-                return -1
-            case "arrow.down":
-                return 1
-            case "arrow.up.right", "arrow.up.left":
-                return -0.5
-            case "arrow.down.right", "arrow.down.left":
-                return 0.5
-            default:
-                return 0
-            }
-        }
-        
+        /// Calculate adjusted distance for temperature. Rule is 2 yards will be added or subtracted for every 10° above or below 75°F (will play shorter if warmer and vice versa)
+        /// - Parameters:
+        ///   - distance: current distance
+        ///   - tempF: temperature in fahrenheit
+        /// - Returns: returns new distance adjusted for temperature
         private func getDistanceWithTemperature(distance: Int, tempF: Int) -> Int {
             let tempFromBase = tempF - 75
             let tempVar = Double(tempFromBase) / 10.0
@@ -191,34 +109,32 @@ extension DistanceCalcView{
             return Int(newDistance)
         }
         
+        /// Performs order operations to account for all current environmental variables that will impact how far the target is palying
+        /// - Returns: return the adjusted distance for current environmental variables
         public func calculateTrueDistance() -> Int {
-            var calcDistance = Int(adjYardage) ?? Int(yardage) ?? 0
-            let calcAltitude = Int(altitude) ?? 0
-            let calcTemp = Int(temperature) ?? 75
+            var distance = calcData.initialDistance
+            let altitude = prefs.distanceUnit == .Imperial ? HelperMethods.convertFeetToMeters(distanceFeet: Double(calcData.altitude) ?? 0.0) : Int(calcData.altitude) ?? 0
+            let temp =  prefs.tempUnit == TempUnit.Fahrenheit ? Int(calcData.temperature) ?? 75 : HelperMethods.convertCToF(tempC: Int(calcData.temperature) ?? 75)
+            let windSpeed = prefs.speedUnit == .Imperial ? calcData.windSpeed : HelperMethods.convertKmhToMph(speedKmh: calcData.windSpeed)
             
-            calcDistance = getDistanceWithWind(distance: calcDistance, windSpeedMph: prefs.speedUnit == .Imperial ? windSpeed : HelperMethods.convertKmhToMph(speedKmh: windSpeed))
-            calcDistance = getDistanceWithAltitude(distance: calcDistance, altitudeMeters: prefs.distanceUnit == .Imperial ? HelperMethods.convertFeetToMeters(distanceFeet: Double(calcAltitude)) : calcAltitude)
-            calcDistance = getDistanceWithTemperature(distance: calcDistance, tempF: prefs.tempUnit == TempUnit.Fahrenheit ? calcTemp : HelperMethods.convertCToF(tempC: calcTemp))
+            distance = getDistanceWithWind(distance: distance, windSpeedMph: windSpeed)
+            distance = getDistanceWithAltitude(distance: distance, altitudeMeters: altitude)
+            distance = getDistanceWithTemperature(distance: distance, tempF: temp)
             
-            if (isRaining) {
-                calcDistance = getDistanceWithRain(distance: calcDistance)
+            if (calcData.isRaining) {
+                distance = getDistanceWithRain(distance: distance)
             }
             
-            return calcDistance
+            return distance
         }
         
+        ///  Lie is better accounted for in the club decision, the rule is to club up or down to varying amounts depending on given lie
+        /// - Parameter index: The position of the currently decided club in the clubs list
+        /// - Returns: returns the new club adjusted for lie
         private func accountForLie(index: Int) -> Club? {
-            var newIndex = index
+            var newIndex = index + calcData.getSlopeLieFactor()
             
-            if (slope == "Down") {
-                newIndex -= 1
-            } else if (slope == "Up") {
-                newIndex += 1
-            }
-            
-            if (lie == "Rough" || lie == "Bunker") {
-                newIndex += 1
-            } else if (lie == "Deep Rough") {
+            if (calcData.lie == "Deep Rough") {
                 while newIndex > 0 {
                     if (clubs[newIndex].rank >= 29) {
                         return clubs[newIndex]
@@ -238,6 +154,9 @@ extension DistanceCalcView{
             }
         }
         
+        /// This function utilizes a modified binary search algorithm (also account for lie and weighing in favorited clubs) to efficiently and accurately pickout the club with the assigned distance most helpful to the player with the adjusted distance
+        /// - Parameter distance: distance with environmental variables accounted for
+        /// - Returns: returns the recommend club to play
         public func getRecommendedClub(distance: Int) -> Club? {
             
             var resultDist = distance
@@ -265,7 +184,6 @@ extension DistanceCalcView{
                     return clubs[mid]
                 }
                 
-                //I think the way to implement favorites is if the yardages are equedistant, choose the favorite, otherwise random?
                 if (resultDist < clubs[mid].distanceYards!) {
                     if (mid > 0 && resultDist > clubs[mid - 1].distanceYards!) {
                         if (prefs.favoritesOn && abs(resultDist - clubs[mid].distanceYards!) == abs(resultDist - clubs[mid - 1].distanceYards!)) {
@@ -275,7 +193,7 @@ extension DistanceCalcView{
                                 return accountForLie(index: mid - 1)
                             }
                         }
-                        let foundIndex = abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid - 1].distanceYards!) ? mid : mid - 1 //abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid - 1].distanceYards!) ? clubs[mid] : clubs[mid - 1]
+                        let foundIndex = abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid - 1].distanceYards!) ? mid : mid - 1
                         return accountForLie(index: foundIndex)
                     }
                     high = mid
@@ -288,7 +206,7 @@ extension DistanceCalcView{
                                 return accountForLie(index: mid + 1)
                             }
                         }
-                        let foundIndex = abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid + 1].distanceYards!) ? mid : mid + 1 //abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid + 1].distanceYards!) ? clubs[mid] : clubs[mid + 1]
+                        let foundIndex = abs(resultDist - clubs[mid].distanceYards!) <= abs(resultDist - clubs[mid + 1].distanceYards!) ? mid : mid + 1
                         return accountForLie(index: foundIndex)
                     }
                     low = mid

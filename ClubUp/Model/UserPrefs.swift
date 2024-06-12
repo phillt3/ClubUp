@@ -4,14 +4,13 @@
 //
 //  Created by Phillip  Tracy on 4/22/24.
 //
+//  Description:
+//  This file contains the implementation of a model that defines the
+//  structure and properties of global user preferences.
 
 import Foundation
 import SwiftData
 
-
-/*
- This model defines the structure and properties of global user preferences
- */
 @Model
 class UserPrefs {
     

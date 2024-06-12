@@ -4,6 +4,9 @@
 //
 //  Created by Phillip  Tracy on 3/18/24.
 //
+//  Description:
+//  This file contains the implementation of a cell view for displaying data for a specific club
+//  that the user has created. This data includes brand, model name, distance and more.
 
 import SwiftUI
 import SwiftData
@@ -11,9 +14,12 @@ import SwiftData
 struct ClubsListCellView: View {
     var club: Club
     var prefs: UserPrefs
+    
     var body: some View {
+        /// Setup the cell to navigate to the detail page when tapped
         NavigationLink(destination: ClubDetailView(club: club, prefs: prefs)) {
             HStack {
+                /// Provide option to mark club as a favorite from the list cell
                 if (prefs.favoritesOn) {
                     Image(systemName: club.favorite ? "star.fill" : "star")
                         .resizable()
@@ -41,6 +47,7 @@ struct ClubsListCellView: View {
                         .foregroundColor(.secondary)
                 }
                 Spacer()
+                /// Present the current assigned distance of the club in the preferred distance unit
                 VStack(alignment: .trailing) {
                     if prefs.distanceUnit == Unit.Imperial {
                         distanceView(unitText: "Yards", distance: club.distanceYards)
@@ -53,6 +60,7 @@ struct ClubsListCellView: View {
     }
 }
 
+/// A dedicated view builder func to present a reminder label if no distance has been assigned
 @ViewBuilder
 func distanceView(unitText: String, distance: Int?) -> some View {
     if distance ?? 0 > 0 {

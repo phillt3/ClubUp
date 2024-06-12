@@ -4,6 +4,9 @@
 //
 //  Created by Phillip  Tracy on 3/25/24.
 //
+//  Description:
+//  This file contains the implementation of a create view where the user
+//  can input information to create a custom, virtual representations of a club that they own.
 
 import SwiftUI
 
@@ -16,6 +19,7 @@ struct ClubCreateView: View {
 
     var body: some View {
         List {
+            /// display input fields
             VStack(alignment: .leading) {
                 Text("Brand").font(.headline).bold()
                     .padding(.bottom, -10)
@@ -42,6 +46,7 @@ struct ClubCreateView: View {
             .padding(.horizontal)
             .listRowSeparator(.hidden)
             
+            /// display grid of buttons to represent different club types
             VStack {
                 Text("Club Type").font(.headline).bold()
                 HStack {
@@ -74,7 +79,7 @@ struct ClubCreateView: View {
                 
                 HStack {
                     Button(action: {
-                        viewModel.type = ClubType.iron //TODO: should make these capitalized
+                        viewModel.type = ClubType.iron
                     }) {
                         VStack(alignment: .center) {
                             Text("Iron")
@@ -103,7 +108,9 @@ struct ClubCreateView: View {
             .padding()
             .listRowSeparator(.hidden)
             
+            /// once the club type has been selected, present additional data inputs
             if viewModel.type != nil {
+                /// picker for defining club number, will use specific value list depending on type
                 HStack {
                     Label("Select Club Number", systemImage: "number")
                         .font(.headline)
@@ -120,7 +127,7 @@ struct ClubCreateView: View {
                 .frame(height: 100)
                 
                 HStack {
-                    
+                    /// display input field for distance
                     Text("Distance" + (viewModel.prefs.distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
                         .font(.title2)
                         .padding(.leading)
@@ -140,6 +147,7 @@ struct ClubCreateView: View {
                 }
                 .listRowSeparator(.hidden)
                 
+                /// favorite toggle
                 if (viewModel.prefs.favoritesOn) {
                     HStack {
                         Text("Favorite")
@@ -162,6 +170,7 @@ struct ClubCreateView: View {
                 HStack(alignment: .center) {
                     Spacer()
                     Button(action: {
+                        /// add club to swiftdata club structure
                         modelContext.insert(viewModel.createClub())
                         dismiss()
                     }) {
@@ -174,12 +183,16 @@ struct ClubCreateView: View {
                 .listRowSeparator(.hidden)
             }
         }
+        .onAppear {
+            viewModel.fetchData() /// will need to fetch preference data for the vm on the view's appearance
+        }
         .onTapGesture{
             focusItem = false
         }
     }
 }
 
+/// A stylized button style to act as a 4 way toggle for club types
 struct CustomButtonStyle: ButtonStyle {
     let selected: Bool
     
@@ -195,8 +208,8 @@ struct CustomButtonStyle: ButtonStyle {
     }
 }
 
-#Preview {
-    let prefs = UserPrefs()
-    let viewModel = ClubCreateView.ClubCreateViewModel(prefs: prefs)
-    return ClubCreateView(viewModel: viewModel)
-}
+//#Preview {
+//    let prefs = UserPrefs()
+//    let viewModel = ClubCreateView.ClubCreateViewModel(modelContext: modelContext)
+//    return ClubCreateView(viewModel: viewModel)
+//}

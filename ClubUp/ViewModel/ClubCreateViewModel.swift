@@ -4,13 +4,18 @@
 //
 //  Created by Phillip  Tracy on 5/8/24.
 //
+//  Description:
+//  This file contains the implementation of a viewmodel for supporting the data retrieval and formatting
+//  of the ClubCreateView
 
 import Foundation
+import SwiftData
 
 extension ClubCreateView{
     @Observable
     class ClubCreateViewModel: ObservableObject {
-        
+    
+        //Create Club Fields
         public var brand: String = ""
         public var model: String = ""
         public var distance: Int = 0
@@ -18,17 +23,37 @@ extension ClubCreateView{
         public var type: ClubType?
         public var selectedValue: String = ""
         
+        //Multiple Value
         let woodValues = (1...10).map { String($0) }
         let hybridValues = (1...10).map { String($0) }
         let ironValues = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "P"]
         let wedgeValues = ["E", "A", "D", "F", "G", "M", "MB", "S", "L"] + (46...72).map { String($0) }
         
-        public var prefs: UserPrefs //TODO: Can we make it so that the user prefs are not passed in here?
+        var modelContext: ModelContext
+        public var prefs: UserPrefs = UserPrefs()
         
-        init(prefs: UserPrefs ) {
-            self.prefs = prefs
+        /// Initialize VM with model context to have access to swiftdata structures
+        /// - Parameter modelContext: model context for the application
+        init(modelContext: ModelContext) {
+            self.modelContext = modelContext
         }
         
+        /// Fetch relevante swiftdata objects
+        public func fetchData() {
+            do {
+                let descriptor = FetchDescriptor<UserPrefs>()
+                let fetchedPrefs = try modelContext.fetch(descriptor)
+                if (fetchedPrefs.first != nil) {
+                    prefs = fetchedPrefs.first!
+                }
+            } catch {
+                print("Prefs Fetch failed")
+            }
+        }
+        
+        /// Determin what clubs numeric values to present based on selected club type
+        /// - Parameter type: selected club type
+        /// - Returns: returns array of numeric club values
         public func getSelection(type: ClubType) -> [String] {
             switch type {
             case .wood:
@@ -42,6 +67,8 @@ extension ClubCreateView{
             }
         }
         
+        /// Create custom club based on user inputs
+        /// - Returns: returns club object
         public func createClub() -> Club {
             if (selectedValue == "") {
                 switch type! {

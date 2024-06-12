@@ -3,7 +3,10 @@
 //  ClubUp
 //
 //  Created by Phillip  Tracy on 3/16/24.
-//  My first commit!
+//
+//  Description:
+//  This file contains the implementation of the main view to display the current list of clubs
+//  and provide the user with options to quickly add recommended clubs or custom clubs.
 
 import SwiftUI
 import SwiftData
@@ -13,7 +16,6 @@ struct ClubListView: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \Club.rank) private var userClubs: [Club]
     @Query private var userPrefs: [UserPrefs]
-    
     
     @State private var sheetIsPresented = false
     @State private var showSettingsView = false
@@ -27,12 +29,14 @@ struct ClubListView: View {
     var body: some View {
         NavigationStack {
             VStack() {
+                /// If there are available recommended clubs and the preference for quick add is turned on, display the relevant clubs to quick add. Otherwise, display header label with # of clubs
                 if(Club.isMissingRecommendedClubs(clubs: userClubs) && UserPrefs.getCurrentPrefs(prefs: userPrefs).quickAddClubsOn) { //TODO: will need to optimize this method and below
                     HStack{
                         Text("Add Recommended Clubs (\(userClubs.count))")
                             .padding(.leading, 20)
                         Spacer()
                         Button(action: {
+                            /// Add all currently recommended clubs except for those that are already in the current list of user clubs
                             Club.recommendedClubs.forEach { key, recClub in
                                 if !userClubs.contains(where: { $0.name == recClub.name }) {
                                     addItem(club: recClub) //TODO: Hopefully this can be optimized as well
@@ -44,6 +48,7 @@ struct ClubListView: View {
                         })
                     }
                     LazyVGrid(columns: layout) {
+                        /// present clubs to recommend for quick add if they are not already in the user's club list
                         ForEach(Club.recommendedClubs.values.sorted { return $0.rank < $1.rank }, id: \.self) { recClub in //TODO: looping through this dictionary and then checking the list feels unoptimized and can be improved. But it is important that we are no longer relying on a state static dictionary from the model
                             if !userClubs.contains(where: { $0.name == recClub.name }) {
                                 Button(action: {
@@ -70,6 +75,7 @@ struct ClubListView: View {
                 }
             }
             HStack(alignment: .center) {
+                /// toggle view to add custom club
                 Button {
                     sheetIsPresented.toggle()
                 } label: {
@@ -78,6 +84,7 @@ struct ClubListView: View {
                 .buttonStyle(.bordered)
             }
             List {
+                /// present list of user clubs
                 ForEach(userClubs) { item in
                     ClubsListCellView(club: item, prefs: userPrefs.first ?? UserPrefs())
                 }
@@ -87,6 +94,7 @@ struct ClubListView: View {
             .navigationBarBackButtonHidden()
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
+                    /// navigate back to the calculation page
                     Button(action: {
                         dismiss()
                     }, label: {
@@ -95,6 +103,7 @@ struct ClubListView: View {
                     })
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
+                    /// navigate to the preferences page
                     NavigationLink(destination: SettingsView(userPrefs: userPrefs.first ?? UserPrefs(), isFirst: userPrefs.isEmpty)) {
                         Image(systemName:"gearshape")
                             .foregroundStyle(.gray)
@@ -104,25 +113,20 @@ struct ClubListView: View {
         }
         .sheet(isPresented: $sheetIsPresented, content: {
             NavigationStack {
-                ClubCreateView(viewModel: ClubCreateView.ClubCreateViewModel(prefs: userPrefs.first ?? UserPrefs()))//new value
+                ClubCreateView(viewModel: ClubCreateView.ClubCreateViewModel(modelContext: modelContext))//new value
                 
             }
         })
     }
     
-    private func addItem() {
-        withAnimation {
-            let newItem = Club.createClub(brand: "Callaway", model: "Apex", name: "", type: ClubType.hybrid, number: "9", degree: "", distanceYards: nil, distanceMeters: nil, favorite: false)
-            modelContext.insert(newItem)
-        }
-    }
-    
+    /// Add club to swiftdata strcuture
     private func addItem(club: Club) {
         withAnimation {
             modelContext.insert(club)
         }
     }
     
+    /// Delete club from swiftdata structure
     private func deleteItems(offsets: IndexSet) {
         withAnimation {
             for index in offsets {

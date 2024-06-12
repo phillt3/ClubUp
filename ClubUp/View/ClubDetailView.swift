@@ -4,6 +4,9 @@
 //
 //  Created by Phillip  Tracy on 3/19/24.
 //
+//  Description:
+//  This file contains the implementation of a Detail view for displaying a club dedicated page 
+//  where the user can view club stats.
 
 import SwiftUI
 import SwiftData
@@ -21,6 +24,7 @@ struct ClubDetailView: View {
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             VStack {
+                /// display stylized image of club with name brand and model
                 ZStack {
                     LinearGradient(gradient: Gradient(colors: [Color.black, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
                     Image(club.imageName)
@@ -62,6 +66,8 @@ struct ClubDetailView: View {
                         .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                         .frame(height: 75)
                         .padding(.horizontal)
+                    
+                    /// display current distance of club and option to edit it
                     HStack {
                         Text("Distance " + (prefs.distanceUnit == Unit.Imperial ? "(Yards)" : "(Meters)"))
                             .font(.title2)
@@ -95,6 +101,8 @@ struct ClubDetailView: View {
                     }
                     .padding()
                 }
+                
+                /// present favorite icon and option to toggle it
                 if (prefs.favoritesOn) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -122,6 +130,8 @@ struct ClubDetailView: View {
                         .padding()
                     }
                 }
+                
+                /// present shot tracker good shot bad shot percentage
                 if (prefs.trackersOn) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -148,6 +158,7 @@ struct ClubDetailView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button(action: {
+                        /// on dismiss, format distance if it was edited and update swiftdata object
                         if let distance = prefs.distanceUnit == Unit.Imperial ? club.distanceYards : club.distanceMeters {
                             if prefs.distanceUnit == Unit.Imperial {
                                 club.modifyDistanceYards(yards: distance)
@@ -167,12 +178,6 @@ struct ClubDetailView: View {
                         Image(systemName:"chevron.backward")
                             .foregroundStyle(.gray)
                     })
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink(destination: SettingsView(userPrefs: userPrefs.first ?? UserPrefs(), isFirst: userPrefs.isEmpty)) {
-                        Image(systemName:"gearshape")
-                            .foregroundStyle(.gray)
-                    }
                 }
             }
         }

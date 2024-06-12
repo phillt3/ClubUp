@@ -4,6 +4,9 @@
 //
 //  Created by Phillip  Tracy on 3/17/24.
 //
+//  Description:
+//  This file contains the implementation of a variety of custom data types that
+//  are used throughout the application.
 
 import Foundation
 
@@ -23,6 +26,7 @@ enum TempUnit: String, CaseIterable, Codable {
     case Celsius = "°C (Celsius)"
 }
 
+/// Allow user to learn more about each variable impacting distance, presenting this info through alerts
 enum AlertType {
     case distance
     case adjustedDistance

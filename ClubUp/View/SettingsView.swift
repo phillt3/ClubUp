@@ -4,6 +4,9 @@
 //
 //  Created by Phillip  Tracy on 4/22/24.
 //
+//  Description:
+//  This file contains the implementation of a settings page where a user
+//  can customize different application preferences.
 
 import SwiftUI
 
@@ -12,6 +15,7 @@ struct SettingsView: View {
     @State var isFirst: Bool
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) private var dismiss
+    
     var body: some View {
         Form {
             Picker("Distance Unit", selection: $userPrefs.distanceUnit) {
@@ -41,6 +45,8 @@ struct SettingsView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
+                    //TODO: Maybe the singular settings object logic can be solved or improved here
+                    /// There will only every be one or no SwiftData userpref object, if one is not available create it to be used by the rest of the application
                     if (isFirst) {
                         modelContext.insert(userPrefs)
                     }

@@ -4,20 +4,21 @@
 //
 //  Created by Phillip  Tracy on 4/30/24.
 //
+//  Description:
+//  This file contains the implementation of the main calculator page where a user
+//  can enter all pertinent information as well as make weather data requests in order to
+//  accurately calculate their yardage to the target.
 
 import SwiftUI
 import SwiftData
-
-//TODO: Use a viewmodel for performing the calculations and abstracting all properties, this page should ONLY be UI or properties that deal with UI
-//TODO: Research whether or not the view model is necessary and makes sense in the context of swiftui
-//TODO: Either way, step one is just to put together the UI
 
 struct DistanceCalcView: View {
     @Environment(\.modelContext) var modelContext
     @Query public var userPrefs: [UserPrefs]
     @State private var viewModel: DistanceCalcViewModel
-    @FocusState private var focusItem: Bool
+    @FocusState private var focusItem: Bool /// this value assists with clicking off any input keyboards
     
+    /// initialize the viewmodel
     init(modelContext: ModelContext) {
         let viewModel = DistanceCalcViewModel(modelContext: modelContext)
         _viewModel = State(initialValue: viewModel)
@@ -27,6 +28,7 @@ struct DistanceCalcView: View {
         ZStack {
             NavigationStack {
                 List {
+                    /// Initial user input values
                     VStack {
                         HStack {
                             Text("Distance" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
@@ -43,14 +45,14 @@ struct DistanceCalcView: View {
                             .buttonStyle(BorderlessButtonStyle())
                         }
                         .padding(.top)
-                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "150" : "137", text: $viewModel.yardage) //TODO: I know we had issues in other areas with a number formatter, maybe just forcing a number pad will be good enough, otherwise do research
+                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "150" : "137", text: $viewModel.calcData.yardage)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 100)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.center)
                             .onSubmit { focusItem = false }
                             .focused($focusItem)
-                        
+                            .limitInputLength(value: $viewModel.calcData.yardage, length: 3)
                         
                         HStack {
                             Text("Adjusted Distance" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
@@ -66,13 +68,14 @@ struct DistanceCalcView: View {
                             }
                             .buttonStyle(BorderlessButtonStyle())
                         }
-                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "158" : "144", text: $viewModel.adjYardage)
+                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "158" : "144", text: $viewModel.calcData.adjYardage)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
                             .frame(width: 100)
                             .keyboardType(.numberPad)
                             .multilineTextAlignment(.center)
                             .onSubmit { focusItem = false }
                             .focused($focusItem)
+                            .limitInputLength(value: $viewModel.calcData.adjYardage, length: 3)
                         
                         HStack {
                             Text("Wind Direction")
@@ -87,8 +90,8 @@ struct DistanceCalcView: View {
                             }
                             .buttonStyle(BorderlessButtonStyle())
                         }
-                        Picker(selection: $viewModel.windDirection, label: Text("Wind Direction")) {
-                            ForEach(viewModel.arrowImages, id: \.self) {
+                        Picker(selection: $viewModel.calcData.windDirection, label: Text("Wind Direction")) {
+                            ForEach(viewModel.calcData.arrowImages, id: \.self) {
                                 Image(systemName: $0)
                                     .foregroundColor(.blue)
                                     .padding(.trailing, 8)
@@ -109,8 +112,8 @@ struct DistanceCalcView: View {
                                     .padding(.trailing, 8)
                             }
                             .buttonStyle(BorderlessButtonStyle())
-                            Picker("Lie", selection: $viewModel.lie) {
-                                ForEach(viewModel.selectionOptions, id: \.self) {
+                            Picker("Lie", selection: $viewModel.calcData.lie) {
+                                ForEach(viewModel.calcData.selectionOptions, id: \.self) {
                                     Text($0)
                                 }
                             }
@@ -129,8 +132,8 @@ struct DistanceCalcView: View {
                                     .padding(.trailing, 8)
                             }
                             .buttonStyle(BorderlessButtonStyle())
-                            Picker("Slope", selection: $viewModel.slope) {
-                                ForEach(viewModel.slopes, id: \.self) {
+                            Picker("Slope", selection: $viewModel.calcData.slope) {
+                                ForEach(viewModel.calcData.slopes, id: \.self) {
                                     Text($0)
                                 }
                             }
@@ -141,9 +144,10 @@ struct DistanceCalcView: View {
                         Divider()
                             .padding(.vertical)
                         
+                        /// Input that can be filled in manually or using an auto fill
                         Button {
-                            viewModel.isLoading = true
-                            viewModel.fillInData()
+                            viewModel.calcData.isLoading = true
+                            viewModel.calcData.fillInData()
                         } label: {
                             Label(" Auto Fill", systemImage: "square.and.pencil")
                         }
@@ -167,7 +171,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField((UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "82" : "28"), text: $viewModel.temperature)
+                            TextField((UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "82" : "28"), text: $viewModel.calcData.temperature)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -193,7 +197,7 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "1803" : "550", text: $viewModel.altitude)
+                            TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "1803" : "550", text: $viewModel.calcData.altitude)
                                 .textFieldStyle(RoundedBorderTextFieldStyle())
                                 .frame(width: 100)
                                 .keyboardType(.numberPad)
@@ -216,14 +220,13 @@ struct DistanceCalcView: View {
                             }
                             .buttonStyle(BorderlessButtonStyle())
                         }
-                        Slider(value: $viewModel.windSpeed, in: 0...50, step: 1)
+                        Slider(value: $viewModel.calcData.windSpeed, in: 0...50, step: 1)
                             .padding(.horizontal)
                         
-                        Text("\(Int(viewModel.windSpeed))" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).speedUnit == .Imperial ? " (mph)" : " (km/h)"))
+                        Text("\(Int(viewModel.calcData.windSpeed))" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).speedUnit == .Imperial ? " (mph)" : " (km/h)"))
                             .font(.headline)
                             .foregroundColor(.gray)
-                        
-                        Toggle(isOn: $viewModel.isRaining) {
+                        Toggle(isOn: $viewModel.calcData.isRaining) {
                             HStack {
                                 Text("Raining")
                                     .font(.headline)
@@ -246,12 +249,14 @@ struct DistanceCalcView: View {
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
+                        /// navigate to settings
                         NavigationLink(destination: SettingsView(userPrefs: userPrefs.first ?? UserPrefs(), isFirst: userPrefs.isEmpty)) {
                             Image(systemName:"gearshape")
                                 .foregroundStyle(.gray)
                         }
                     }
                     ToolbarItem(placement: .topBarTrailing) {
+                        /// navigate to clubs list
                         NavigationLink(destination: ClubListView()) {
                             HStack {
                                 Text("Your Clubs")
@@ -263,46 +268,46 @@ struct DistanceCalcView: View {
                     ToolbarItem(placement: .bottomBar) {
                         HStack{
                             Spacer()
+                            /// initiate calculate and show result view
                             Button("Calculate") {
                                 viewModel.showingResult.toggle()
                             }
                             .buttonStyle(.borderedProminent)
+                            /// reset calculation page
                             Button("Clear") {
-                                viewModel.reset()
+                                viewModel.calcData.reset()
                             }
                             .buttonStyle(.borderedProminent)
                             Spacer()
                         }
-
-                    }
-                    ToolbarItem(placement: .bottomBar) {
-  
                     }
                 }
                 .onTapGesture{
                     focusItem = false
                 }
                 .onAppear {
+                    //TODO: Possibly consolidate these 3 lines
                     viewModel.fetchData()
-                    viewModel.reset()
+                    viewModel.calcData.fetchData()
+                    viewModel.calcData.reset()
                 }
             }
             .sheet(isPresented: $viewModel.showingResult, content: {
                 NavigationStack {
-                    let result = viewModel.calculateTrueDistance()
-                    let recClub = viewModel.getRecommendedClub(distance: result)
-                    DistanceResultView(distanceCalcVM: viewModel, distance: result, club: recClub)
+                    let result = viewModel.calculateTrueDistance() /// calculate the distance
+                    let recClub = viewModel.getRecommendedClub(distance: result) /// find the club to recommend
+                    DistanceResultView(distanceCalcVM: viewModel, distance: result, club: recClub) /// pass both values to the result view
                 }
                 .presentationDetents([.medium])
             })
-            if viewModel.isLoading {
+            /// present a loading view while fetching data
+            if viewModel.calcData.isLoading {
                 Color.black.opacity(0.4)
                     .edgesIgnoringSafeArea(.all)
                 
                 VStack {
                     ProgressView("Fetching...")
                         .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                        //.scaleEffect(1.5)
                         .padding()
                 }
                 .background(BlurView(style: .systemMaterial))
@@ -313,8 +318,10 @@ struct DistanceCalcView: View {
         }
 
     }
+    
 }
 
+/// help to stylize the loading view
 struct BlurView: UIViewRepresentable {
     var style: UIBlurEffect.Style
 

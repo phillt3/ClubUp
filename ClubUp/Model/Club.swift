@@ -1,14 +1,20 @@
+//
+//  Club.swift
+//  ClubUp
+//
 //  Created by Phillip  Tracy on 3/16/24.
+//
+//  Description:
+//  This file contains the implementation of a model that defines the 
+//  structure and properties of a golf club for a virtual golf bag.
 
 import Foundation
 import SwiftData
 
-/*
- This model defines the structure and properties of a golf club for a virtual golf bag
- */
 @Model
 class Club: CustomStringConvertible {
     
+    //Model Properties
     @Attribute(.unique) var id: UUID // Unique identifier for the club
     var brand: String //Club Producer (Titleist, Callaway, PXG, TaylorMade...)
     var model: String //Club Title (Apex, Big Bertha, DCI 962B, MP 14...)
@@ -28,6 +34,7 @@ class Club: CustomStringConvertible {
         return "\(self.name)(rank: \(self.rank))"
     }
     
+    /// Out of the box club objects, precrafted for the user to quick add
     public static let recommendedClubs : [String : Club] =
     [
         "Dr" : Club.createWood(brand: "", model: "", number: "1", distanceYards: 0, distanceMeters: 0, favorite: false, rank: 1),
@@ -172,25 +179,35 @@ class Club: CustomStringConvertible {
     }
     
     //Class Functions
+    
+    /// Convert the value of the current club distance in yards to meters
+    /// - Parameter yards: Current club distance in yards
     func modifyDistanceYards(yards: Int) {
         self.distanceYards = yards
         self.distanceMeters = HelperMethods.yardsToMeters(yards: yards)
     }
     
+    /// Convert the value of the current club distance in meters to yards
+    /// - Parameter meters: Current club distance in meters
     func modifyDistanceMeters(meters: Int) {
         self.distanceMeters = meters
         self.distanceYards = HelperMethods.metersToYards(meters: meters)
     }
     
+    /// Track good shot
     func addGoodShot() {
         self.goodShots += 1
         self.shots += 1
     }
     
+    
+    /// Track shot
     func addShot() {
         self.shots += 1
     }
     
+    /// Calculate what percentage of total shots tracked have been marked as good shots
+    /// - Returns: Int representing percentage of good shots
     func calculateGoodShotPercentage() -> Int {
         if(self.shots == 0) {
             return 0
@@ -199,6 +216,12 @@ class Club: CustomStringConvertible {
         return Int(decimalPercentage * 100)
     }
     
+    /// Based on the type, number, and degree, determine how this club ranks so that it can be order properly in the clubs list
+    /// - Parameters:
+    ///   - type: Club type
+    ///   - number: Club's numerical representation
+    ///   - degree: Club's degree of loft
+    /// - Returns: Int value representing its rank (1 being the farthest club - a driver)
     public static func calculateRank(type: ClubType, number: String, degree: String) -> Int {
         switch type {
         case .wood:

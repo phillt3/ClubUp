@@ -4,6 +4,9 @@
 //
 //  Created by Phillip  Tracy on 5/31/24.
 //
+//  Description:
+//  This file contains the implementation of various helper methods used throughout
+//  the application, primarily for unit conversion purposes.
 
 import Foundation
 
@@ -38,5 +41,14 @@ class HelperMethods {
     
     public static func metersToYards(meters: Int) -> Int {
         return Int(round(Double(meters) / 0.9144))
+    }
+    
+    /// In specific cases it is necessary to fill in test data when working with the simulator
+    public static var isRunningOnSimulator: Bool {
+        #if targetEnvironment(simulator)
+        return true
+        #else
+        return false
+        #endif
     }
 }
