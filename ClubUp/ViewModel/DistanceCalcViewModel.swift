@@ -114,7 +114,7 @@ extension DistanceCalcView{
         public func calculateTrueDistance() -> Int {
             var distance = calcData.initialDistance
             let altitude = prefs.distanceUnit == .Imperial ? HelperMethods.convertFeetToMeters(distanceFeet: Double(calcData.altitude) ?? 0.0) : Int(calcData.altitude) ?? 0
-            let temp =  prefs.tempUnit == TempUnit.Fahrenheit ? Int(calcData.temperature) ?? 75 : HelperMethods.convertCToF(tempC: Int(calcData.temperature) ?? 75)
+            let temp =  prefs.tempUnit == TempUnit.Fahrenheit ? Int(calcData.temperature) ?? 75 : HelperMethods.convertCToF(tempC: Int(calcData.temperature) ?? 24)
             let windSpeed = prefs.speedUnit == .Imperial ? calcData.windSpeed : HelperMethods.convertKmhToMph(speedKmh: calcData.windSpeed)
             
             distance = getDistanceWithWind(distance: distance, windSpeedMph: windSpeed)
