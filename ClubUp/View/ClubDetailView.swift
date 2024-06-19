@@ -69,7 +69,8 @@ struct ClubDetailView: View {
                     
                     /// display current distance of club and option to edit it
                     HStack {
-                        Text("Distance " + (prefs.distanceUnit == Unit.Imperial ? "(Yards)" : "(Meters)"))
+                        let distanceStringKey = prefs.distanceUnit == Unit.Imperial ? "distance_yards" : "distance_meters"
+                        Text(String(format: NSLocalizedString(distanceStringKey, comment: "")))
                             .font(.title2)
                             .padding(.leading)
                             .bold()

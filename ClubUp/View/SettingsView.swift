@@ -20,19 +20,19 @@ struct SettingsView: View {
         Form {
             Picker("Distance Unit", selection: $userPrefs.distanceUnit) {
                 ForEach(Unit.allCases, id: \.self) {
-                    Text($0.rawValue)
+                    Text($0.title)
                 }
             }
             .pickerStyle(.inline)
             Picker("Speed Unit", selection: $userPrefs.speedUnit) {
                 ForEach(Unit.allCases, id: \.self) {
-                    Text($0.rawValue)
+                    Text($0.title)
                 }
             }
             .pickerStyle(.inline)
             Picker("Temperature Unit", selection: $userPrefs.tempUnit) {
                 ForEach(TempUnit.allCases, id: \.self) {
-                    Text($0.rawValue)
+                    Text($0.title)
                 }
             }
             .pickerStyle(.inline)

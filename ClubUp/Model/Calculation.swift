@@ -17,8 +17,9 @@ class Calculation: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     //Properties to Track Selections
     let arrowImages = ["multiply.circle","arrow.up", "arrow.up.right", "arrow.right", "arrow.down.right", "arrow.down", "arrow.down.left", "arrow.left", "arrow.up.left"]
-    let selectionOptions = ["Tee", "Fairway","Rough","Bunker", "Deep Rough"]
-    let slopes = ["Flat","Down","Up"]
+    let selectionOptions = [String(format: NSLocalizedString("tee", comment: "")), String(format: NSLocalizedString("fairway", comment: "")), String(format: NSLocalizedString("rough", comment: "")), String(format: NSLocalizedString("bunker", comment: "")), String(format: NSLocalizedString("deep_rough", comment: ""))]
+//    let slopes = ["Flat","Down","Up"]
+    let slopes = [String(format: NSLocalizedString("flat", comment: "")), String(format: NSLocalizedString("down", comment: "")), String(format: NSLocalizedString("up", comment: ""))]
     
     // Data Properties
     var modelContext: ModelContext

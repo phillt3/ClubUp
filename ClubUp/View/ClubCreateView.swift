@@ -128,7 +128,8 @@ struct ClubCreateView: View {
                 
                 HStack {
                     /// display input field for distance
-                    Text("Distance" + (viewModel.prefs.distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
+                    let distanceStringKey = viewModel.prefs.distanceUnit == Unit.Imperial ? "distance_yards" : "distance_meters"
+                    Text(String(format: NSLocalizedString(distanceStringKey, comment: "")))
                         .font(.title2)
                         .padding(.leading)
                         .bold()

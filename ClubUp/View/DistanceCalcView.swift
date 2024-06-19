@@ -31,7 +31,8 @@ struct DistanceCalcView: View {
                     /// Initial user input values
                     VStack {
                         HStack {
-                            Text("Distance" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
+                            let distanceStringKey = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "distance_yards" : "distance_meters"
+                            Text(String(format: NSLocalizedString(distanceStringKey, comment: "")))
                                 .font(.headline)
                             Button(action: {
                                 viewModel.alertType = .distance
@@ -55,7 +56,8 @@ struct DistanceCalcView: View {
                             .limitInputLength(value: $viewModel.calcData.yardage, length: 3)
                         
                         HStack {
-                            Text("Adjusted Distance" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Yards)" : " (Meters)"))
+                            let adjDistanceStringKey = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "adjusted_distance_yards" : "adjusted_distance_meters"
+                            Text(String(format: NSLocalizedString(adjDistanceStringKey, comment: "")))
                                 .font(.headline)
                             Button(action: {
                                 viewModel.alertType = .adjustedDistance
@@ -157,7 +159,8 @@ struct DistanceCalcView: View {
                         
                         VStack {
                             HStack {
-                                Text("Temperature" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? " (°F)" : " (°C)"))
+                                let tempString = UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "temperature_f" : "temperature_c"
+                                Text(String(format: NSLocalizedString(tempString, comment: "")))
                                     .font(.headline)
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.5)
@@ -183,7 +186,8 @@ struct DistanceCalcView: View {
                         Spacer()
                         VStack {
                             HStack {
-                                Text("Altitude" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? " (Feet)" : " (Meters)"))
+                                let altString = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "altitude_f" : "altitude_m"
+                                Text(String(format: NSLocalizedString(altString, comment: "")))
                                     .font(.headline)
                                     .lineLimit(1)
                                     .minimumScaleFactor(0.5)

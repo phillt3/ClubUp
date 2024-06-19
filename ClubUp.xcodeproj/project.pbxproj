@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A4059C762C1D3612005311E2 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A4059C752C1D3612005311E2 /* Localizable.xcstrings */; };
 		A43298BD2C0D6204006EF80E /* Calculation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43298BC2C0D6204006EF80E /* Calculation.swift */; };
 		A43BAE382BAA161C005CBEE5 /* ClubDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */; };
 		A44C330E2BE10EC300DDC2FB /* DistanceCalcView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44C330D2BE10EC300DDC2FB /* DistanceCalcView.swift */; };
@@ -31,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A4059C752C1D3612005311E2 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A4059C772C1E1E95005311E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A43298BC2C0D6204006EF80E /* Calculation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculation.swift; sourceTree = "<group>"; };
 		A43BAE372BAA161C005CBEE5 /* ClubDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubDetailView.swift; sourceTree = "<group>"; };
 		A44C330C2BDFD05A00DDC2FB /* TechDebt.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TechDebt.md; sourceTree = "<group>"; };
@@ -96,6 +99,7 @@
 		A481CF9F2BA6458B00121B44 /* ClubUp */ = {
 			isa = PBXGroup;
 			children = (
+				A4059C772C1E1E95005311E2 /* Info.plist */,
 				A49AEAD62C0AA7F100DF9312 /* Utility */,
 				A471C8732BC49BBD0033D68C /* Documentation */,
 				A481CFA02BA6458B00121B44 /* ClubUpApp.swift */,
@@ -131,6 +135,7 @@
 				A49AEAD72C0AA81C00DF9312 /* HelperMethods.swift */,
 				A4AF93F92C0FDA56009EC806 /* Config.swift */,
 				A48A40E42C16A3F900028870 /* TextFieldLimitModifier.swift */,
+				A4059C752C1D3612005311E2 /* Localizable.xcstrings */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -212,6 +217,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"es-419",
 			);
 			mainGroup = A481CF942BA6458B00121B44;
 			productRefGroup = A481CF9E2BA6458B00121B44 /* Products */;
@@ -230,6 +236,7 @@
 			files = (
 				A481CFAA2BA6458D00121B44 /* Preview Assets.xcassets in Resources */,
 				A481CFA72BA6458D00121B44 /* Assets.xcassets in Resources */,
+				A4059C762C1D3612005311E2 /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +402,7 @@
 				DEVELOPMENT_TEAM = P4S97U2LLW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ClubUp/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Your location is required to get current altitude and weather";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to get current altitude and weather";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -426,6 +434,7 @@
 				DEVELOPMENT_TEAM = P4S97U2LLW;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ClubUp/Info.plist;
 				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Your location is required to get current altitude and weather";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Your location is required to get current altitude and weather";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -25,7 +25,8 @@ struct DistanceResultView: View {
         VStack{
             /// club is the passed in recommended club, but recClub is used to safely update the shot tracker
             if let recClub = club {
-                Text("\(distance) \(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == .Imperial ? "Yards" : "Meters")")
+                let distanceString = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == .Imperial  ? String(format: NSLocalizedString("yards", comment: "")) : String(format: NSLocalizedString("meters", comment: ""))
+                Text("\(distance) \(distanceString)")
                     .font(.system(size: 55, weight: .bold, design: .monospaced))
                     .foregroundColor(.black)
                     .shadow(color: .gray, radius: 2, x: 0, y: 2)
@@ -95,7 +96,8 @@ struct DistanceResultView: View {
 
             } else {
                 /// a distance has been calculated but no club provided meaning no clubs are added, show distance but recommend adding clubs
-                Text("\(distance) \(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == .Imperial ? "Yards" : "Meters")")
+                let distanceString = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == .Imperial  ? String(format: NSLocalizedString("yards", comment: "")) : String(format: NSLocalizedString("meters", comment: ""))
+                Text("\(distance) \(distanceString)")
                     .font(.system(size: 55, weight: .bold, design: .monospaced))
                     .foregroundColor(.black)
                     .shadow(color: .gray, radius: 2, x: 0, y: 2)
