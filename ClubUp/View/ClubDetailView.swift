@@ -62,7 +62,7 @@ struct ClubDetailView: View {
                 .frame(height: 400)
                 ZStack {
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.white)
+                        .fill(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.gray]), startPoint: .topLeading, endPoint: .bottomTrailing))
                         .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                         .frame(height: 75)
                         .padding(.horizontal)
@@ -107,7 +107,7 @@ struct ClubDetailView: View {
                 if (prefs.favoritesOn) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                            .fill(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.gray]), startPoint: .topLeading, endPoint: .bottomTrailing))
                             .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                             .frame(height: 75)
                             .padding(.horizontal)
@@ -136,7 +136,7 @@ struct ClubDetailView: View {
                 if (prefs.trackersOn) {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
-                            .fill(Color.white)
+                            .fill(LinearGradient(gradient: Gradient(colors: [Color.blue, Color.gray]), startPoint: .topLeading, endPoint: .bottomTrailing))
                             .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                             .frame(height: 75)
                             .padding(.horizontal)

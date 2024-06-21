@@ -31,4 +31,5 @@ Currently the calculation of which rec clubs to display, or if the section is di
 
 ##Add proper comments throughout
 
+##Will have to attribut background photos
 

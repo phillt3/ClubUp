@@ -318,11 +318,8 @@ struct DistanceCalcView: View {
                 .cornerRadius(15)
                 .shadow(radius: 10)
             }
-
         }
-
     }
-    
 }
 
 /// help to stylize the loading view

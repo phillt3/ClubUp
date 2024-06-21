@@ -28,7 +28,7 @@ struct DistanceResultView: View {
                 let distanceString = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == .Imperial  ? String(format: NSLocalizedString("yards", comment: "")) : String(format: NSLocalizedString("meters", comment: ""))
                 Text("\(distance) \(distanceString)")
                     .font(.system(size: 55, weight: .bold, design: .monospaced))
-                    .foregroundColor(.black)
+                    .foregroundColor(.primary)
                     .shadow(color: .gray, radius: 2, x: 0, y: 2)
 
                 Text(recClub.name)
