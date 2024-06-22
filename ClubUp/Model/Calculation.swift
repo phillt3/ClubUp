@@ -106,7 +106,6 @@ class Calculation: NSObject, ObservableObject, CLLocationManagerDelegate {
         }
     }
     
-    //TODO: THIS does not accout for if the user has gaps in their clubs, need to bring rank in on this
     /// Determine number of club positions to move based on lie
     /// - Returns: Index positions to move
     func getSlopeLieFactor() -> Int {
@@ -204,7 +203,6 @@ class Calculation: NSObject, ObservableObject, CLLocationManagerDelegate {
         self.isLoading = false
     }
 
-    //TODO: Handle this error user side
     /// Handle Unsuccessful Retrieval
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("error: \(error.localizedDescription)")

@@ -35,6 +35,13 @@ extension DistanceCalcView{
             calcData = Calculation(modelContext: modelContext)
         }
         
+        /// Perform data fetch and binding reset
+        public func prepareViewModelForView() {
+            self.fetchData()
+            self.calcData.fetchData()
+            self.calcData.reset()
+        }
+        
         /// Fetch relevant swiftdata objects
         public func fetchData() {
             do {

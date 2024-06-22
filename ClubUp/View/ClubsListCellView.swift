@@ -26,7 +26,7 @@ struct ClubsListCellView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 25, height: 25)
                         .fontWeight(.thin)
-                        .foregroundStyle(.yellow)
+                        .foregroundStyle(Color("Favorite"))
                         .onTapGesture {
                             club.favorite.toggle()
                         }

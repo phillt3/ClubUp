@@ -31,5 +31,5 @@ Currently the calculation of which rec clubs to display, or if the section is di
 
 ##Add proper comments throughout
 
-##Will have to attribut background photos
+##Will have to attribute background photo - https://wallpapers.com/iphone-x-golf-course-background#google_vignette
 

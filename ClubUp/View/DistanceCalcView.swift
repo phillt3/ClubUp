@@ -27,145 +27,66 @@ struct DistanceCalcView: View {
     var body: some View {
         ZStack {
             NavigationStack {
-                List {
-                    /// Initial user input values
-                    VStack {
-                        HStack {
-                            let distanceStringKey = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "distance_yards" : "distance_meters"
-                            Text(String(format: NSLocalizedString(distanceStringKey, comment: "")))
-                                .font(.headline)
-                            Button(action: {
-                                viewModel.alertType = .distance
-                                viewModel.showingAlert.toggle()
-                                
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 8)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                        .padding(.top)
-                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "150" : "137", text: $viewModel.calcData.yardage)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 100)
-                            .keyboardType(.numberPad)
-                            .multilineTextAlignment(.center)
-                            .onSubmit { focusItem = false }
-                            .focused($focusItem)
-                            .limitInputLength(value: $viewModel.calcData.yardage, length: 3)
-                        
-                        HStack {
-                            let adjDistanceStringKey = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "adjusted_distance_yards" : "adjusted_distance_meters"
-                            Text(String(format: NSLocalizedString(adjDistanceStringKey, comment: "")))
-                                .font(.headline)
-                            Button(action: {
-                                viewModel.alertType = .adjustedDistance
-                                viewModel.showingAlert.toggle()
-                                
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 8)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                        TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "158" : "144", text: $viewModel.calcData.adjYardage)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .frame(width: 100)
-                            .keyboardType(.numberPad)
-                            .multilineTextAlignment(.center)
-                            .onSubmit { focusItem = false }
-                            .focused($focusItem)
-                            .limitInputLength(value: $viewModel.calcData.adjYardage, length: 3)
-                        
-                        HStack {
-                            Text("Wind Direction")
-                                .font(.headline)
-                            Button(action: {
-                                viewModel.alertType = .windDirection
-                                viewModel.showingAlert.toggle()
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 8)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                        Picker(selection: $viewModel.calcData.windDirection, label: Text("Wind Direction")) {
-                            ForEach(viewModel.calcData.arrowImages, id: \.self) {
-                                Image(systemName: $0)
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 8)
-                            }
-                        }
-                        .pickerStyle(SegmentedPickerStyle())
-                        .padding(.horizontal)
-                        
-                        HStack {
-                            Text("Lie")
-                                .font(.headline)
-                            Button(action: {
-                                viewModel.alertType = .lie
-                                viewModel.showingAlert.toggle()
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 8)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                            Picker("Lie", selection: $viewModel.calcData.lie) {
-                                ForEach(viewModel.calcData.selectionOptions, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.wheel)
-                            .frame(height: 100)
-                        }
-                        HStack {
-                            Text("Slope")
-                                .font(.headline)
-                            Button(action: {
-                                viewModel.alertType = .slope
-                                viewModel.showingAlert.toggle()
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 8)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                            Picker("Slope", selection: $viewModel.calcData.slope) {
-                                ForEach(viewModel.calcData.slopes, id: \.self) {
-                                    Text($0)
-                                }
-                            }
-                            .pickerStyle(.wheel)
-                            .frame(height: 100)
-                        }
-                        
-                        Divider()
-                            .padding(.vertical)
-                        
-                        /// Input that can be filled in manually or using an auto fill
-                        Button {
-                            viewModel.calcData.isLoading = true
-                            viewModel.calcData.fillInData()
-                        } label: {
-                            Label(" Auto Fill", systemImage: "square.and.pencil")
-                        }
-                        .buttonStyle(.bordered)
-                        
-                        Spacer()
-                        
+                ZStack {
+                    Image("golf-background")
+                        .resizable()
+                    List {
+                        /// Initial user input values
                         VStack {
                             HStack {
-                                let tempString = UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "temperature_f" : "temperature_c"
-                                Text(String(format: NSLocalizedString(tempString, comment: "")))
+                                let distanceStringKey = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "distance_yards" : "distance_meters"
+                                Text(String(format: NSLocalizedString(distanceStringKey, comment: "")))
                                     .font(.headline)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.5)
                                 Button(action: {
-                                    viewModel.alertType = .temperature
+                                    viewModel.alertType = .distance
+                                    viewModel.showingAlert.toggle()
+                                    
+                                }) {
+                                    Image(systemName: "info.circle")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 8)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
+                            }
+                            .padding(.top)
+                            TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "150" : "137", text: $viewModel.calcData.yardage)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 100)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.center)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
+                                .limitInputLength(value: $viewModel.calcData.yardage, length: 3)
+                            
+                            HStack {
+                                let adjDistanceStringKey = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "adjusted_distance_yards" : "adjusted_distance_meters"
+                                Text(String(format: NSLocalizedString(adjDistanceStringKey, comment: "")))
+                                    .font(.headline)
+                                Button(action: {
+                                    viewModel.alertType = .adjustedDistance
+                                    viewModel.showingAlert.toggle()
+                                    
+                                }) {
+                                    Image(systemName: "info.circle")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 8)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
+                            }
+                            TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "158" : "144", text: $viewModel.calcData.adjYardage)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 100)
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.center)
+                                .onSubmit { focusItem = false }
+                                .focused($focusItem)
+                                .limitInputLength(value: $viewModel.calcData.adjYardage, length: 3)
+                            
+                            HStack {
+                                Text("Wind Direction")
+                                    .font(.headline)
+                                Button(action: {
+                                    viewModel.alertType = .windDirection
                                     viewModel.showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
@@ -174,68 +95,130 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField((UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "82" : "28"), text: $viewModel.calcData.temperature)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 100)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.center)
-                                .onSubmit { focusItem = false }
-                                .focused($focusItem)
-                        }
-                        .padding(.horizontal)
-                        Spacer()
-                        VStack {
-                            HStack {
-                                let altString = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "altitude_f" : "altitude_m"
-                                Text(String(format: NSLocalizedString(altString, comment: "")))
-                                    .font(.headline)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.5)
-                                Button(action: {
-                                    viewModel.alertType = .altitude
-                                    viewModel.showingAlert.toggle()
-                                }) {
-                                    Image(systemName: "info.circle")
+                            Picker(selection: $viewModel.calcData.windDirection, label: Text("Wind Direction")) {
+                                ForEach(viewModel.calcData.arrowImages, id: \.self) {
+                                    Image(systemName: $0)
                                         .foregroundColor(.blue)
                                         .padding(.trailing, 8)
                                 }
-                                .buttonStyle(BorderlessButtonStyle())
                             }
-                            TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "1803" : "550", text: $viewModel.calcData.altitude)
-                                .textFieldStyle(RoundedBorderTextFieldStyle())
-                                .frame(width: 100)
-                                .keyboardType(.numberPad)
-                                .multilineTextAlignment(.center)
-                                .onSubmit { focusItem = false }
-                                .focused($focusItem)
-                        }
-                        .padding(.horizontal)
-                        .padding(.vertical)
-                        HStack {
-                            Text("Wind Speed")
-                                .font(.headline)
-                            Button(action: {
-                                viewModel.alertType = .windSpeed
-                                viewModel.showingAlert.toggle()
-                            }) {
-                                Image(systemName: "info.circle")
-                                    .foregroundColor(.blue)
-                                    .padding(.trailing, 8)
-                            }
-                            .buttonStyle(BorderlessButtonStyle())
-                        }
-                        Slider(value: $viewModel.calcData.windSpeed, in: 0...50, step: 1)
+                            .pickerStyle(SegmentedPickerStyle())
                             .padding(.horizontal)
-                        
-                        Text("\(Int(viewModel.calcData.windSpeed))" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).speedUnit == .Imperial ? " (mph)" : " (km/h)"))
-                            .font(.headline)
-                            .foregroundColor(.gray)
-                        Toggle(isOn: $viewModel.calcData.isRaining) {
+                            
                             HStack {
-                                Text("Raining")
+                                Text("Lie")
                                     .font(.headline)
                                 Button(action: {
-                                    viewModel.alertType = .rain
+                                    viewModel.alertType = .lie
+                                    viewModel.showingAlert.toggle()
+                                }) {
+                                    Image(systemName: "info.circle")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 8)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
+                                Picker("Lie", selection: $viewModel.calcData.lie) {
+                                    ForEach(viewModel.calcData.selectionOptions, id: \.self) {
+                                        Text($0)
+                                    }
+                                }
+                                .pickerStyle(.wheel)
+                                .frame(height: 100)
+                            }
+                            HStack {
+                                Text("Slope")
+                                    .font(.headline)
+                                Button(action: {
+                                    viewModel.alertType = .slope
+                                    viewModel.showingAlert.toggle()
+                                }) {
+                                    Image(systemName: "info.circle")
+                                        .foregroundColor(.blue)
+                                        .padding(.trailing, 8)
+                                }
+                                .buttonStyle(BorderlessButtonStyle())
+                                Picker("Slope", selection: $viewModel.calcData.slope) {
+                                    ForEach(viewModel.calcData.slopes, id: \.self) {
+                                        Text($0)
+                                    }
+                                }
+                                .pickerStyle(.wheel)
+                                .frame(height: 100)
+                            }
+                            
+                            Divider()
+                                .padding(.vertical)
+                            
+                            /// Input that can be filled in manually or using an auto fill
+                            Button {
+                                viewModel.calcData.isLoading = true
+                                viewModel.calcData.fillInData()
+                            } label: {
+                                Label(" Auto Fill", systemImage: "square.and.pencil")
+                            }
+                            .buttonStyle(.bordered)
+                            
+                            Spacer()
+                            
+                            VStack {
+                                HStack {
+                                    let tempString = UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "temperature_f" : "temperature_c"
+                                    Text(String(format: NSLocalizedString(tempString, comment: "")))
+                                        .font(.headline)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
+                                    Button(action: {
+                                        viewModel.alertType = .temperature
+                                        viewModel.showingAlert.toggle()
+                                    }) {
+                                        Image(systemName: "info.circle")
+                                            .foregroundColor(.blue)
+                                            .padding(.trailing, 8)
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
+                                }
+                                TextField((UserPrefs.getCurrentPrefs(prefs: userPrefs).tempUnit == TempUnit.Fahrenheit ? "82" : "28"), text: $viewModel.calcData.temperature)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 100)
+                                    .keyboardType(.numberPad)
+                                    .multilineTextAlignment(.center)
+                                    .onSubmit { focusItem = false }
+                                    .focused($focusItem)
+                            }
+                            .padding(.horizontal)
+                            Spacer()
+                            VStack {
+                                HStack {
+                                    let altString = UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "altitude_f" : "altitude_m"
+                                    Text(String(format: NSLocalizedString(altString, comment: "")))
+                                        .font(.headline)
+                                        .lineLimit(1)
+                                        .minimumScaleFactor(0.5)
+                                    Button(action: {
+                                        viewModel.alertType = .altitude
+                                        viewModel.showingAlert.toggle()
+                                    }) {
+                                        Image(systemName: "info.circle")
+                                            .foregroundColor(.blue)
+                                            .padding(.trailing, 8)
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
+                                }
+                                TextField(UserPrefs.getCurrentPrefs(prefs: userPrefs).distanceUnit == Unit.Imperial ? "1803" : "550", text: $viewModel.calcData.altitude)
+                                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                                    .frame(width: 100)
+                                    .keyboardType(.numberPad)
+                                    .multilineTextAlignment(.center)
+                                    .onSubmit { focusItem = false }
+                                    .focused($focusItem)
+                            }
+                            .padding(.horizontal)
+                            .padding(.vertical)
+                            HStack {
+                                Text("Wind Speed")
+                                    .font(.headline)
+                                Button(action: {
+                                    viewModel.alertType = .windSpeed
                                     viewModel.showingAlert.toggle()
                                 }) {
                                     Image(systemName: "info.circle")
@@ -244,12 +227,35 @@ struct DistanceCalcView: View {
                                 }
                                 .buttonStyle(BorderlessButtonStyle())
                             }
+                            Slider(value: $viewModel.calcData.windSpeed, in: 0...50, step: 1)
+                                .padding(.horizontal)
+                            
+                            Text("\(Int(viewModel.calcData.windSpeed))" + (UserPrefs.getCurrentPrefs(prefs: userPrefs).speedUnit == .Imperial ? " (mph)" : " (km/h)"))
+                                .font(.headline)
+                                .foregroundColor(.gray)
+                            Toggle(isOn: $viewModel.calcData.isRaining) {
+                                HStack {
+                                    Text("Raining")
+                                        .font(.headline)
+                                    Button(action: {
+                                        viewModel.alertType = .rain
+                                        viewModel.showingAlert.toggle()
+                                    }) {
+                                        Image(systemName: "info.circle")
+                                            .foregroundColor(.blue)
+                                            .padding(.trailing, 8)
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
+                                }
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom)
                         }
-                        .padding(.horizontal)
+                        .alert(isPresented: $viewModel.showingAlert) {
+                            Alert(title: Text(viewModel.alertType.title), message: Text(viewModel.alertType.message), dismissButton: .default(Text("Got it!")))
+                        }
                     }
-                    .alert(isPresented: $viewModel.showingAlert) {
-                        Alert(title: Text(viewModel.alertType.title), message: Text(viewModel.alertType.message), dismissButton: .default(Text("Got it!")))
-                    }
+                    .scrollContentBackground(.hidden)
                 }
                 .toolbar {
                     ToolbarItem(placement: .topBarLeading) {
@@ -267,6 +273,7 @@ struct DistanceCalcView: View {
                                     .font(.headline)
                                 Image(systemName: "arrowshape.right")
                             }
+                            .foregroundStyle(.gray)
                         }
                     }
                     ToolbarItem(placement: .bottomBar) {
@@ -277,11 +284,13 @@ struct DistanceCalcView: View {
                                 viewModel.showingResult.toggle()
                             }
                             .buttonStyle(.borderedProminent)
+                            .tint(Color("Dark_Green"))
                             /// reset calculation page
                             Button("Clear") {
                                 viewModel.calcData.reset()
                             }
                             .buttonStyle(.borderedProminent)
+                            .tint(Color("Primary_Green"))
                             Spacer()
                         }
                     }
@@ -290,10 +299,7 @@ struct DistanceCalcView: View {
                     focusItem = false
                 }
                 .onAppear {
-                    //TODO: Possibly consolidate these 3 lines
-                    viewModel.fetchData()
-                    viewModel.calcData.fetchData()
-                    viewModel.calcData.reset()
+                    viewModel.prepareViewModelForView()
                 }
             }
             .sheet(isPresented: $viewModel.showingResult, content: {

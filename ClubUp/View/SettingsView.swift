@@ -40,12 +40,13 @@ struct SettingsView: View {
             Toggle("Shot Tracker", isOn: $userPrefs.trackersOn)
             Toggle("Clubs Quick Add", isOn: $userPrefs.quickAddClubsOn)
         }
+        .scrollContentBackground(.hidden)
+        .background(Color("Sky_Blue"))
         .navigationTitle("Settings")
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button(action: {
-                    //TODO: Maybe the singular settings object logic can be solved or improved here
                     /// There will only every be one or no SwiftData userpref object, if one is not available create it to be used by the rest of the application
                     if (isFirst) {
                         modelContext.insert(userPrefs)

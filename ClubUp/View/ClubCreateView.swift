@@ -161,7 +161,7 @@ struct ClubCreateView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 40, height: 40)
                             .fontWeight(.thin)
-                            .foregroundStyle(.yellow)
+                            .foregroundStyle(Color("Favorite"))
                             .padding(.trailing, 25)
                             .onTapGesture {
                                 viewModel.isFavorite.toggle()
