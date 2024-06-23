@@ -260,10 +260,14 @@ class Club: CustomStringConvertible {
         return -1
     }
     
-    //TODO: Need to revisit the below method, because we are essentially performing nested loops twice, here and below in the view, very unoptimized.
+    
+    /// Determine if any recommended clubs should be added for quick add
+    /// - Parameter clubs: User's current clubs
+    /// - Returns: bool, true if the user is missing one of the default recommended clubs, false if the user has all recommended clubs set already
     public static func isMissingRecommendedClubs(clubs: [Club]) -> Bool {
-        for (key, _) in recommendedClubs {
-            if !clubs.contains(where: {$0.name == key }) {
+        let clubNames = Set(clubs.map { $0.name })
+        for key in recommendedClubs.keys {
+            if !clubNames.contains(key) {
                 return true
             }
         }

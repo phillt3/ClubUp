@@ -33,21 +33,20 @@ struct ClubListView: View {
             NavigationStack {
                 VStack {
                     /// If there are available recommended clubs and the preference for quick add is turned on, display the relevant clubs to quick add. Otherwise, display header label with # of clubs
-                    if(Club.isMissingRecommendedClubs(clubs: userClubs) && UserPrefs.getCurrentPrefs(prefs: userPrefs).quickAddClubsOn) { //TODO: will need to optimize this method and below
-                        HStack{
+                    if(Club.isMissingRecommendedClubs(clubs: userClubs) && UserPrefs.getCurrentPrefs(prefs: userPrefs).quickAddClubsOn) {
+                        HStack {
                             Text("Add Recommended Clubs (\(userClubs.count))")
                                 .padding(.leading, 20)
-                                .padding(.top)
                                 .foregroundStyle(Color.white)
                                 .bold()
+                                .padding(.top)
+
                             Spacer()
+
                             Button(action: {
-                                /// Add all currently recommended clubs except for those that are already in the current list of user clubs
-                                Club.recommendedClubs.forEach { key, recClub in
-                                    if !userClubs.contains(where: { $0.name == recClub.name }) {
-                                        addItem(club: recClub) //TODO: Hopefully this can be optimized as well
-                                    }
-                                }
+                                let userClubNames = Set(userClubs.map { $0.name })
+                                let newClubs = Club.recommendedClubs.filter { !userClubNames.contains($0.value.name) }
+                                newClubs.forEach { addItem(club: $0.value) }
                             }, label: {
                                 Text("Add All")
                             })
@@ -55,26 +54,26 @@ struct ClubListView: View {
                             .tint(Color("Primary_Green"))
                             .padding(.trailing, 20)
                             .padding(.top)
-
                         }
+
                         LazyVGrid(columns: layout) {
                             /// present clubs to recommend for quick add if they are not already in the user's club list
-                            ForEach(Club.recommendedClubs.values.sorted { return $0.rank < $1.rank }, id: \.self) { recClub in //TODO: looping through this dictionary and then checking the list feels unoptimized and can be improved. But it is important that we are no longer relying on a state static dictionary from the model
-                                if !userClubs.contains(where: { $0.name == recClub.name }) {
-                                    Button(action: {
-                                        addItem(club: recClub)
-                                    }, label: {
-                                        Image(recClub.imageName)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fit)
-                                        Text("\(recClub.name)")
-                                            .bold()
-                                            .frame(maxWidth: .infinity)
-                                    })
-                                    .buttonStyle(.borderedProminent)
-                                    .tint(Color("Sky_Blue"))
-                                    .buttonBorderShape(.capsule)
-                                }
+                            let userClubNames = Set(userClubs.map { $0.name })
+
+                            ForEach(Club.recommendedClubs.values.filter { !userClubNames.contains($0.name) }.sorted(by: { $0.rank < $1.rank }), id: \.self) { recClub in
+                                Button(action: {
+                                    addItem(club: recClub)
+                                }, label: {
+                                    Image(recClub.imageName)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                    Text("\(recClub.name)")
+                                        .bold()
+                                        .frame(maxWidth: .infinity)
+                                })
+                                .buttonStyle(.borderedProminent)
+                                .tint(Color("Sky_Blue"))
+                                .buttonBorderShape(.capsule)
                             }
                         }
                         .padding()
