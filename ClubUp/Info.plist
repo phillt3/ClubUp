@@ -7,5 +7,12 @@
 		<string>en</string>
 		<string>Spanish</string>
 	</array>
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>Launch</string>
+		<key>UIImageName</key>
+		<string>logo</string>
+	</dict>
 </dict>
 </plist>

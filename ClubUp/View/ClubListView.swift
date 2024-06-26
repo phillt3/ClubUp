@@ -100,7 +100,7 @@ struct ClubListView: View {
                 ZStack {
 //                    Image("golf-background")
 //                        .resizable()
-                    Color("Primary_Green")
+                    Color("Primary_Green").ignoresSafeArea()
                     List {
                         /// present list of user clubs
                         ForEach(userClubs) { item in
