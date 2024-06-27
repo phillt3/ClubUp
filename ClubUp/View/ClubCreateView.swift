@@ -179,6 +179,7 @@ struct ClubCreateView: View {
                             .foregroundStyle(.white)
                     }
                     .buttonStyle(.borderedProminent)
+                    .padding(.bottom)
                     Spacer()
                 }
                 .listRowSeparator(.hidden)
