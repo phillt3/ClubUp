@@ -139,6 +139,7 @@ extension DistanceCalcView{
         /// - Parameter index: The position of the currently decided club in the clubs list
         /// - Returns: returns the new club adjusted for lie
         private func accountForLie(index: Int) -> Club? {
+            //MARK: Something to note here is that account for lie does not influence the calculated distance, could be helpful to make user aware of this
             var newIndex = index + calcData.getSlopeLieFactor()
             
             if (calcData.lie == "Deep Rough") {
@@ -152,12 +153,14 @@ extension DistanceCalcView{
                 return clubs[newIndex] //return the highest lofted club
             }
             
+            // Check the validity of the new index, but also check that the new club is within reasonable ranking range
+            // For example if 4i = 180 and next club is 2h = 215, do not want to club up that much, should stick with 4 iron in most cases
             if (newIndex < 0) {
-                return clubs.first
-            } else if (newIndex > clubs.endIndex) {
-                return clubs.last
+                return abs(clubs.first!.rank - clubs[index].rank) <= 3 ? clubs.first : clubs[index]
+            } else if (newIndex > clubs.count - 1) {
+                return abs(clubs.last!.rank - clubs[index].rank) <= 3 ? clubs.last : clubs[index]
             } else {
-                return clubs[newIndex]
+                return abs(clubs[newIndex].rank - clubs[index].rank) <= 3 ? clubs[newIndex] : clubs[index]
             }
         }
         
@@ -188,7 +191,8 @@ extension DistanceCalcView{
                 mid = (low + high) / 2
                 
                 if (clubs[mid].distanceYards! == resultDist) {
-                    return clubs[mid]
+                    return accountForLie(index: mid)
+                    //return clubs[mid]
                 }
                 
                 if (resultDist < clubs[mid].distanceYards!) {
