@@ -24,11 +24,11 @@ Be sure to visit my Youtube channel for an on course demo and overview of **Club
 
 ## Screenshots
 
-![IMG_4119](https://github.com/phillt3/ClubUp/assets/46726184/712706fb-6146-4845-8ed2-7b59b98f6b39)
-
-![IMG_4127](https://github.com/phillt3/ClubUp/assets/46726184/47317cf0-800a-4473-b6de-d9b1492efee0)
-
-![image](https://github.com/phillt3/ClubUp/assets/46726184/cd93a9ee-e477-4d73-b38e-f1cf1111c3bd)
+<p align="center">
+  <img src="https://github.com/phillt3/ClubUp/assets/46726184/712706fb-6146-4845-8ed2-7b59b98f6b39" width="30%">
+  <img src="https://github.com/phillt3/ClubUp/assets/46726184/47317cf0-800a-4473-b6de-d9b1492efee0" width="30%">
+  <img src="https://github.com/phillt3/ClubUp/assets/46726184/cd93a9ee-e477-4d73-b38e-f1cf1111c3bd" width="30%">
+</p>
 
 
 
