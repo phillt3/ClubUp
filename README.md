@@ -20,7 +20,8 @@ Be sure to visit my Youtube channel for an on course demo and overview of **Club
 - [Text Field Modifier](https://sanzaru84.medium.com/): Source for Text Field Modifier Code.
 
 ## Additional Links
-- [DEMO AND OVERVIEW - TBA]()
+- [OVERVIEW](https://youtu.be/0skt2EpnrE4)
+- [DEMO - TBA]()
 
 ## Screenshots
 
