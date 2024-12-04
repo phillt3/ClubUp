@@ -21,7 +21,7 @@ Be sure to visit my Youtube channel for an on course demo and overview of **Club
 
 ## Additional Links
 - [OVERVIEW](https://youtu.be/0skt2EpnrE4)
-- [DEMO - TBA]()
+- [DEMO](https://youtu.be/gaZKnp61xCI)
 
 ## Screenshots
 
